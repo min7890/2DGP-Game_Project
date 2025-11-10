@@ -98,23 +98,23 @@ class Player:
 
         # 왼쪽 팔 그리기 (걷기 애니메이션)
         sx, sy, sw, sh = self.sprite_arm_l
-        arm_offset_l = math.sin(walk_time + math.pi) * 5 if abs(self.velocity_x) > 0 else 0
-        arm_y = self.y + 1 * scale + arm_offset_l
+        arm_offset_l = math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
+        arm_y = self.y - 1 * scale + arm_offset_l
         player_image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
-            self.x - 4 * scale, arm_y,
+            self.x - 3 * scale, arm_y,
             sw * scale, sh * scale
         )
 
         # 오른쪽 팔 그리기 (걷기 애니메이션)
         sx, sy, sw, sh = self.sprite_arm_r
-        arm_offset_r = -math.sin(walk_time + math.pi) * 5 if abs(self.velocity_x) > 0 else 0
-        arm_y = self.y + 1 * scale + arm_offset_r
+        arm_offset_r = -math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
+        arm_y = self.y - 1 * scale + arm_offset_r
         player_image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
-            self.x + 4 * scale, arm_y,
+            self.x + 3 * scale, arm_y,
             sw * scale, sh * scale
         )
 
