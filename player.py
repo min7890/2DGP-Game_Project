@@ -6,18 +6,43 @@ from pinput import key_pressed, process_input
 open_canvas(800, 600)
 
 # 이미지 로드
-player_image = load_image('avatar_body0000.png')
+
 
 
 # 플레이어 클래스
+class Idle:
+    pass
+
+
+class Walk:
+    pass
+
+
+class Run:
+    pass
+
+
+class Jump:
+    pass
+
+
 class Player:
     def __init__(self):
-        self.x = 400  # 화면 중앙
-        self.y = 300
+
+        self.x, self.y = 400, 300
         self.velocity_x = 0  # 좌우 속도
         self.direction = 1  # 1: 오른쪽, -1: 왼쪽
         self.frame = 0  # 애니메이션 프레임
+
+        self.image = load_image('avatar_body0000.png')
+
         self.time = 0
+
+        self.IDLE = Idle(self)
+        self.WALK = Walk(self)
+        self.RUN = Run(self)
+        self.JUMP = Jump(self)
+        
 
         # 스프라이트 정보 (x, y, w, h)
         self.sprite_head = (0, 20, 16, 12)
@@ -57,7 +82,7 @@ class Player:
 
         # 몸통 그리기 (중심)
         sx, sy, sw, sh = self.sprite_body
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
             self.x, self.y,
@@ -67,7 +92,7 @@ class Player:
         # 머리 그리기
         sx, sy, sw, sh = self.sprite_head
         head_y = self.y + 6 * scale
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, ' ' if self.direction < 0 else 'h',
             self.x, head_y,
@@ -78,7 +103,7 @@ class Player:
         sx, sy, sw, sh = self.sprite_leg_l
         leg_offset_l = math.sin(walk_time) * 4 if abs(self.velocity_x) > 0 else 0
         leg_y = self.y - 4 * scale + leg_offset_l
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
             self.x - 1 * scale, leg_y,
@@ -89,7 +114,7 @@ class Player:
         sx, sy, sw, sh = self.sprite_leg_r
         leg_offset_r = -math.sin(walk_time) * 4 if abs(self.velocity_x) > 0 else 0
         leg_y = self.y - 4 * scale + leg_offset_r
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
             self.x + 1 * scale, leg_y,
@@ -100,7 +125,7 @@ class Player:
         sx, sy, sw, sh = self.sprite_arm_l
         arm_offset_l = math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
         arm_y = self.y - 1 * scale + arm_offset_l
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
             self.x - 3 * scale, arm_y,
@@ -111,7 +136,7 @@ class Player:
         sx, sy, sw, sh = self.sprite_arm_r
         arm_offset_r = -math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
         arm_y = self.y - 1 * scale + arm_offset_r
-        player_image.clip_composite_draw(
+        self.image.clip_composite_draw(
             sx, sy, sw, sh,
             0, 'h' if self.direction < 0 else '',
             self.x + 3 * scale, arm_y,
