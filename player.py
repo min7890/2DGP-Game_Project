@@ -1,48 +1,198 @@
 from pico2d import *
 import math
-from pinput import key_pressed, process_input
+from pinput import space_down, right_down, right_up, left_down, left_up
+import time
+import game_framework
 
-# 게임 초기화
-open_canvas(800, 600)
-
-# 이미지 로드
-
-
+from state_machine import StateMachine
 
 # 플레이어 클래스
 class Idle:
-    pass
+    def __init__(self, player):
+        self.player = player
+
+    def enter(self, e):
+        self.player.velocity_x = 0
+
+    def exit(self, e):
+        pass
+
+    def do(self):
+        pass
+
+    def draw(self):
+        scale = 3
+
+        # 몸통 그리기 (중심)
+        sx, sy, sw, sh = self.player.sprite_body
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x, self.player.y,
+            sw * scale, sh * scale
+        )
+
+        # 머리 그리기
+        sx, sy, sw, sh = self.player.sprite_head
+        head_y = self.player.y + 6 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x, head_y,
+            sw * scale, sh * scale
+        )
+
+        # 왼쪽 다리 그리기
+        sx, sy, sw, sh = self.player.sprite_leg_l
+        leg_y = self.player.y - 4 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x - 1 * scale, leg_y,
+            sw * scale, sh * scale
+        )
+
+        # 오른쪽 다리 그리기
+        sx, sy, sw, sh = self.player.sprite_leg_r
+        leg_y = self.player.y - 4 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x + 1 * scale, leg_y,
+            sw * scale, sh * scale
+        )
+
+        # 왼쪽 팔 그리기
+        sx, sy, sw, sh = self.player.sprite_arm_l
+        arm_y = self.player.y - 1 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x - 3 * scale, arm_y,
+            sw * scale, sh * scale
+        )
+
+        # 오른쪽 팔 그리기
+        sx, sy, sw, sh = self.player.sprite_arm_r
+        arm_y = self.player.y - 1 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, 'h' if self.player.dir < 0 else '',
+            self.player.x + 3 * scale, arm_y,
+            sw * scale, sh * scale
+        )
 
 
 class Walk:
-    pass
+    def __init__(self, player):
+        self.player = player
 
+    def enter(self, e):
+        if right_down(e):
+            self.player.dir = self.player.face_dir = 1
+            self.player.velocity_x = 200  # 오른쪽으로 이동
+        elif left_down(e):
+            self.player.dir = self.player.face_dir = -1
+            self.player.velocity_x = -200  # 왼쪽으로 이동
 
-class Run:
-    pass
+    def exit(self, e):
+        self.player.velocity_x = 0  # 멈춤
 
+    def do(self):
+        self.player.x += self.player.velocity_x * game_framework.frame_time
+        # 화면 범위 제한
+        if self.player.x < 50:
+            self.player.x = 50
+        if self.player.x > 750:
+            self.player.x = 750
 
-class Jump:
-    pass
+    def draw(self):
+        scale = 3
+        walk_time = self.player.time * 10 if abs(self.player.velocity_x) > 0 else 0
+
+        # 몸통 그리기 (중심)
+        sx, sy, sw, sh = self.player.sprite_body
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x, self.player.y,
+            sw * scale, sh * scale
+        )
+
+        # 머리 그리기
+        sx, sy, sw, sh = self.player.sprite_head
+        head_y = self.player.y + 6 * scale
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x, head_y,
+            sw * scale, sh * scale
+        )
+
+        # 왼쪽 다리 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_leg_l
+        leg_offset_l = math.sin(walk_time) * 4 if abs(self.player.velocity_x) > 0 else 0
+        leg_y = self.player.y - 4 * scale + leg_offset_l
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x - 1 * scale, leg_y,
+            sw * scale, sh * scale
+        )
+
+        # 오른쪽 다리 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_leg_r
+        leg_offset_r = -math.sin(walk_time) * 4 if abs(self.player.velocity_x) > 0 else 0
+        leg_y = self.player.y - 4 * scale + leg_offset_r
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x + 1 * scale, leg_y,
+            sw * scale, sh * scale
+        )
+
+        # 왼쪽 팔 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_arm_l
+        arm_offset_l = math.sin(walk_time + math.pi) * 3 if abs(self.player.velocity_x) > 0 else 0
+        arm_y = self.player.y - 1 * scale + arm_offset_l
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x - 3 * scale, arm_y,
+            sw * scale, sh * scale
+        )
+
+        # 오른쪽 팔 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_arm_r
+        arm_offset_r = -math.sin(walk_time + math.pi) * 3 if abs(self.player.velocity_x) > 0 else 0
+        arm_y = self.player.y - 1 * scale + arm_offset_r
+        self.player.image.clip_composite_draw(
+            sx, sy, sw, sh,
+            0, ' ' if self.player.dir < 0 else 'h',
+            self.player.x + 3 * scale, arm_y,
+            sw * scale, sh * scale
+        )
 
 
 class Player:
     def __init__(self):
-
         self.x, self.y = 400, 300
         self.velocity_x = 0  # 좌우 속도
-        self.direction = 1  # 1: 오른쪽, -1: 왼쪽
-        self.frame = 0  # 애니메이션 프레임
-
+        self.dir = 0  # 1: 오른쪽, -1: 왼쪽
+        self.face_dir = 1  # 1: 오른쪽, -1: 왼쪽
         self.image = load_image('avatar_body0000.png')
-
         self.time = 0
 
         self.IDLE = Idle(self)
         self.WALK = Walk(self)
-        self.RUN = Run(self)
-        self.JUMP = Jump(self)
-        
+
+        self.state_machine = StateMachine(
+            self.IDLE,
+            {
+                self.IDLE: {right_down: self.WALK, left_down: self.WALK},
+                self.WALK: {right_up: self.IDLE, left_up: self.IDLE}
+            }
+        )
 
         # 스프라이트 정보 (x, y, w, h)
         self.sprite_head = (0, 20, 16, 12)
@@ -52,134 +202,19 @@ class Player:
         self.sprite_leg_l = (3, 0, 2, 4)
         self.sprite_leg_r = (9, 0, 2, 4)
 
-    def update(self, delta_time):
-        self.time += delta_time
+    def update(self):
+        self.time += game_framework.frame_time
+        self.state_machine.update()
 
-        # 키 입력 처리
-        self.velocity_x = 0
-        if key_pressed(SDLK_a):
-            self.velocity_x = -200
-            self.direction = -1
-        elif key_pressed(SDLK_d):
-            self.velocity_x = 200
-            self.direction = 1
-
-        # 위치 업데이트
-        self.x += self.velocity_x * delta_time
-
-        # 화면 범위 제한
-        if self.x < 50:
-            self.x = 50
-        if self.x > 750:
-            self.x = 750
+    def handle_event(self, event):
+        self.state_machine.handle_state_event(('INPUT', event))
 
     def draw(self):
-        # 스케일 (확대 배율)
-        scale = 3
+        self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
-        # 걷기 애니메이션을 위한 시간 값
-        walk_time = self.time * 10 if abs(self.velocity_x) > 0 else 0
+    def get_bb(self):
+        return self.x - 20, self.y - 40, self.x + 20, self.y + 40
 
-        # 몸통 그리기 (중심)
-        sx, sy, sw, sh = self.sprite_body
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, 'h' if self.direction < 0 else '',
-            self.x, self.y,
-            sw * scale, sh * scale
-        )
-
-        # 머리 그리기
-        sx, sy, sw, sh = self.sprite_head
-        head_y = self.y + 6 * scale
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, ' ' if self.direction < 0 else 'h',
-            self.x, head_y,
-            sw * scale, sh * scale
-        )
-
-        # 왼쪽 다리 그리기 (걷기 애니메이션)
-        sx, sy, sw, sh = self.sprite_leg_l
-        leg_offset_l = math.sin(walk_time) * 4 if abs(self.velocity_x) > 0 else 0
-        leg_y = self.y - 4 * scale + leg_offset_l
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, 'h' if self.direction < 0 else '',
-            self.x - 1 * scale, leg_y,
-            sw * scale, sh * scale
-        )
-
-        # 오른쪽 다리 그리기 (걷기 애니메이션)
-        sx, sy, sw, sh = self.sprite_leg_r
-        leg_offset_r = -math.sin(walk_time) * 4 if abs(self.velocity_x) > 0 else 0
-        leg_y = self.y - 4 * scale + leg_offset_r
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, 'h' if self.direction < 0 else '',
-            self.x + 1 * scale, leg_y,
-            sw * scale, sh * scale
-        )
-
-        # 왼쪽 팔 그리기 (걷기 애니메이션)
-        sx, sy, sw, sh = self.sprite_arm_l
-        arm_offset_l = math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
-        arm_y = self.y - 1 * scale + arm_offset_l
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, 'h' if self.direction < 0 else '',
-            self.x - 3 * scale, arm_y,
-            sw * scale, sh * scale
-        )
-
-        # 오른쪽 팔 그리기 (걷기 애니메이션)
-        sx, sy, sw, sh = self.sprite_arm_r
-        arm_offset_r = -math.sin(walk_time + math.pi) * 3 if abs(self.velocity_x) > 0 else 0
-        arm_y = self.y - 1 * scale + arm_offset_r
-        self.image.clip_composite_draw(
-            sx, sy, sw, sh,
-            0, 'h' if self.direction < 0 else '',
-            self.x + 3 * scale, arm_y,
-            sw * scale, sh * scale
-        )
-
-
-# 플레이어 생성
-player = Player()
-
-# 게임 루프
-running = True
-last_time = get_time()
-
-while running:
-    clear_canvas()
-
-    # 델타 타임 계산
-    current_time = get_time()
-    delta_time = current_time - last_time
-    last_time = current_time
-
-    # 이벤트 처리
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
-
-    # 입력 처리 (업데이트 전에 호출해야 함)
-    process_input(events)
-
-    # 업데이트
-    player.update(delta_time)
-
-    # 그리기
-    player.draw()
-
-    # 간단한 텍스트 대신 배경만 표시
-
-    update_canvas()
-
-    delay(0.01)
-
-close_canvas()
+    def handle_collision(self, group, other):
+        pass
