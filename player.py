@@ -1,6 +1,6 @@
 from pico2d import *
 import math
-from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed
+from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed, is_lshift_pressed
 import time
 import game_framework
 
@@ -12,10 +12,18 @@ WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
 WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
 WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
+PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0  # Km / Hour  성인은 평균적으로 한시간에 약 4~5킬로미터 정도 걷는다고함.
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
 
 on_land = lambda e: e[0] == 'LAND'
 not_walking = lambda e: e[0] == 'NOT_WALKING'
 enter_idle_press_key = lambda e: e[0] == 'ENTER_IDLE_PRESS_KEY'
+enter_run = lambda e: e[0] == 'ENTER_RUN'
+enter_walk = lambda e: e[0] == 'ENTER_WALK'
 
 
 # 플레이어 클래스
@@ -162,26 +170,25 @@ class Walk:
     def enter(self, e):
         if right_down(e):
             if is_left_pressed():
-                print('1')
                 self.player.face_dir = 1
                 self.player.state_machine.handle_state_event(('NOT_WALKING', None))
             else:
-                print('2')
                 self.player.dir = self.player.face_dir = 1
         elif left_down(e):
             if is_right_pressed():
-                print('3')
                 self.player.face_dir = -1
                 self.player.state_machine.handle_state_event(('NOT_WALKING', None))
             else:
-                print('4')
                 self.player.dir = self.player.face_dir = -1
+
 
 
     def exit(self, e):
         self.player.velocity_x = 0  # 멈춤
 
     def do(self):
+        if is_lshift_pressed():
+            self.player.state_machine.handle_state_event(('ENTER_RUN', None))
         self.player.x += self.player.dir * WALK_SPEED_PPS * game_framework.frame_time
         # 화면 범위 제한
         if self.player.x < 50:
@@ -305,7 +312,153 @@ class Walk:
                 sw * scale, sh * scale
             )
 
+class Run:
+    def __init__(self, player):
+        self.player = player
 
+    def enter(self, e):
+        if right_down(e):
+            if is_left_pressed():
+                self.player.face_dir = 1
+                self.player.state_machine.handle_state_event(('NOT_WALKING', None))
+            else:
+                self.player.dir = self.player.face_dir = 1
+        elif left_down(e):
+            if is_right_pressed():
+                self.player.face_dir = -1
+                self.player.state_machine.handle_state_event(('NOT_WALKING', None))
+            else:
+                self.player.dir = self.player.face_dir = -1
+
+
+    def exit(self, e):
+        self.player.velocity_x = 0  # 멈춤
+
+    def do(self):
+        if not is_lshift_pressed():
+            self.player.state_machine.handle_state_event(('ENTER_WALK', None))
+        self.player.x += self.player.dir * RUN_SPEED_PPS * game_framework.frame_time
+        # 화면 범위 제한
+        if self.player.x < 50:
+            self.player.x = 50
+        if self.player.x > 1230:
+            self.player.x = 1230
+
+    def draw(self):
+        # print(self.player.dir)
+        scale = 3
+        walk_time = self.player.time * 4 * math.pi
+
+        # 몸통 그리기 (중심)
+        sx, sy, sw, sh = self.player.sprite_body
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x, self.player.y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x, self.player.y,
+                sw * scale, sh * scale
+            )
+
+        # 머리 그리기
+        sx, sy, sw, sh = self.player.sprite_head
+        head_y = self.player.y + 6 * scale
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x, head_y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x, head_y,
+                sw * scale, sh * scale
+            )
+
+        # 왼쪽 다리 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_leg_l
+        leg_offset_l = math.sin(walk_time) * 4
+        leg_y = self.player.y - 4 * scale + leg_offset_l
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 1 * scale, leg_y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x - 1 * scale, leg_y,
+                sw * scale, sh * scale
+            )
+
+        # 오른쪽 다리 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_leg_r
+        leg_offset_r = -math.sin(walk_time) * 4
+        leg_y = self.player.y - 4 * scale + leg_offset_r
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x + 1 * scale, leg_y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x + 1 * scale, leg_y,
+                sw * scale, sh * scale
+            )
+
+        # 왼쪽 팔 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_arm_l
+        arm_offset_l = math.sin(walk_time + math.pi) * 3
+        arm_y = self.player.y - 1 * scale + arm_offset_l
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * scale, arm_y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x - 3 * scale, arm_y,
+                sw * scale, sh * scale
+            )
+
+        # 오른쪽 팔 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = self.player.sprite_arm_r
+        arm_offset_r = -math.sin(walk_time + math.pi) * 3
+        arm_y = self.player.y - 1 * scale + arm_offset_r
+        if self.player.face_dir == -1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x + 3 * scale, arm_y,
+                sw * scale, sh * scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, 'h',
+                self.player.x + 3 * scale, arm_y,
+                sw * scale, sh * scale
+            )
 
 class Jump:
     def __init__(self, player):
@@ -466,13 +619,15 @@ class Player:
         self.IDLE = Idle(self)
         self.WALK = Walk(self)
         self.JUMP = Jump(self)
+        self.RUN = Run(self)
 
         self.state_machine = StateMachine(
             self.IDLE,
             {
                 self.IDLE: {right_down: self.WALK, left_down: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
-                self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP},
-                self.JUMP: {on_land: self.IDLE}
+                self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_run: self.RUN},
+                self.JUMP: {on_land: self.IDLE},
+                self.RUN: {right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK},
             }
         )
 

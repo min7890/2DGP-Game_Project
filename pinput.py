@@ -1,11 +1,12 @@
 from pico2d import *
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_LSHIFT
 
 # 현재 눌려있는 키 상태 추적
 pressed_keys = {
     SDLK_RIGHT: False,
     SDLK_LEFT: False,
-    SDLK_SPACE: False
+    SDLK_SPACE: False,
+    SDLK_LSHIFT: False
 }
 
 def update_key_state(event):
@@ -56,3 +57,11 @@ def left_down(e):
 def left_up(e):
     print('left up event detected')
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+
+def lshift_down(e):
+    print('left shift down event detected')
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LSHIFT
+
+def is_lshift_pressed():
+    """왼쪽 쉬프트 키가 눌려있는지 확인"""
+    return pressed_keys[SDLK_LSHIFT]
