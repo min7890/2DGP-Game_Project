@@ -1,6 +1,6 @@
 from pico2d import *
 import math
-from pinput import space_down, right_down, right_up, left_down, left_up
+from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed
 import time
 import game_framework
 
@@ -14,6 +14,9 @@ WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
 
 on_land = lambda e: e[0] == 'LAND'
+not_walking = lambda e: e[0] == 'NOT_WALKING'
+enter_idle_press_key = lambda e: e[0] == 'ENTER_IDLE_PRESS_KEY'
+
 
 # 플레이어 클래스
 class Idle:
@@ -24,9 +27,21 @@ class Idle:
         self.player.velocity_x = 0
 
     def exit(self, e):
+        if is_left_pressed():
+            self.player.dir = self.face_dir = -1
+        elif is_right_pressed():
+            self.player.dir = self.face_dir = 1
         pass
 
     def do(self):
+        if is_left_pressed() and is_right_pressed():
+            pass
+        else:
+            if is_left_pressed():
+                self.player.state_machine.handle_state_event(('ENTER_IDLE_PRESS_KEY', None))
+
+            if is_right_pressed():
+                self.player.state_machine.handle_state_event(('ENTER_IDLE_PRESS_KEY', None))
         pass
 
     def draw(self):
@@ -145,10 +160,23 @@ class Walk:
         self.player = player
 
     def enter(self, e):
-        if right_down(e) or left_up(e):
-            self.player.dir = self.player.face_dir = 1
-        elif left_down(e) or right_up(e):
-            self.player.dir = self.player.face_dir = -1
+        if right_down(e):
+            if is_left_pressed():
+                print('1')
+                self.player.face_dir = 1
+                self.player.state_machine.handle_state_event(('NOT_WALKING', None))
+            else:
+                print('2')
+                self.player.dir = self.player.face_dir = 1
+        elif left_down(e):
+            if is_right_pressed():
+                print('3')
+                self.player.face_dir = -1
+                self.player.state_machine.handle_state_event(('NOT_WALKING', None))
+            else:
+                print('4')
+                self.player.dir = self.player.face_dir = -1
+
 
     def exit(self, e):
         self.player.velocity_x = 0  # 멈춤
@@ -162,6 +190,7 @@ class Walk:
             self.player.x = 1230
 
     def draw(self):
+        # print(self.player.dir)
         scale = 3
         walk_time = self.player.time * 2 * math.pi
 
@@ -276,6 +305,8 @@ class Walk:
                 sw * scale, sh * scale
             )
 
+
+
 class Jump:
     def __init__(self, player):
         self.player = player
@@ -283,11 +314,6 @@ class Jump:
     def enter(self, e):
         self.player.velocity_y = 300  # 점프 초기 속도 (위쪽)
         self.player.gravity = -800    # 중력 (아래쪽)
-        # 점프 중에도 이동 방향 유지
-        if right_down(e) or left_up(e):
-            self.player.dir = self.player.face_dir = 1
-        elif left_down(e) or right_up(e):
-            self.player.dir = self.player.face_dir = -1
 
     def exit(self, e):
         self.player.velocity_y = 0    # 점프 종료 시 수직 속도 초기화
@@ -295,7 +321,6 @@ class Jump:
     def do(self):
         # 중력 적용
         self.player.velocity_y += self.player.gravity * game_framework.frame_time
-
         # 수직 이동
         self.player.y += self.player.velocity_y * game_framework.frame_time
 
@@ -303,7 +328,6 @@ class Jump:
         if self.player.y <= 300:
             self.player.y = 300
             self.player.velocity_y = 0
-            # IDLE 상태로 전환
             self.player.state_machine.handle_state_event(('LAND', None))
 
         # 화면 범위 제한 (좌우 이동 가능)
@@ -315,6 +339,7 @@ class Jump:
                 self.player.x = 1230
 
     def draw(self):
+        print('JUMP')
         scale = 3
 
         # 몸통 그리기 (중심)
@@ -445,9 +470,9 @@ class Player:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE: {right_down: self.WALK, left_down: self.WALK, right_up: self.WALK, left_up: self.WALK, space_down: self.JUMP},
-                self.WALK: {right_down: self.IDLE, left_down: self.IDLE, right_up: self.IDLE, left_up: self.IDLE, space_down: self.JUMP},
-                self.JUMP: {on_land : self.IDLE}
+                self.IDLE: {right_down: self.WALK, left_down: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
+                self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP},
+                self.JUMP: {on_land: self.IDLE}
             }
         )
 
