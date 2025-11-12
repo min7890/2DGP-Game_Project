@@ -5,7 +5,7 @@ import game_framework
 import game_world
 from state_machine import StateMachine
 
-PIXEL_PER_METER = (10.0 / 0.1) # 10pixel = 10cm = 0.1m
+PIXEL_PER_METER = (10.0 / 0.2) # 10pixel = 10cm = 0.1m
 WALK_SPEED_KMPH = 10.0 # 10km/h
 WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
 WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
@@ -34,9 +34,10 @@ class Monster_1:
         pass
     def draw(self):
         if self.face_dir == 1:
-            self.image.clip_composite_draw(int(self.frame) * 120, 380, 110, 190, 3.141592, 'v', self.x, self.y, 110 / 2, 190 / 2)
+            # self.image.clip_draw(120, 420, 110, 190, 300, 400)
+            self.image.clip_composite_draw(int(self.frame) * 120, 420, 110, 190, 3.141592, 'v', self.x, self.y, 110 / 2, 190 / 2)
         else:
-            self.image.clip_draw(int(self.frame) * 120, 380, 110, 190, self.x, self.y, 110 / 2, 190 / 2)
+            self.image.clip_draw(int(self.frame) * 120, 420, 110, 190, self.x, self.y, 110 / 2, 190 / 2)
         pass
 
     def handle_collision(self, group, other):
