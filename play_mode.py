@@ -4,6 +4,8 @@ import game_world
 
 import game_framework
 from player import Player
+from monster_01 import Monster_1
+import pinput
 
 player = None
 
@@ -15,6 +17,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         else:
+            pinput.update_key_state(event)  # 키 상태 업데이트
             player.handle_event(event)
 
 def init():
@@ -22,6 +25,11 @@ def init():
 
     player = Player()
     game_world.add_object(player, 1)
+
+    monster_1 = Monster_1()
+    game_world.add_object(monster_1, 1)
+
+
 
 
 
@@ -41,4 +49,3 @@ def finish():
 
 def pause(): pass
 def resume(): pass
-
