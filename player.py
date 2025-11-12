@@ -1,3 +1,5 @@
+from functools import wraps
+
 from pico2d import *
 import math
 from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed, \
@@ -67,6 +69,7 @@ class Idle:
 
     def draw(self):
         scale = 3
+        weapon_scale = 2
 
         # 몸통 그리기 (중심)
         sx, sy, sw, sh = self.player.sprite_body
@@ -157,6 +160,24 @@ class Idle:
                 sw * scale, sh * scale
             )
 
+        # 칼 그리기
+        sx, sy, sw, sh = 89, 139, 17, 7
+        arm_y = self.player.y - 4 * weapon_scale
+        if self.player.face_dir == -1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                3.141592, '',
+                self.player.x + 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+
         # 오른쪽 팔 그리기
         sx, sy, sw, sh = self.player.sprite_arm_r
         arm_y = self.player.y - 1 * scale
@@ -216,6 +237,7 @@ class Walk:
 
     def draw(self):
         scale = 3
+        weapon_scale = 2
         walk_time = self.player.time * 2 * math.pi
 
         # 몸통 그리기 (중심)
@@ -329,6 +351,25 @@ class Walk:
                 sw * scale, sh * scale
             )
 
+        # 칼 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = 89, 139, 17, 7
+        arm_offset_l = math.sin(walk_time + math.pi) * 3
+        arm_y = self.player.y - 1 * weapon_scale + arm_offset_l
+        if self.player.face_dir == -1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                3.141592, '',
+                self.player.x + 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+
 class Run:
     def __init__(self, player):
         self.player = player
@@ -368,6 +409,7 @@ class Run:
     def draw(self):
         # print(self.player.dir)
         scale = 3
+        weapon_scale = 2
         walk_time = self.player.time * 4 * math.pi
 
         # 몸통 그리기 (중심)
@@ -480,6 +522,24 @@ class Run:
                 self.player.x + 3 * scale, arm_y,
                 sw * scale, sh * scale
             )
+            # 칼 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = 89, 139, 17, 7
+        arm_offset_l = math.sin(walk_time + math.pi) * 3
+        arm_y = self.player.y - 1 * weapon_scale + arm_offset_l
+        if self.player.face_dir == -1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                3.141592, '',
+                self.player.x + 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
 
 class Jump:
     def __init__(self, player):
@@ -524,6 +584,7 @@ class Jump:
 
     def draw(self):
         scale = 3
+        weapon_scale = 2
 
         # 몸통 그리기 (중심)
         sx, sy, sw, sh = self.player.sprite_body
@@ -634,6 +695,24 @@ class Jump:
                 sw * scale, sh * scale
             )
 
+        # 칼 그리기
+        sx, sy, sw, sh = 89, 139, 17, 7
+        arm_y = self.player.y + 1 * weapon_scale  # 평상시보다 2픽셀 위로
+        if self.player.face_dir == -1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                3.141592, '',
+                self.player.x + 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+
 class Dash:
     def __init__(self, player):
         self.player = player
@@ -658,6 +737,7 @@ class Dash:
         pass
     def draw(self):
         scale = 3
+        weapon_scale = 2
         walk_time = self.player.time * 2 * math.pi
 
         # 몸통 그리기 (중심)
@@ -771,6 +851,25 @@ class Dash:
                 sw * scale, sh * scale
             )
 
+        # 왼쪽 팔 그리기 (걷기 애니메이션)
+        sx, sy, sw, sh = 89, 139, 17, 7
+        arm_offset_l = math.sin(walk_time + math.pi) * 3
+        arm_y = self.player.y - 1 * weapon_scale + arm_offset_l
+        if self.player.face_dir == -1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                0, '',
+                self.player.x - 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+        elif self.player.face_dir == 1:
+            self.player.weapon_image.clip_composite_draw(
+                sx, sy, sw, sh,
+                3.141592, '',
+                self.player.x + 3 * weapon_scale, arm_y,
+                sw * weapon_scale, sh * weapon_scale
+            )
+
 class Player:
     def __init__(self):
         self.x, self.y = 100, 100
@@ -780,6 +879,7 @@ class Player:
         self.dir = 0  # 1: 오른쪽, -1: 왼쪽
         self.face_dir = 1  # 1: 오른쪽, -1: 왼쪽
         self.image = load_image('avatar_body0000.png')
+        self.weapon_image = load_image('weapons01.png')
         self.time = 0
         self.jump = 2
 
