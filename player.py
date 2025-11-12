@@ -1,8 +1,11 @@
 from pico2d import *
 import math
-from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed, is_lshift_pressed, is_d_pressed
+from pinput import space_down, right_down, right_up, left_down, left_up, is_right_pressed, is_left_pressed, \
+    is_lshift_pressed, is_d_pressed, a_down, is_a_pressed
 import time
 import game_framework
+import game_world
+from fire import Fire
 
 from state_machine import StateMachine
 
@@ -40,8 +43,11 @@ class Idle:
 
     def enter(self, e):
         self.player.velocity_x = 0
+        self.player.jump = 2
 
     def exit(self, e):
+        if a_down(e):
+            self.player.fire_ball()
         if is_left_pressed():
             self.player.dir = self.face_dir = -1
         elif is_right_pressed():
@@ -192,6 +198,8 @@ class Walk:
 
     def exit(self, e):
         self.player.velocity_x = 0  # 멈춤
+        if a_down(e):
+            self.player.fire_ball()
 
     def do(self):
         if is_lshift_pressed():
@@ -342,6 +350,8 @@ class Run:
 
     def exit(self, e):
         self.player.velocity_x = 0  # 멈춤
+        if a_down(e):
+            self.player.fire_ball()
 
     def do(self):
         if is_d_pressed():
@@ -474,12 +484,18 @@ class Run:
 class Jump:
     def __init__(self, player):
         self.player = player
+        self.player.jump = 2
 
     def enter(self, e):
-        self.player.velocity_y = 300  # 점프 초기 속도 (위쪽)
-        self.player.gravity = -800    # 중력 (아래쪽)
+        self.player.jump -= 1
+        if not a_down(e) and self.player.jump >= 0:
+            self.player.velocity_y = 300  # 점프 초기 속도 (위쪽)
+            self.player.gravity = -800    # 중력 (아래쪽)
 
     def exit(self, e):
+        if a_down(e):
+            self.player.fire_ball()
+
         self.player.velocity_y = 0    # 점프 종료 시 수직 속도 초기화
 
     def do(self):
@@ -750,9 +766,6 @@ class Dash:
                 self.player.x + 3 * scale, arm_y,
                 sw * scale, sh * scale
             )
-        pass
-
-
 
 class Player:
     def __init__(self):
@@ -764,6 +777,7 @@ class Player:
         self.face_dir = 1  # 1: 오른쪽, -1: 왼쪽
         self.image = load_image('avatar_body0000.png')
         self.time = 0
+        self.jump = 2
 
         self.IDLE = Idle(self)
         self.WALK = Walk(self)
@@ -774,10 +788,10 @@ class Player:
         self.state_machine = StateMachine(
             self.IDLE,
             {
-                self.IDLE: {right_down: self.WALK, left_down: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
-                self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_run: self.RUN, enter_dash: self.DASH},
-                self.JUMP: {on_land: self.IDLE},
-                self.RUN: {right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK, enter_dash: self.DASH},
+                self.IDLE: {a_down: self.IDLE, right_down: self.WALK, left_down: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
+                self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_run: self.RUN, enter_dash: self.DASH, a_down: self.WALK},
+                self.JUMP: {on_land: self.IDLE, a_down: self.JUMP, space_down: self.JUMP},
+                self.RUN: {right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK, enter_dash: self.DASH, a_down: self.RUN},
                 self.DASH: {enter_walk: self.WALK}
             }
         )
@@ -800,6 +814,10 @@ class Player:
     def draw(self):
         self.state_machine.draw()
         draw_rectangle(*self.get_bb())
+
+    def fire_ball(self):
+        fire = Fire(self.x+self.face_dir*30, self.y+15, self.face_dir * 8)
+        game_world.add_object(fire, 1)
 
     def get_bb(self):
         return self.x - 20, self.y - 40, self.x + 20, self.y + 40
