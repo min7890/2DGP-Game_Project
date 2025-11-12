@@ -5,6 +5,8 @@ import game_world
 import game_framework
 from player import Player
 from monster_01 import Monster_1
+from monster_02 import Monster_2
+from monster_03 import Monster_3
 import pinput
 
 player = None
@@ -26,8 +28,11 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
-    monster_1 = Monster_1()
-    game_world.add_object(monster_1, 1)
+    # monster_1 = Monster_1()
+    # game_world.add_object(monster_1, 1)
+
+    monster_2 = Monster_2()
+    game_world.add_object(monster_2, 1)
 
 
 
