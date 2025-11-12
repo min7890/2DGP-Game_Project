@@ -6,7 +6,7 @@ import game_world
 from state_machine import StateMachine
 
 
-class Monster_1:
+class Monster_3:
     def __init__(self):
         self.image = load_image('monster.png')
         self.x, self.y = 400, 300
