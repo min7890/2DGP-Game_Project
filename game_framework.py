@@ -58,7 +58,7 @@ def run(start_mode):
         stack[-1].draw()
         frame_time = time.time() - current_time
         frame_rate = 1.0/ frame_time
-        print(f'Frame Time:  {frame_time: .4f}, Frame Rate: {frame_rate: .2f} FPS')
+        # print(f'Frame Time:  {frame_time: .4f}, Frame Rate: {frame_rate: .2f} FPS')
         current_time += frame_time
         # 여기를 채우시오.
 
