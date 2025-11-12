@@ -28,13 +28,14 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
-    # monster_1 = Monster_1()
-    # game_world.add_object(monster_1, 1)
+    monster_1 = Monster_1()
+    game_world.add_object(monster_1, 1)
 
-    monster_2 = Monster_2()
-    game_world.add_object(monster_2, 1)
+    # monster_2 = Monster_2()
+    # game_world.add_object(monster_2, 1)
 
-
+    # monster_3 = Monster_3()
+    # game_world.add_object(monster_3, 1)
 
 
 
