@@ -488,9 +488,13 @@ class Jump:
 
     def enter(self, e):
         self.player.jump -= 1
-        if not a_down(e) and self.player.jump >= 0:
+        if not a_down(e) and not right_down(e) and not left_down(e) and self.player.jump >= 0:
             self.player.velocity_y = 300  # 점프 초기 속도 (위쪽)
             self.player.gravity = -800    # 중력 (아래쪽)
+        if right_down(e):
+            self.player.face_dir = self.player.dir =  1
+        elif left_down(e):
+            self.player.face_dir = self.player.dir =  -1
 
     def exit(self, e):
         if a_down(e):
@@ -505,8 +509,8 @@ class Jump:
         self.player.y += self.player.velocity_y * game_framework.frame_time
 
         # 지면에 착지 확인 (y = 300이 지면)
-        if self.player.y <= 300:
-            self.player.y = 300
+        if self.player.y <= 100:
+            self.player.y = 100
             self.player.velocity_y = 0
             self.player.state_machine.handle_state_event(('LAND', None))
 
@@ -769,7 +773,7 @@ class Dash:
 
 class Player:
     def __init__(self):
-        self.x, self.y = 400, 300
+        self.x, self.y = 100, 100
         self.velocity_x = 0  # 좌우 속도
         self.velocity_y = 0  # 수직 속도
         self.gravity = 0     # 중력
@@ -790,7 +794,7 @@ class Player:
             {
                 self.IDLE: {a_down: self.IDLE, right_down: self.WALK, left_down: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
                 self.WALK: {right_down: self.WALK, left_down: self.WALK, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_run: self.RUN, enter_dash: self.DASH, a_down: self.WALK},
-                self.JUMP: {on_land: self.IDLE, a_down: self.JUMP, space_down: self.JUMP},
+                self.JUMP: {on_land: self.IDLE, a_down: self.JUMP, space_down: self.JUMP, right_down: self.JUMP, left_down: self.JUMP},
                 self.RUN: {right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK, enter_dash: self.DASH, a_down: self.RUN},
                 self.DASH: {enter_walk: self.WALK}
             }
