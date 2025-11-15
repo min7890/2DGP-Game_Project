@@ -7,6 +7,7 @@ from player import Player
 from monster_01 import Monster_1
 from monster_02 import Monster_2
 from monster_03 import Monster_3
+from map_01 import Map_01
 import pinput
 
 player = None
@@ -36,6 +37,9 @@ def init():
 
     # monster_3 = Monster_3()
     # game_world.add_object(monster_3, 1)
+
+    map_01 = Map_01()
+    game_world.add_object(map_01, 0)
 
 
 
