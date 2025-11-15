@@ -260,7 +260,6 @@ class Walk:
 
     def enter(self, e):
         if right_down(e):
-            print("----------------------------------------------------------------")
             if is_left_pressed():
                 self.player.face_dir = 1
                 self.player.state_machine.handle_state_event(('NOT_WALKING', None))
@@ -503,6 +502,8 @@ class Walk:
 class Run:
     def __init__(self, player):
         self.player = player
+        self.swing_time = 0
+        self.swing_duration = 0.2  # 칼 휘두르기 모션 시간(초)
 
     def enter(self, e):
         if right_down(e):
@@ -517,6 +518,10 @@ class Run:
                 self.player.state_machine.handle_state_event(('NOT_WALKING', None))
             else:
                 self.player.dir = self.player.face_dir = -1
+
+        if s_down(e):
+            self.player.swing = True
+            self.swing_time = 0
 
 
     def exit(self, e):
@@ -534,6 +539,12 @@ class Run:
 
         # 플랫폼 체크 및 중력 적용
         self.check_platform()
+
+        if self.player.swing:
+            self.swing_time += game_framework.frame_time
+            if self.swing_time >= self.swing_duration:
+                self.player.swing = False
+                self.swing_time = 0
 
         # 화면 범위 제한
         if self.player.x < 50:
@@ -701,21 +712,21 @@ class Run:
                 )
         else:
             # 칼 휘두르기 모션
-            angle = math.pi / 2 * (self.swing_time / self.swing_duration)  # 0~90도 회전
+            angle = -math.pi / 2 + math.pi * (self.swing_time / self.swing_duration)
             sx, sy, sw, sh = 89, 139, 17, 7
-            arm_y = self.player.y - 4 * weapon_scale
+            arm_y = self.player.y - (4 + int(angle *4)) * weapon_scale
             if self.player.face_dir == -1:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     angle, '',
-                    self.player.x - 3 * weapon_scale, arm_y,
+                    self.player.x - 4 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
             elif self.player.face_dir == 1:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     3.141592 - angle, '',
-                    self.player.x + 3 * weapon_scale, arm_y,
+                    self.player.x + 4 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
 
@@ -1131,7 +1142,6 @@ class Player:
         self.JUMP = Jump(self)
         self.RUN = Run(self)
         self.DASH = Dash(self)
-        # self.SWING = Swing(self)
 
         self.state_machine = StateMachine(
             self.IDLE,
@@ -1139,9 +1149,8 @@ class Player:
                 self.IDLE: {s_down: self.IDLE, a_down: self.IDLE, right_down: self.WALK, left_down: self.WALK, right_up: self.WALK, left_up: self.WALK, enter_idle_press_key: self.WALK, space_down: self.JUMP},
                 self.WALK: {s_down: self.WALK, right_down: self.WALK, left_down: self.WALK, right_up: self.WALK, left_up: self.WALK, not_walking: self.IDLE, space_down: self.JUMP, enter_run: self.RUN, enter_dash: self.DASH, a_down: self.WALK},
                 self.JUMP: {on_land: self.IDLE, a_down: self.JUMP, space_down: self.JUMP, right_down: self.JUMP, left_down: self.JUMP},
-                self.RUN: {right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK, enter_dash: self.DASH, a_down: self.RUN},
+                self.RUN: {s_down: self.RUN, right_down: self.RUN, left_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, not_walking: self.IDLE, space_down: self.JUMP, enter_walk: self.WALK, enter_dash: self.DASH, a_down: self.RUN},
                 self.DASH: {enter_walk: self.WALK},
-                # self.SWING: {time_out: self.IDLE}
             }
         )
 
