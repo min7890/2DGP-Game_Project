@@ -566,7 +566,7 @@ class Run:
     def draw(self):
         # print(self.player.dir)
         scale = 3
-        weapon_scale = 2
+        weapon_scale = 3.5
         walk_time = self.player.time * 4 * math.pi
 
         # 몸통 그리기 (중심)
@@ -689,14 +689,14 @@ class Run:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     0, '',
-                    self.player.x - 3 * weapon_scale, arm_y,
+                    self.player.x - 6 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
             elif self.player.face_dir == 1:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     3.141592, '',
-                    self.player.x + 3 * weapon_scale, arm_y,
+                    self.player.x + 6 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
         else:
@@ -777,7 +777,7 @@ class Jump:
 
     def draw(self):
         scale = 3
-        weapon_scale = 2
+        weapon_scale = 3.5
 
         # 몸통 그리기 (중심)
         sx, sy, sw, sh = self.player.sprite_body
@@ -895,14 +895,14 @@ class Jump:
             self.player.weapon_image.clip_composite_draw(
                 sx, sy, sw, sh,
                 0, '',
-                self.player.x - 3 * weapon_scale, arm_y,
+                self.player.x - 6 * weapon_scale, arm_y,
                 sw * weapon_scale, sh * weapon_scale
             )
         elif self.player.face_dir == 1:
             self.player.weapon_image.clip_composite_draw(
                 sx, sy, sw, sh,
                 3.141592, '',
-                self.player.x + 3 * weapon_scale, arm_y,
+                self.player.x + 6 * weapon_scale, arm_y,
                 sw * weapon_scale, sh * weapon_scale
             )
 
@@ -955,7 +955,7 @@ class Dash:
 
     def draw(self):
         scale = 3
-        weapon_scale = 2
+        weapon_scale = 3.5
         walk_time = self.player.time * 2 * math.pi
 
         # 몸통 그리기 (중심)
@@ -1097,14 +1097,14 @@ class Dash:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     angle, '',
-                    self.player.x - 3 * weapon_scale, arm_y,
+                    self.player.x - 6 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
             elif self.player.face_dir == 1:
                 self.player.weapon_image.clip_composite_draw(
                     sx, sy, sw, sh,
                     3.141592 - angle, '',
-                    self.player.x + 3 * weapon_scale, arm_y,
+                    self.player.x + 6 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
 
