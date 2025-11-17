@@ -65,8 +65,6 @@ class Idle:
                 self.player.swing = False
                 self.swing_time = 0
 
-        # 플랫폼 체크 및 중력 적용
-        # self.check_platform()
 
         # 좌우 이동 체크
         if is_left_pressed() and is_right_pressed():
@@ -79,18 +77,6 @@ class Idle:
                 self.player.face_dir = 1
                 self.player.state_machine.handle_state_event(('ENTER_IDLE_PRESS_KEY', None))
 
-    # def check_platform(self):
-    #     # 플랫폼 x 범위 체크 후 ground 설정
-    #     if 336 < self.player.x < 592:
-    #         if self.player.y > 280:
-    #             self.player.ground = 286
-    #         elif self.player.y < 270 and not (336 < self.player.x < 360):
-    #             self.player.ground = 90
-    #     elif 236 < self.player.x < 360:
-    #         if self.player.y > 188:
-    #             self.player.ground = 187
-    #     else:
-    #         self.player.ground = 90
 
         # 현재 위치가 ground보다 높으면 떨어뜨림
         if self.player.y > self.player.ground:
@@ -312,27 +298,12 @@ class Walk:
 
         self.player.x += self.player.dir * WALK_SPEED_PPS * game_framework.frame_time
 
-        # 플랫폼 체크 및 중력 적용
-        # self.check_platform()
 
         # 화면 범위 제한
         if self.player.x < 50:
             self.player.x = 50
         if self.player.x > 1230:
             self.player.x = 1230
-
-    # def check_platform(self):
-    #     # 플랫폼 x 범위 체크 후 ground 설정
-    #     if 336 < self.player.x < 592:
-    #         if self.player.y > 280:
-    #             self.player.ground = 286
-    #         elif self.player.y < 270 and not (336 < self.player.x < 360):
-    #             self.player.ground = 90
-    #     elif 236 < self.player.x < 360:
-    #         if self.player.y > 188:
-    #             self.player.ground = 187
-    #     else:
-    #         self.player.ground = 90
 
         # 현재 위치가 ground보다 높으면 떨어뜨림
         if self.player.y > self.player.ground:
@@ -552,18 +523,6 @@ class Run:
         if self.player.x > 1230:
             self.player.x = 1230
 
-    # def check_platform(self):
-    #     # 플랫폼 x 범위 체크 후 ground 설정
-    #     if 336 < self.player.x < 592:
-    #         if self.player.y > 280:
-    #             self.player.ground = 286
-    #         elif self.player.y < 270 and not (336 < self.player.x < 360):
-    #             self.player.ground = 90
-    #     elif 236 < self.player.x < 360:
-    #         if self.player.y > 188:
-    #             self.player.ground = 187
-    #     else:
-    #         self.player.ground = 90
 
         # 현재 위치가 ground보다 높으면 떨어뜨림
         if self.player.y > self.player.ground:
@@ -760,17 +719,6 @@ class Jump:
         # 수직 이동
         self.player.y += self.player.velocity_y * game_framework.frame_time
 
-        # 플랫폼 x 범위 체크 후 ground 설정
-        # if 336 < self.player.x < 592:
-        #     if self.player.y > 280:
-        #         self.player.ground = 286
-        #     elif self.player.y < 270 and not (336 < self.player.x < 360):
-        #         self.player.ground = 90
-        # elif 236 < self.player.x < 360:
-        #     if self.player.y > 188:
-        #         self.player.ground = 187
-        # else:
-        #     self.player.ground = 90
 
         # 지면에 착지 확인
         if self.player.y <= self.player.ground:
@@ -930,9 +878,6 @@ class Dash:
     def do(self):
         self.player.x += self.player.dir * DASH_SPEED_PPS * game_framework.frame_time
 
-        # 플랫폼 체크 및 중력 적용
-        # self.check_platform()
-
         # 화면 범위 제한
         if self.player.x < 50:
             self.player.x = 50
@@ -941,19 +886,6 @@ class Dash:
 
         if get_time() - self.player.dash_time > 0.2:
             self.player.state_machine.handle_state_event(('ENTER_WALK', None))
-
-    # def check_platform(self):
-    #     # 플랫폼 x 범위 체크 후 ground 설정
-    #     if 336 < self.player.x < 592:
-    #         if self.player.y > 280:
-    #             self.player.ground = 286
-    #         elif self.player.y < 270 and not (336 < self.player.x < 360):
-    #             self.player.ground = 90
-    #     elif 236 < self.player.x < 360:
-    #         if self.player.y > 188:
-    #             self.player.ground = 187
-    #     else:
-    #         self.player.ground = 90
 
         # 현재 위치가 ground보다 높으면 떨어뜨림
         if self.player.y > self.player.ground:
