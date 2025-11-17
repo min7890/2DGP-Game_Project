@@ -40,6 +40,10 @@ def init():
 
     map_01 = Map_01()
     game_world.add_object(map_01, 0)
+    game_world.add_collision_pair('map_01_tile:player', None, player)
+    for tile in map_01.tiles:
+        game_world.add_collision_pair('map_01_tile:player', tile, None)
+
 
 
 
