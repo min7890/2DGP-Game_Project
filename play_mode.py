@@ -10,7 +10,7 @@ from monster_03 import Monster_3
 
 from fire import Fire
 
-from map_01 import Map_01
+from map import Map_01
 import pinput
 
 player = None
