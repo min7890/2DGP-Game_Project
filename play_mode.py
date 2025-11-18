@@ -7,6 +7,9 @@ from player import Player
 from monster_01 import Monster_1
 from monster_02 import Monster_2
 from monster_03 import Monster_3
+
+from fire import Fire
+
 from map_01 import Map_01
 import pinput
 
@@ -29,20 +32,37 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
-    monster_1 = Monster_1()
-    game_world.add_object(monster_1, 1)
+    monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
+    for monster in monster_1:
+         game_world.add_object(monster, 1)
+    game_world.add_collision_pair('monster_1:player', None, player)
+    for monster in monster_1:
+        game_world.add_collision_pair('monster_1:player', monster, None)
+
+    #몬스터1, 원거리공격 충돌
+    for monster in monster_1:
+        game_world.add_collision_pair('monster_1:fire', monster, None)
+
 
     # monster_2 = Monster_2()
     # game_world.add_object(monster_2, 1)
+    game_world.add_collision_pair('monster_2:player', None, player)
 
     # monster_3 = Monster_3()
     # game_world.add_object(monster_3, 1)
+    game_world.add_collision_pair('monster_3:player', None, player)
+
+
 
     map_01 = Map_01()
     game_world.add_object(map_01, 0)
     game_world.add_collision_pair('map_01_tile:player', None, player)
     for tile in map_01.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
+
+
+
+
 
 
 

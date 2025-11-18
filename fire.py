@@ -24,4 +24,6 @@ class Fire:
         return self.x - 30, self.y - 15, self.x + 20, self.y + 12
 
     def handle_collision(self, group, other):
+        if group == 'monster_1:fire':
+            game_world.remove_object(self)
         pass

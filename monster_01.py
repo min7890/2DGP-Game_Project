@@ -17,9 +17,9 @@ FRAMES_PER_ACTION = 3
 FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 class Monster_1:
-    def __init__(self):
+    def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
-        self.x, self.y = 400, 300
+        self.x, self.y = x, y
         self.frame = 0
         self.dir = self.face_dir = 1
 
@@ -46,4 +46,7 @@ class Monster_1:
         return self.x - 25, self.y - 40, self.x + 25, self.y + 45
 
     def handle_collision(self, group, other):
+        if group == 'monster_1:fire':
+            game_world.remove_object(self)
+            game_world.remove_collision_pair('monster_1:fire', self, None)
         pass
