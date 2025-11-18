@@ -1065,6 +1065,10 @@ class Player:
         self.time = 0
         self.jump = 2
 
+        self.life = 5
+        self.islife_down = False
+        self.life_notdown_timer = 0
+
         self.ground = 90
 
         self.swing = False
@@ -1097,6 +1101,10 @@ class Player:
     def update(self):
         self.time += game_framework.frame_time
         self.state_machine.update()
+
+
+        if get_time() - self.life_notdown_timer > 2.0:
+            self.islife_down = False
 
         if hasattr(self, 'candidate_grounds') and self.candidate_grounds:
             self.ground = max(self.candidate_grounds)
@@ -1133,5 +1141,11 @@ class Player:
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
         if group == 'monster_1:player':
+            if self.life > 1 and not self.islife_down:
+                self.life -= 1
+                self.islife_down = True
+                self.life_notdown_timer = get_time()
+
             print('몬스터와 충돌함')
+            print(self.life)
 

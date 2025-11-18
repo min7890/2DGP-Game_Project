@@ -29,12 +29,12 @@ def handle_events():
 def init():
     global player
 
-    lives = [Life(35 + x * 60, 690) for x in range(5)]
-    for life in lives:
-        game_world.add_object(life, 2)
-
     player = Player()
     game_world.add_object(player, 1)
+
+    # lives = [Life(35 + x * 60, 690) for x in range(player.life)]
+    # for life in lives:
+    #     game_world.add_object(life, 2)
 
     monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
     for monster in monster_1:
@@ -75,6 +75,16 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collisions()
+
+    current_life_objects = [obj for obj in game_world.world[2] if isinstance(obj, Life)]
+    if len(current_life_objects) != player.life:
+        # 기존 Life 객체 모두 제거
+        for obj in current_life_objects:
+            game_world.remove_object(obj)
+        # 새 Life 객체 생성
+        lives = [Life(35 + x * 60, 690) for x in range(player.life)]
+        for life in lives:
+            game_world.add_object(life, 2)
 
 
 def draw():
