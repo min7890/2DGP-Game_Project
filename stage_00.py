@@ -10,7 +10,7 @@ from monster_03 import Monster_3
 
 from fire import Fire
 
-from map import Map_01
+from map import Map_Start
 import pinput
 
 player = None
@@ -32,17 +32,6 @@ def init():
     player = Player()
     game_world.add_object(player, 1)
 
-    monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
-    for monster in monster_1:
-         game_world.add_object(monster, 1)
-    game_world.add_collision_pair('monster_1:player', None, player)
-    for monster in monster_1:
-        game_world.add_collision_pair('monster_1:player', monster, None)
-
-    #몬스터1, 원거리공격 충돌
-    for monster in monster_1:
-        game_world.add_collision_pair('monster_1:fire', monster, None)
-
 
     # monster_2 = Monster_2()
     # game_world.add_object(monster_2, 1)
@@ -54,13 +43,19 @@ def init():
 
 
 
-    map_01 = Map_01()
-    game_world.add_object(map_01, 0)
+    map = Map_Start()
+    game_world.add_object(map, 0)
     game_world.add_collision_pair('map_01_tile:player', None, player)
-    for tile in map_01.tiles:
+    for tile in map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
-
+def spawn_monster():
+    monster_1 = Monster_1(400, 300)
+    game_world.add_object(monster_1, 1)
+    game_world.add_collision_pair('monster_1:player', None, player)
+    game_world.add_collision_pair('monster_1:player', monster_1, None)
+    #몬스터1, 원거리공격 충돌
+    game_world.add_collision_pair('monster_1:fire', monster_1, None)
 
 
 
@@ -71,6 +66,11 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collisions()
+
+    monsters = [obj for obj in game_world.world[1] if isinstance(obj, Monster_1)]
+    if not monsters:
+        # 몬스터가 사라진 상태
+        spawn_monster()
 
 
 def draw():
