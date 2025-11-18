@@ -1132,7 +1132,6 @@ class Player:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
+        if group == 'monster_1:player':
+            print('몬스터와 충돌함')
 
-
-            print('충돌충돌충돌')
-        pass

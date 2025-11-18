@@ -8,7 +8,7 @@ from monster_01 import Monster_1
 from monster_02 import Monster_2
 from monster_03 import Monster_3
 
-from fire import Fire
+from life import Life
 
 from map import Map_01
 import pinput
@@ -28,6 +28,10 @@ def handle_events():
 
 def init():
     global player
+
+    lives = [Life(35 + x * 60, 690) for x in range(5)]
+    for life in lives:
+        game_world.add_object(life, 2)
 
     player = Player()
     game_world.add_object(player, 1)

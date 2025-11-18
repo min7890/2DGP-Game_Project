@@ -48,4 +48,6 @@ class Monster_1:
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
             game_world.remove_object(self)
-        pass
+        elif group == 'monster_1:player':
+            pass
+

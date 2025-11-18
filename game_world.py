@@ -35,14 +35,15 @@ def remove_object(o):
             remove_collision_object(o)
             return
 
-    raise ValueError('Cannot delete non existing object')
+    # raise ValueError('Cannot delete non existing object')
 
 
 def clear():
-    global world
+    global world, collision_pairs
 
     for layer in world:
         layer.clear()
+    collision_pairs.clear()
 
 
 def collide(a, b):
@@ -76,8 +77,8 @@ def remove_collision_pair(group, a, b):
 
 def handle_collisions():
     for group, pairs in collision_pairs.items():
-        for a in pairs[0]:
-            for b in pairs[1]:
+        for a in pairs[0][:]:
+            for b in pairs[1][:]:
                 if collide(a, b):
                     a.handle_collision(group, b)
                     b.handle_collision(group, a)
