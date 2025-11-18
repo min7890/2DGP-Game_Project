@@ -1,5 +1,5 @@
 from pico2d import *
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_LSHIFT, SDLK_d, SDLK_a
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_LSHIFT, SDLK_d, SDLK_a, SDLK_s
 
 # 현재 눌려있는 키 상태 추적
 pressed_keys = {
@@ -8,7 +8,8 @@ pressed_keys = {
     SDLK_SPACE: False,
     SDLK_LSHIFT: False,
     SDLK_d: False,
-    SDLK_a: False
+    SDLK_a: False,
+    SDLK_s: False
 }
 
 def update_key_state(event):
@@ -79,3 +80,7 @@ def a_down(e):
 def is_a_pressed():
     """A 키가 눌려있는지 확인"""
     return pressed_keys[SDLK_a]
+
+def s_down(e):
+    print('S down event detected')
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
