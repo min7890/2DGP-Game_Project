@@ -37,11 +37,11 @@ def init():
 
     # monster_2 = Monster_2()
     # game_world.add_object(monster_2, 1)
-    game_world.add_collision_pair('monster_2:player', None, player)
+
 
     # monster_3 = Monster_3()
     # game_world.add_object(monster_3, 1)
-    game_world.add_collision_pair('monster_3:player', None, player)
+
 
 
 
@@ -54,8 +54,7 @@ def init():
 def spawn_monster():
     monster_1 = Monster_1(400, 300)
     game_world.add_object(monster_1, 1)
-    game_world.add_collision_pair('monster_1:player', None, player)
-    game_world.add_collision_pair('monster_1:player', monster_1, None)
+
     #몬스터1, 원거리공격 충돌
     game_world.add_collision_pair('monster_1:fire', monster_1, None)
 
