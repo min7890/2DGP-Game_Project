@@ -1,7 +1,7 @@
 from pico2d import *
 
 import game_world
-
+import stage_01
 import game_framework
 from player import Player
 from monster_01 import Monster_1
@@ -22,6 +22,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_1:
+            game_framework.change_mode(stage_01)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
             player.handle_event(event)

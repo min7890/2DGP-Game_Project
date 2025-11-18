@@ -48,5 +48,4 @@ class Monster_1:
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
             game_world.remove_object(self)
-            game_world.remove_collision_pair('monster_1:fire', self, None)
         pass
