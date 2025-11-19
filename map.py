@@ -1,5 +1,6 @@
 from pico2d import *
 from tile import Tile_01, Tile_02
+from portal import Portal
 
 class Map_01:
     def __init__(self):
@@ -27,7 +28,9 @@ class Map_Start:
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [Tile_02(x, y) for x, y in
                       [(400, 250), (400 + 128, 250), (300, 150)]]
+        self.portal = Portal(1100, 120)
     def update(self):
+        self.portal.update()
         pass
     def draw(self):
         self.image.draw(1280 // 2, 720 // 2, 1280, 720)
@@ -35,5 +38,7 @@ class Map_Start:
             tile.draw()
         for tile in self.tiles:
             tile.draw()
+
+        self.portal.draw()
     def handle_collision(self, group, other):
         pass
