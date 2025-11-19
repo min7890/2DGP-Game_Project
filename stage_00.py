@@ -22,7 +22,7 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_1:
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_f and player.isInPortal:
             game_framework.change_mode(stage_01)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
@@ -50,6 +50,8 @@ def init():
     game_world.add_collision_pair('map_01_tile:player', None, player)
     for tile in map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
+
+    game_world.add_collision_pair('portal:player', map.portal, player)
 
 def spawn_monster():
     monster_1 = Monster_1(400, 300)

@@ -1073,6 +1073,8 @@ class Player:
 
         self.swing = False
 
+        self.isInPortal = False
+
         self.IDLE = Idle(self)
         self.WALK = Walk(self)
         self.JUMP = Jump(self)
@@ -1099,6 +1101,7 @@ class Player:
         self.sprite_leg_r = (9, 0, 2, 4)
 
     def update(self):
+        self.isInPortal = False
         self.time += game_framework.frame_time
         self.state_machine.update()
 
@@ -1148,4 +1151,10 @@ class Player:
 
             print('몬스터와 충돌함')
             print(self.life)
+
+        if group == 'portal:player':
+            self.isInPortal = True
+            print('포탈과 충돌함')
+
+
 
