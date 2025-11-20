@@ -102,7 +102,10 @@ def draw():
     update_canvas()
 
 def prev_stage_life():
-    return player.life
+    if player is None:
+        return 5
+    else:
+        return player.life
 
 def finish():
     game_world.clear()
