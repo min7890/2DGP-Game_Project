@@ -3,6 +3,7 @@ import math
 import time
 import game_framework
 import game_world
+from player import Player
 from state_machine import StateMachine
 
 PIXEL_PER_METER = (10.0 / 0.1)
@@ -18,19 +19,27 @@ FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 
 class Monster_2:
-    def __init__(self, x = 400, y =300):
+    def __init__(self, x = 400, y =300, player=None):
         self.image = load_image('monster.png')
         self.x, self.y = x, y
         self.frame = 0
         self.dir = self.face_dir = 1
+        self.isdetection = False
+        self.player = player
 
     def update(self):
         self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
-        # self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
-        # if (self.x >= 1230):
-        #     self.dir = self.face_dir = -1
-        # elif (self.x <= 50):
-        #     self.dir = self.face_dir = 1
+        print(self.player.x, self.x)
+        if self.isdetection and self.player is not None:
+            if self.x < self.player.x:
+                self.dir = self.face_dir = 1
+                if abs(self.player.x - self.x) > 10:
+                    self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
+            elif self.x > self.player.x:
+                self.dir = self.face_dir = -1
+                if abs(self.player.x - self.x) > 10:
+                    self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
+            self.isdetection = False
         pass
     def draw(self):
         if self.face_dir == 1:
@@ -62,4 +71,7 @@ class Monster_2:
             pass
 
     def handle_detection_collision(self, group, other):
+        if group == 'detection_monster_1:player':
+            self.isdetection = True
+            print('몬스터 감지 범위와 충돌함')
         pass

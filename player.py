@@ -1130,6 +1130,9 @@ class Player:
     def swing_sword(self):
         self.swing = True
 
+    def get_player_x(self):
+        return self.x
+
 
     def get_detection_bb(self):
         return self.x - 17, self.y - 22, self.x + 17, self.y + 25

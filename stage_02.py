@@ -45,7 +45,7 @@ def init():
     # for life in lives:
     #     game_world.add_object(life, 2)
 
-    monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
+    monster_1 = [Monster_2(x, y, player) for x, y in [(400, 285), (600, 88), (900, 185)]]
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, player)
