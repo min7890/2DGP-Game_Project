@@ -26,11 +26,11 @@ class Monster_2:
 
     def update(self):
         self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
-        self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
-        if (self.x >= 1230):
-            self.dir = self.face_dir = -1
-        elif (self.x <= 50):
-            self.dir = self.face_dir = 1
+        # self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
+        # if (self.x >= 1230):
+        #     self.dir = self.face_dir = -1
+        # elif (self.x <= 50):
+        #     self.dir = self.face_dir = 1
         pass
     def draw(self):
         if self.face_dir == 1:
