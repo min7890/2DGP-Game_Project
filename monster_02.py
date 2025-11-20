@@ -40,6 +40,7 @@ class Monster_2:
         else:
             self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
         draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_detection_bb(), 0, 0, 255)
 
     def get_bb(self):
         if self.dir == 1:
@@ -47,8 +48,18 @@ class Monster_2:
         elif self.dir == -1:
             return self.x - 30, self.y - 25, self.x + 35, self.y + 25
 
+    def get_detection_bb(self):
+        if self.dir == 1:
+            return self.x - 300, self.y - 25, self.x + 300, self.y + 25
+        elif self.dir == -1:
+            return self.x - 300, self.y - 25, self.x + 300, self.y + 25
+
+
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
             game_world.remove_object(self)
         elif group == 'monster_1:player':
             pass
+
+    def handle_detection_collision(self, group, other):
+        pass

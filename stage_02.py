@@ -49,8 +49,10 @@ def init():
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, player)
+    game_world.add_detection_collision_pair('detection_monster_1:player', None, player)
     for monster in monster_1:
         game_world.add_collision_pair('monster_1:player', monster, None)
+        game_world.add_detection_collision_pair('detection_monster_1:player', monster, None)
 
     #몬스터1, 원거리공격 충돌
     for monster in monster_1:
@@ -86,6 +88,7 @@ def init():
 def update():
     game_world.update()
     game_world.handle_collisions()
+    game_world.handle_detection_collisions()
 
     current_life_objects = [obj for obj in game_world.world[2] if isinstance(obj, Life)]
     if len(current_life_objects) != player.life:

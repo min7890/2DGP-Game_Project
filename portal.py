@@ -27,3 +27,7 @@ class Portal:
 
     def handle_collision(self, group, other):
         pass
+
+
+    def handle_detection_collision(self, group, other):
+        pass

@@ -1131,7 +1131,8 @@ class Player:
         self.swing = True
 
 
-
+    def get_detection_bb(self):
+        return self.x - 17, self.y - 22, self.x + 17, self.y + 25
 
     def get_bb(self):
         return self.x - 17, self.y - 22, self.x + 17, self.y + 25
@@ -1144,7 +1145,7 @@ class Player:
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
         if group == 'monster_1:player':
-            if self.life > 1 and not self.islife_down:
+            if self.life > 0 and not self.islife_down:
                 self.life -= 1
                 self.islife_down = True
                 self.life_notdown_timer = get_time()
@@ -1155,6 +1156,10 @@ class Player:
         if group == 'portal:player':
             self.isInPortal = True
             print('포탈과 충돌함')
+
+    def handle_detection_collision(self, group, other):
+        if group == 'detection_monster_1:player':
+            print('몬스터 감지 범위와 충돌함')
 
 
 

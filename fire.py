@@ -31,3 +31,5 @@ class Fire:
                 current_stage.get_map().monster_num -= 1
                 print(current_stage.get_map().monster_num)
         pass
+    def handle_detection_collision(self, group, other):
+        pass
