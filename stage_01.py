@@ -60,11 +60,11 @@ def init():
     game_world.add_collision_pair('monster_3:player', None, player)
 
 
-    global map_01
-    map_01 = Map_01()
-    game_world.add_object(map_01, 0)
+    global map
+    map = Map_01()
+    game_world.add_object(map, 0)
     game_world.add_collision_pair('map_01_tile:player', None, player)
-    for tile in map_01.tiles:
+    for tile in map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
     game_world.add_collision_pair('portal:player', None, player)
@@ -104,4 +104,4 @@ def pause(): pass
 def resume(): pass
 
 def get_map():
-    return map_01
+    return map
