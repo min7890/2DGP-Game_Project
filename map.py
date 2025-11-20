@@ -14,6 +14,8 @@ class Map_01:
     def update(self):
         if self.monster_num == 0 and self.portal is None:
             self.portal = Portal(1100, 220)
+        if self.portal:
+            self.portal.update()
         pass
 
     def draw(self):
@@ -64,6 +66,8 @@ class Map_02:
     def update(self):
         if self.monster_num == 0 and self.portal is None:
             self.portal = Portal(1100, 220)
+        if self.portal:
+            self.portal.update()
         pass
     def draw(self):
         self.image.draw(1280 // 2, 720 // 2, 1280, 720)
