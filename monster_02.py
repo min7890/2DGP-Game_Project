@@ -18,9 +18,9 @@ FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 
 class Monster_2:
-    def __init__(self):
+    def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
-        self.x, self.y = 400, 300
+        self.x, self.y = x, y
         self.frame = 0
         self.dir = self.face_dir = 1
 
@@ -39,7 +39,13 @@ class Monster_2:
 
         else:
             self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
-        pass
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return self.x - 25, self.y - 40, self.x + 25, self.y + 45
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'monster_1:fire':
+            game_world.remove_object(self)
+        elif group == 'monster_1:player':
+            pass

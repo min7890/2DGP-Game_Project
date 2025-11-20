@@ -10,7 +10,7 @@ from monster_03 import Monster_3
 
 from life import Life
 
-from map import Map_01
+from map import Map_02
 import pinput
 import stage_00
 
@@ -39,7 +39,7 @@ def init():
     # for life in lives:
     #     game_world.add_object(life, 2)
 
-    monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
+    monster_1 = [Monster_2(400 + x, 300) for x in range(0, 60, 20)]
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, player)
@@ -61,7 +61,7 @@ def init():
 
 
     global map
-    map = Map_01()
+    map = Map_02()
     game_world.add_object(map, 0)
     game_world.add_collision_pair('map_01_tile:player', None, player)
     for tile in map.tiles:

@@ -12,7 +12,7 @@ from life import Life
 
 from map import Map_01
 import pinput
-import stage_00
+import stage_02
 
 player = None
 
@@ -24,7 +24,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_f and player.isInPortal:
-            game_framework.change_mode(stage_00)
+            game_framework.change_mode(stage_02)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
             player.handle_event(event)
