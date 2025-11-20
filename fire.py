@@ -25,9 +25,9 @@ class Fire:
 
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
-            from stage_01 import get_map
+            current_stage = game_framework.stack[-1]
             game_world.remove_object(self)
-            if get_map().monster_num > 0:
-                get_map().monster_num -= 1
-            print(get_map().monster_num)
+            if hasattr(current_stage, 'get_map') and current_stage.get_map().monster_num > 0:
+                current_stage.get_map().monster_num -= 1
+                print(current_stage.get_map().monster_num)
         pass
