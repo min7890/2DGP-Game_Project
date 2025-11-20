@@ -13,12 +13,16 @@ from life import Life
 from map import Map_01
 import pinput
 import stage_02
+import stage_00
 
 player = None
 
 def handle_events():
     event_list = get_events()
     for event in event_list:
+        if player.life == 0:
+            game_framework.change_mode(stage_00)
+
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
@@ -96,6 +100,9 @@ def draw():
     clear_canvas()
     game_world.render()
     update_canvas()
+
+def prev_stage_life():
+    return player.life
 
 def finish():
     game_world.clear()

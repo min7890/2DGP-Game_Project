@@ -13,12 +13,16 @@ from life import Life
 from map import Map_02
 import pinput
 import stage_00
+import stage_01
 
 player = None
 
 def handle_events():
     event_list = get_events()
     for event in event_list:
+        if player.life == 0:
+            game_framework.change_mode(stage_00)
+
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
@@ -33,13 +37,15 @@ def init():
     global player
 
     player = Player()
+    if player is not None:
+        player.life = stage_01.prev_stage_life()
     game_world.add_object(player, 1)
 
     # lives = [Life(35 + x * 60, 690) for x in range(player.life)]
     # for life in lives:
     #     game_world.add_object(life, 2)
 
-    monster_1 = [Monster_2(400 + x, 300) for x in range(0, 60, 20)]
+    monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, player)
