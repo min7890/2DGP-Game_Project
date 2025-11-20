@@ -12,6 +12,7 @@ from life import Life
 
 from map import Map_01
 import pinput
+import stage_00
 
 player = None
 
@@ -22,6 +23,8 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_f and player.isInPortal:
+            game_framework.change_mode(stage_00)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
             player.handle_event(event)
@@ -57,12 +60,14 @@ def init():
     game_world.add_collision_pair('monster_3:player', None, player)
 
 
-
+    global map_01
     map_01 = Map_01()
     game_world.add_object(map_01, 0)
     game_world.add_collision_pair('map_01_tile:player', None, player)
     for tile in map_01.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
+
+    game_world.add_collision_pair('portal:player', None, player)
 
 
 
@@ -97,3 +102,6 @@ def finish():
 
 def pause(): pass
 def resume(): pass
+
+def get_map():
+    return map_01
