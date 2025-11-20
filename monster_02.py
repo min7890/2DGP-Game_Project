@@ -42,7 +42,10 @@ class Monster_2:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 25, self.y - 40, self.x + 25, self.y + 45
+        if self.dir == 1:
+            return self.x - 35, self.y - 25, self.x + 30, self.y + 25
+        elif self.dir == -1:
+            return self.x - 30, self.y - 25, self.x + 35, self.y + 25
 
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
