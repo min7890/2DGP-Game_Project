@@ -56,6 +56,8 @@ class Idle:
 
     def exit(self, e):
         self.player.swing = False
+        if a_down(e):
+            self.player.fire_ball()
 
     def do(self):
         # swing 진행 중 타이머 업데이트
@@ -280,6 +282,7 @@ class Walk:
         self.player.swing = False
         if a_down(e):
             self.player.fire_ball()
+
 
     def do(self):
         # swing 진행 중 타이머 업데이트
