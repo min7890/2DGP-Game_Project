@@ -1,12 +1,14 @@
 from pico2d import *
-import math
-import time
+import random
 import game_framework
 import game_world
-from player import Player
+# from player import Player
 from state_machine import StateMachine
 
-PIXEL_PER_METER = (10.0 / 0.1)
+from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
+import common
+
+PIXEL_PER_METER = (10.0 / 0.3)
 WALK_SPEED_KMPH = 5.0 # 5km/h
 WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
 WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
@@ -19,27 +21,34 @@ FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 
 class Monster_2:
-    def __init__(self, x = 400, y =300, player=None):
+    def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
         self.x, self.y = x, y
         self.frame = 0
         self.dir = self.face_dir = 1
-        self.isdetection = False
-        self.player = player
+        # self.isdetection = False
+        # self.player = player
+
+        self.tx, self.ty = 400, 300
+        self.state = 'Idle'
+
+        self.build_behavior_tree()
 
     def update(self):
         self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
-        print(self.player.x, self.x)
-        if self.isdetection and self.player is not None:
-            if self.x < self.player.x:
-                self.dir = self.face_dir = 1
-                if abs(self.player.x - self.x) > 10:
-                    self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
-            elif self.x > self.player.x:
-                self.dir = self.face_dir = -1
-                if abs(self.player.x - self.x) > 10:
-                    self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
-            self.isdetection = False
+        # print(self.player.x, self.x)
+        # if self.isdetection and self.player is not None:
+        #     if self.x < self.player.x:
+        #         self.dir = self.face_dir = 1
+        #         if abs(self.player.x - self.x) > 10:
+        #             self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
+        #     elif self.x > self.player.x:
+        #         self.dir = self.face_dir = -1
+        #         if abs(self.player.x - self.x) > 10:
+        #             self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
+        #     self.isdetection = False
+
+        self.bt.run()
         pass
     def draw(self):
         if self.face_dir == 1:
@@ -49,7 +58,9 @@ class Monster_2:
         else:
             self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
         draw_rectangle(*self.get_bb())
-        draw_rectangle(*self.get_detection_bb(), 0, 0, 255)
+        # draw_rectangle(*self.get_detection_bb(), 0, 0, 255)
+
+        draw_circle(self.x, self.y, int(7 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         if self.dir == 1:
@@ -57,11 +68,11 @@ class Monster_2:
         elif self.dir == -1:
             return self.x - 30, self.y - 25, self.x + 35, self.y + 25
 
-    def get_detection_bb(self):
-        if self.dir == 1:
-            return self.x - 300, self.y - 25, self.x + 300, self.y + 25
-        elif self.dir == -1:
-            return self.x - 300, self.y - 25, self.x + 300, self.y + 25
+    # def get_detection_bb(self):
+    #     if self.dir == 1:
+    #         return self.x - 300, self.y - 25, self.x + 300, self.y + 25
+    #     elif self.dir == -1:
+    #         return self.x - 300, self.y - 25, self.x + 300, self.y + 25
 
 
     def handle_collision(self, group, other):
@@ -70,8 +81,72 @@ class Monster_2:
         elif group == 'monster_1:player':
             pass
 
-    def handle_detection_collision(self, group, other):
-        if group == 'detection_monster_1:player':
-            self.isdetection = True
-            print('몬스터 감지 범위와 충돌함')
+    # def handle_detection_collision(self, group, other):
+    #     if group == 'detection_monster_1:player':
+    #         self.isdetection = True
+    #         print('몬스터 감지 범위와 충돌함')
+    #     pass
+
+    def set_target_location(self, x=None, y=None):
+        self.tx, self.ty = x, y
+        return BehaviorTree.SUCCESS
+
+    def distance_less_than(self, x1, y1, x2, y2, r):
+        distance2 = (x2 - x1) ** 2 + (y2 - y1) ** 2
+        return distance2 < (r * PIXEL_PER_METER) ** 2
+
+    def move_little_to(self, tx, ty):
+        if tx - self.x < 10:
+            self.dir = -1
+        else:
+            self.dir = 1
+        distance = WALK_SPEED_PPS * game_framework.frame_time
+        self.x += distance * self.dir
+
+    def move_to(self, r=0.5):
+        self.state = 'Walk'
+        self.move_little_to(self.tx, self.ty)
+
+        if self.distance_less_than(self.x, self.y, self.tx, self.ty, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
+    def set_random_location(self):
+
+        self.tx = random.randint(100, 1180)
+        self.ty = random.randint(100, 924)
+        return BehaviorTree.SUCCESS
+
+    def if_player_nearby(self, distance):
+        if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def move_to_player(self, r=0.5):
+
+        self.state = 'Walk'
+        self.move_little_to(common.player.x, common.player.y)
+
+        if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
+    def get_patrol_location(self):
         pass
+
+    def build_behavior_tree(self):
+        a1 = Action('목표 지점 설정', self.set_target_location, 1000, 800)
+        a2 = Action('목표 지점으로 이동', self.move_to)
+        move_to_target_location = Sequence('지정된 목표 지점으로 이동', a1, a2)
+
+        a3 = Action('랜덤 위치 설정', self.set_random_location)
+        wandoer = Sequence('배회', a3, a2)
+
+        c1 = Condition('플레이어가 근처에 있는가?', self.if_player_nearby, 7)
+        a4 = Action('플레이어 추적', self.move_to_player)
+        root = chase_if_player_nearby = Sequence('플레이어가 근처에 있으면 추적', c1, a4)
+
+        self.bt = BehaviorTree(root)

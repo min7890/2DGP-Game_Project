@@ -1137,8 +1137,8 @@ class Player:
         return self.x
 
 
-    def get_detection_bb(self):
-        return self.x - 17, self.y - 22, self.x + 17, self.y + 25
+    # def get_detection_bb(self):
+    #     return self.x - 17, self.y - 22, self.x + 17, self.y + 25
 
     def get_bb(self):
         return self.x - 17, self.y - 22, self.x + 17, self.y + 25
@@ -1163,9 +1163,9 @@ class Player:
             self.isInPortal = True
             print('포탈과 충돌함')
 
-    def handle_detection_collision(self, group, other):
-        if group == 'detection_monster_1:player':
-            print('몬스터 감지 범위와 충돌함')
+    # def handle_detection_collision(self, group, other):
+    #     if group == 'detection_monster_1:player':
+    #         print('몬스터 감지 범위와 충돌함')
 
 
 

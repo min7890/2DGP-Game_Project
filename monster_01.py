@@ -51,7 +51,7 @@ class Monster_1:
         elif group == 'monster_1:player':
             pass
 
-    def handle_detection_collision(self, group, other):
-        pass
+    # def handle_detection_collision(self, group, other):
+    #     pass
 
 

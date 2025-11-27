@@ -32,8 +32,8 @@ class Map_01:
 
     def handle_collision(self, group, other):
         pass
-    def handle_detection_collision(self, group, other):
-        pass
+    # def handle_detection_collision(self, group, other):
+    #     pass
 
 class Map_Start:
     def __init__(self):
@@ -55,8 +55,8 @@ class Map_Start:
         self.portal.draw()
     def handle_collision(self, group, other):
         pass
-    def handle_detection_collision(self, group, other):
-        pass
+    # def handle_detection_collision(self, group, other):
+    #     pass
 
 class Map_02:
     def __init__(self):
@@ -84,5 +84,5 @@ class Map_02:
             game_world.add_collision_pair('portal:player', self.portal, None)
     def handle_collision(self, group, other):
         pass
-    def handle_detection_collision(self, group, other):
-        pass
+    # def handle_detection_collision(self, group, other):
+    #     pass
