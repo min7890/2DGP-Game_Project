@@ -31,6 +31,7 @@ class Monster_2:
 
         self.tx, self.ty = 400, 300
         self.state = 'Idle'
+        self.ground = self.y
 
         self.build_behavior_tree()
 
@@ -47,6 +48,20 @@ class Monster_2:
         #         if abs(self.player.x - self.x) > 10:
         #             self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
         #     self.isdetection = False
+
+        if hasattr(self, 'candidate_grounds') and self.candidate_grounds:
+            self.ground = max(self.candidate_grounds)
+            self.candidate_grounds = []
+        else:
+            self.ground = 90
+
+        if self.y > self.ground:
+            self.velocity_y = -800 * game_framework.frame_time
+            self.y += self.velocity_y
+            if self.y < self.ground:
+                self.y = self.ground
+        else:
+            self.y = self.ground
 
         self.bt.run()
         pass
@@ -76,6 +91,14 @@ class Monster_2:
 
 
     def handle_collision(self, group, other):
+        left, bottom, right, top = other.get_bb()
+        if group == 'map_01_tile:monster_2':
+            print('몬스터2가 타일과 충돌함')
+            if self.y > top and left <= self.x <= right:
+                if not hasattr(self, 'candidate_grounds'):
+                    self.candidate_grounds = []
+                self.candidate_grounds.append(top + 18)
+
         if group == 'monster_1:fire':
             game_world.remove_object(self)
         elif group == 'monster_1:player':

@@ -45,6 +45,7 @@ def init():
     # for life in lives:
     #     game_world.add_object(life, 2)
 
+    # monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
     monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
     for monster in monster_1:
          game_world.add_object(monster, 1)
@@ -71,9 +72,17 @@ def init():
     global map
     map = Map_02()
     game_world.add_object(map, 0)
+    #플레이어-타일
     game_world.add_collision_pair('map_01_tile:player', None, common.player)
     for tile in map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
+
+    #몬스터-타일
+    for monster in monster_1:
+        game_world.add_collision_pair('map_01_tile:monster_2', None, monster)
+    for tile in map.tiles:
+        game_world.add_collision_pair('map_01_tile:monster_2', tile, None)
+
 
     game_world.add_collision_pair('portal:player', None, common.player)
 
