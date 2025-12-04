@@ -30,6 +30,8 @@ class Monster_1:
 
         self.ground = self.y
 
+        self.life = 3
+
         self.tx, self.ty = 400, 300
         self.state = 'Idle'
 
@@ -116,7 +118,11 @@ class Monster_1:
 
     def handle_collision(self, group, other):
         if group == 'monster_1:fire':
-            game_world.remove_object(self)
+            self.life -= 1
+            if self.life <= 0:
+                game_world.remove_object(self)
+                common.map.monster_num -= 1
+
         elif group == 'monster_1:player':
             self.is_atk = True
 
