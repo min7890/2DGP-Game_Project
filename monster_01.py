@@ -60,7 +60,7 @@ class Monster_1:
             self.ground = max(self.candidate_grounds)
             self.candidate_grounds = []
         else:
-            self.ground = 90
+            self.ground = 90 + 20
 
         if self.y > self.ground:
             self.velocity_y = -800 * game_framework.frame_time
