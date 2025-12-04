@@ -1,9 +1,11 @@
 from pico2d import *
 
 class Tile_01:
-    def __init__(self, x = 400, y =300):
+    def __init__(self, x = 400, y =300, patrol_route=None):
         self.tile_image_01 = load_image('tile_01.png')
         self.x, self.y = x, y
+        # 순찰 경로: None이면 이 타일에서는 순찰 경로 변경 안함
+        self.patrol_route = patrol_route
 
     def update(self):
         pass
@@ -19,9 +21,11 @@ class Tile_01:
         pass
 
 class Tile_02:
-    def __init__(self, x = 400, y =300):
+    def __init__(self, x = 400, y =300, patrol_route=None):
         self.tile_image_02 = load_image('tile_02.png')
         self.x, self.y = x, y
+        # 순찰 경로: None이면 이 타일에서는 순찰 경로 변경 안함
+        self.patrol_route = patrol_route
 
     def update(self):
         pass

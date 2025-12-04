@@ -7,7 +7,20 @@ class Map_01:
     def __init__(self):
         self.image = load_image('background_01.png')
         self.ground_tiles = [Tile_01(60+i, 30) for i in range(0, 1280, 120)]
-        self.tiles = [Tile_02(x,y) for x, y in [(400, 250), (400 + 128, 250), (300, 150), (900, 150), (1028, 150), (1156, 150), (690, 350), (690+128, 350)]]
+
+        # 순찰 경로를 지정한 타일들
+        # patrol_route가 None이면 순찰 경로 변경 안함, 값이 있으면 해당 경로로 변경
+        self.tiles = [
+            # 연속된 타일은 하나에만 patrol_route 지정 (왼쪽~오른쪽 범위)
+            Tile_02(400, 250, patrol_route=[(350, 300), (580, 300)]),
+            Tile_02(400 + 128, 250),  # 연속 타일이므로 None
+            Tile_02(300, 150, patrol_route=[(250, 200), (350, 200)]),
+            Tile_02(900, 150, patrol_route=[(850, 200), (1200, 200)]),
+            Tile_02(1028, 150),  # 연속 타일
+            Tile_02(1156, 150),  # 연속 타일
+            Tile_02(690, 350, patrol_route=[(640, 400), (870, 400)]),
+            Tile_02(690+128, 350),  # 연속 타일
+        ]
         self.monster_num = 3
         self.portal = None
 

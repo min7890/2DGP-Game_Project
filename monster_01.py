@@ -34,8 +34,11 @@ class Monster_1:
 
         self.build_behavior_tree()
 
+        # 현재 밟고 있는 타일 추적 (순찰 경로 변경용)
+        self.current_patrol_tile = None
+
         self.loc_no = 0
-        self.patrol_locations = [(370, 300), (570, 300)]
+        self.patrol_locations = [(350, 300), (580, 300)]
 
     def update(self):
         if self.is_atk:
@@ -105,12 +108,19 @@ class Monster_1:
 
         if group == 'map_01_tile:monster_1':
             left, bottom, right, top = other.get_bb()
-            print('몬스터_01가 타일과 충돌함')
+            print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=}')
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 38)
 
+                # 타일에 순찰 경로가 정의되어 있고, 현재 타일과 다르면 순찰 경로 업데이트
+                if hasattr(other, 'patrol_route') and other.patrol_route is not None:
+                    if self.current_patrol_tile != other:
+                        self.current_patrol_tile = other
+                        self.patrol_locations = other.patrol_route
+                        self.loc_no = 0
+                        print(f'순찰 경로 변경: {self.patrol_locations}')
 
 
     # def handle_detection_collision(self, group, other):
@@ -136,7 +146,8 @@ class Monster_1:
         self.state = 'Walk'
         self.move_little_to(self.tx, self.ty)
 
-        if self.distance_less_than(self.x, self.y, self.tx, self.ty, r):
+        # 순찰은 x좌표만 비교
+        if abs(self.x - self.tx) < r * PIXEL_PER_METER:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
@@ -178,5 +189,3 @@ class Monster_1:
         root = chase_or_patrol = Selector('플레이어가 가까이 있으면 추적하고, 아니면 순찰', chase_if_player_nearby, patrol)
 
         self.bt = BehaviorTree(root)
-
-

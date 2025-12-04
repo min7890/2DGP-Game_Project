@@ -44,7 +44,7 @@ def init():
     #     game_world.add_object(life, 2)
 
     monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
-    # monster_1 = [Monster_1(400, 300)]
+    # monster_1 = [Monster_1(300, 200)]
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, common.player)
@@ -66,17 +66,17 @@ def init():
 
 
     global map
-    map = Map_01()
-    game_world.add_object(map, 0)
+    common.map = Map_01()
+    game_world.add_object(common.map, 0)
     game_world.add_collision_pair('map_01_tile:player', None, common.player)
-    for tile in map.tiles:
+    for tile in common.map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
     game_world.add_collision_pair('portal:player', None, common.player)
 
     for monster in monster_1:
         game_world.add_collision_pair('map_01_tile:monster_1', None, monster)
-    for tile in map.tiles:
+    for tile in common.map.tiles:
         game_world.add_collision_pair('map_01_tile:monster_1', tile, None)
 
 
@@ -120,4 +120,4 @@ def pause(): pass
 def resume(): pass
 
 def get_map():
-    return map
+    return common.map
