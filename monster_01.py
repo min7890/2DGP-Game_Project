@@ -27,6 +27,8 @@ class Monster_1:
         self.frame = 0
         self.dir = self.face_dir = 1
 
+        self.ground = self.y
+
         self.tx, self.ty = 400, 300
         self.state = 'Idle'
 
@@ -50,6 +52,20 @@ class Monster_1:
             #     self.dir = self.face_dir = -1
             # elif (self.x <= 370):
             #     self.dir = self.face_dir = 1
+
+        if hasattr(self, 'candidate_grounds') and self.candidate_grounds:
+            self.ground = max(self.candidate_grounds)
+            self.candidate_grounds = []
+        else:
+            self.ground = 90
+
+        if self.y > self.ground:
+            self.velocity_y = -800 * game_framework.frame_time
+            self.y += self.velocity_y
+            if self.y < self.ground:
+                self.y = self.ground
+        else:
+            self.y = self.ground
 
         # print(self.is_atk)
 
@@ -86,7 +102,16 @@ class Monster_1:
             game_world.remove_object(self)
         elif group == 'monster_1:player':
             self.is_atk = True
-            pass
+
+        if group == 'map_01_tile:monster_1':
+            left, bottom, right, top = other.get_bb()
+            print('몬스터_01가 타일과 충돌함')
+            if self.y > top and left <= self.x <= right:
+                if not hasattr(self, 'candidate_grounds'):
+                    self.candidate_grounds = []
+                self.candidate_grounds.append(top + 38)
+
+
 
     # def handle_detection_collision(self, group, other):
     #     pass

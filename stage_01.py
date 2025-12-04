@@ -43,8 +43,8 @@ def init():
     # for life in lives:
     #     game_world.add_object(life, 2)
 
-    # monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
-    monster_1 = [Monster_1(400, 300)]
+    monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
+    # monster_1 = [Monster_1(400, 300)]
     for monster in monster_1:
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, common.player)
@@ -73,6 +73,11 @@ def init():
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
     game_world.add_collision_pair('portal:player', None, common.player)
+
+    for monster in monster_1:
+        game_world.add_collision_pair('map_01_tile:monster_1', None, monster)
+    for tile in map.tiles:
+        game_world.add_collision_pair('map_01_tile:monster_1', tile, None)
 
 
 

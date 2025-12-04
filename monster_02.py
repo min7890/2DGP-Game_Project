@@ -91,8 +91,8 @@ class Monster_2:
 
 
     def handle_collision(self, group, other):
-        left, bottom, right, top = other.get_bb()
         if group == 'map_01_tile:monster_2':
+            left, bottom, right, top = other.get_bb()
             print('몬스터2가 타일과 충돌함')
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
