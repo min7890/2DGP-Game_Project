@@ -6,6 +6,7 @@ import game_world
 from state_machine import StateMachine
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import common
+import random
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10pixel = 10cm = 0.1m
 WALK_SPEED_KMPH = 10.0 # 10km/h
@@ -71,6 +72,14 @@ class Monster_1:
             self.y = self.ground
 
         # print(self.is_atk)
+        print(f'몬스터의 ground: {self.ground=}')
+
+        if self.ground == 90 + 20:
+            root = self.chase_or_wander
+        else:
+            root = self.chase_or_patrol
+
+        self.bt = BehaviorTree(root)
 
         self.bt.run()
 
@@ -108,7 +117,7 @@ class Monster_1:
 
         if group == 'map_01_tile:monster_1':
             left, bottom, right, top = other.get_bb()
-            print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=}')
+            print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=} {self.ground=}')
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
@@ -120,7 +129,6 @@ class Monster_1:
                         self.current_patrol_tile = other
                         self.patrol_locations = other.patrol_route
                         self.loc_no = 0
-                        print(f'순찰 경로 변경: {self.patrol_locations}')
 
 
     # def handle_detection_collision(self, group, other):
@@ -153,7 +161,9 @@ class Monster_1:
             return BehaviorTree.RUNNING
 
     def set_random_location(self):
-        pass
+        self.tx = random.randint(100, 1180)
+        self.ty = 90 + 20
+        return BehaviorTree.SUCCESS
 
     def if_player_nearby(self, distance):
         if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
@@ -186,6 +196,19 @@ class Monster_1:
         a3 = Action('다음 순찰 위치를 가져오기', self.get_patrol_location)
         patrol = Sequence('순찰', a3, a1)
 
-        root = chase_or_patrol = Selector('플레이어가 가까이 있으면 추적하고, 아니면 순찰', chase_if_player_nearby, patrol)
+        a4 = Action('랜덤 위치 설정', self.set_random_location)
+        wander = Sequence('배회', a4, a1)
+
+        chase_or_wander = Selector('플레이어가 가까이 있으면추적하고, 아니면 배회', chase_if_player_nearby, wander)
+        chase_or_patrol = Selector('플레이어가 가까이 있으면 추적하고, 아니면 순찰', chase_if_player_nearby, patrol)
+
+        self.chase_or_wander = chase_or_wander
+        self.chase_or_patrol = chase_or_patrol
+
+        if self.ground == 90 + 20:
+            root = chase_or_wander
+        else:
+            root = chase_or_patrol
+
 
         self.bt = BehaviorTree(root)
