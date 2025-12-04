@@ -51,6 +51,10 @@ class Monster_1:
             self.is_atk = False
         else:
             self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 3
+            if self.loc_no == 0:
+                self.dir = self.face_dir = 1
+            else:
+                self.dir = self.face_dir = -1
             # self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
             # if (self.x >= 570):
             #     self.dir = self.face_dir = -1
