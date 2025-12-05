@@ -48,9 +48,8 @@ def init():
     # 몬스터2, 타일 충돌
     game_world.add_collision_pair('map_00_tile:monster_2', None, monster_2)
 
-
-    # monster_3 = Monster_3()
-    # game_world.add_object(monster_3, 1)
+    monster_3 = Monster_3()
+    game_world.add_object(monster_3, 1)
 
 
 
