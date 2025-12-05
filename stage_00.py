@@ -45,13 +45,16 @@ def init():
 
 
 
-    map = Map_Start()
-    game_world.add_object(map, 0)
+    common.map = Map_Start()
+    game_world.add_object(common.map, 0)
     game_world.add_collision_pair('map_01_tile:player', None, common.player)
-    for tile in map.tiles:
+    for tile in common.map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
-    game_world.add_collision_pair('portal:player', map.portal, common.player)
+        game_world.add_collision_pair('map_00_tile:monster_1', tile, None)
+
+    game_world.add_collision_pair('portal:player', common.map.portal, common.player)
+
 
 def spawn_monster():
     monster_1 = Monster_1(400, 300)
@@ -59,6 +62,8 @@ def spawn_monster():
 
     #몬스터1, 원거리공격 충돌
     game_world.add_collision_pair('monster_1:fire', monster_1, None)
+    #몬스터1, 타일 충돌
+    game_world.add_collision_pair('map_00_tile:monster_1', None, monster_1)
 
 
 

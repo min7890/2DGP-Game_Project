@@ -141,6 +141,21 @@ class Monster_1:
                         self.patrol_locations = other.patrol_route
                         self.loc_no = 0
 
+        if group == 'map_00_tile:monster_1':
+            left, bottom, right, top = other.get_bb()
+            print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=} {self.ground=}')
+            if self.y > top and left <= self.x <= right:
+                if not hasattr(self, 'candidate_grounds'):
+                    self.candidate_grounds = []
+                self.candidate_grounds.append(top + 38)
+
+                # 타일에 순찰 경로가 정의되어 있고, 현재 타일과 다르면 순찰 경로 업데이트
+                if hasattr(other, 'patrol_route') and other.patrol_route is not None:
+                    if self.current_patrol_tile != other:
+                        self.current_patrol_tile = other
+                        self.patrol_locations = other.patrol_route
+                        self.loc_no = 0
+
 
     # def handle_detection_collision(self, group, other):
     #     pass
