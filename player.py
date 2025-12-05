@@ -1147,7 +1147,7 @@ class Player:
 
     def handle_collision(self, group, other):
         left, bottom, right, top = other.get_bb()
-        if group == 'map_01_tile:player':
+        if group == 'tile:player':
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []

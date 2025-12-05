@@ -144,7 +144,7 @@ class Monster_1:
         if group == 'map_00_monster_1:player':
             self.is_atk = True
 
-        if group in ('map_01_tile:monster_1', 'map_00_tile:monster_1'):
+        if group == 'tile:monster_1':
             left, bottom, right, top = other.get_bb()
             print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=} {self.ground=}')
             print(f'{self.x=}, {self.y=}')

@@ -42,7 +42,7 @@ def init():
     # 몬스터1, 원거리공격 충돌
     game_world.add_collision_pair('monster_1:fire', monster_1, None)
     # 몬스터1, 타일 충돌
-    game_world.add_collision_pair('map_00_tile:monster_1', None, monster_1)
+    game_world.add_collision_pair('tile:monster_1', None, monster_1)
     #플레이어 충돌
     game_world.add_collision_pair('map_00_monster_1:player', monster_1, None)
 
@@ -51,7 +51,7 @@ def init():
     # 몬스터2, 원거리공격 충돌
     game_world.add_collision_pair('monster_2:fire', monster_2, None)
     # 몬스터2, 타일 충돌
-    game_world.add_collision_pair('map_00_tile:monster_2', None, monster_2)
+    game_world.add_collision_pair('tile:monster_2', None, monster_2)
     #플레이어 충돌
     game_world.add_collision_pair('map_00_monster_2:player', monster_2, None)
 
@@ -71,8 +71,8 @@ def init():
     for tile in common.map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
-        game_world.add_collision_pair('map_00_tile:monster_1', tile, None)
-        game_world.add_collision_pair('map_00_tile:monster_2', tile, None)
+        game_world.add_collision_pair('tile:monster_1', tile, None)
+        game_world.add_collision_pair('tile:monster_2', tile, None)
 
     game_world.add_collision_pair('portal:player', common.map.portal, common.player)
 
@@ -84,7 +84,7 @@ def spawn_monster_01():
     #몬스터1, 원거리공격 충돌
     game_world.add_collision_pair('monster_1:fire', monster_1, None)
     #몬스터1, 타일 충돌
-    game_world.add_collision_pair('map_00_tile:monster_1', None, monster_1)
+    game_world.add_collision_pair('tile:monster_1', None, monster_1)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_1:player', monster_1, None)
 
@@ -96,7 +96,7 @@ def spawn_monster_02():
     #몬스터2, 원거리공격 충돌
     game_world.add_collision_pair('monster_2:fire', monster_2, None)
     #몬스터2, 타일 충돌
-    game_world.add_collision_pair('map_00_tile:monster_2', None, monster_2)
+    game_world.add_collision_pair('tile:monster_2', None, monster_2)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_2:player', monster_2, None)
 

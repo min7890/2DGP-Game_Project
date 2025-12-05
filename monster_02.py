@@ -115,7 +115,7 @@ class Monster_2:
 
 
     def handle_collision(self, group, other):
-        if group in ('map_00_tile:monster_2', 'map_01_tile:monster_2'):
+        if group == 'tile:monster_2':
             left, bottom, right, top = other.get_bb()
             print(f'몬스터2가 타일과 충돌함 {self.y=} {top=}')
             if self.y > top and left <= self.x <= right:

@@ -49,35 +49,40 @@ def init():
          game_world.add_object(monster, 1)
     game_world.add_collision_pair('monster_1:player', None, common.player)
     for monster in monster_1:
+        #플레이어 충돌
         game_world.add_collision_pair('monster_1:player', monster, None)
-
-    #몬스터1, 원거리공격 충돌
-    for monster in monster_1:
+        # 몬스터1, 원거리공격 충돌
         game_world.add_collision_pair('monster_1:fire', monster, None)
+        # 몬스터1, 타일 충돌
+        game_world.add_collision_pair('tile:monster_1', None, monster)
 
 
     # monster_2 = Monster_2()
     # game_world.add_object(monster_2, 1)
     game_world.add_collision_pair('monster_2:player', None, common.player)
 
-    # monster_3 = Monster_3()
-    # game_world.add_object(monster_3, 1)
+    monster_3 = Monster_3()
+    game_world.add_object(monster_3, 1)
     game_world.add_collision_pair('monster_3:player', None, common.player)
+    # 플레이어 충돌
+    game_world.add_collision_pair('monster_3:player', monster, None)
+    # 몬스터3, 원거리공격 충돌
+    game_world.add_collision_pair('monster_3:fire', monster, None)
 
 
     global map
     common.map = Map_01()
     game_world.add_object(common.map, 0)
-    game_world.add_collision_pair('map_01_tile:player', None, common.player)
+    game_world.add_collision_pair('tile:player', None, common.player)
     for tile in common.map.tiles:
-        game_world.add_collision_pair('map_01_tile:player', tile, None)
+        game_world.add_collision_pair('tile:player', tile, None)
 
     game_world.add_collision_pair('portal:player', None, common.player)
 
     for monster in monster_1:
-        game_world.add_collision_pair('map_01_tile:monster_1', None, monster)
+        game_world.add_collision_pair('tile:monster_1', None, monster)
     for tile in common.map.tiles:
-        game_world.add_collision_pair('map_01_tile:monster_1', tile, None)
+        game_world.add_collision_pair('tile:monster_1', tile, None)
 
 
 

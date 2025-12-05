@@ -57,7 +57,7 @@ def init():
 
     #몬스터1, 원거리공격 충돌
     for monster in monster_1:
-        game_world.add_collision_pair('monster_1:fire', monster, None)
+        game_world.add_collision_pair('monster_2:fire', monster, None)
 
 
     # monster_2 = Monster_2()
@@ -73,15 +73,15 @@ def init():
     map = Map_02()
     game_world.add_object(map, 0)
     #플레이어-타일
-    game_world.add_collision_pair('map_01_tile:player', None, common.player)
+    game_world.add_collision_pair('tile:player', None, common.player)
     for tile in map.tiles:
-        game_world.add_collision_pair('map_01_tile:player', tile, None)
+        game_world.add_collision_pair('tile:player', tile, None)
 
     #몬스터-타일
     for monster in monster_1:
-        game_world.add_collision_pair('map_01_tile:monster_2', None, monster)
+        game_world.add_collision_pair('tile:monster_2', None, monster)
     for tile in map.tiles:
-        game_world.add_collision_pair('map_01_tile:monster_2', tile, None)
+        game_world.add_collision_pair('tile:monster_2', tile, None)
 
 
     game_world.add_collision_pair('portal:player', None, common.player)
