@@ -70,6 +70,11 @@ class Monster_3:
 
     def handle_collision(self, group, other):
         if group == 'monster_3:fire':
+            distance = FLY_SPEED_PPS * game_framework.frame_time
+            if other.xv < 0:
+                self.x -= distance * 30
+            else:
+                self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
                 game_world.remove_object(self)

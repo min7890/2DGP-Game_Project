@@ -123,17 +123,23 @@ class Monster_2:
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
 
-        if group == 'monster_1:fire':
-            self.life -= 1
-            if self.life <= 0:
-                game_world.remove_object(self)
-        elif group == 'monster_1:player':
-            pass
+        # if group == 'monster_1:fire':
+        #
+        #     self.life -= 1
+        #     if self.life <= 0:
+        #         game_world.remove_object(self)
+        # elif group == 'monster_1:player':
+        #     pass
 
         if group == 'map_00_monster_2:player':
             self.is_atk = True
 
         if group == 'monster_2:fire':
+            distance = WALK_SPEED_PPS * game_framework.frame_time
+            if other.xv < 0:
+                self.x -= distance * 30
+            else:
+                self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
                 game_world.remove_object(self)
