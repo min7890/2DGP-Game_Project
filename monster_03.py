@@ -26,16 +26,20 @@ class Monster_3:
         self.image = load_image('monster.png')
         self.x, self.y = 400, 300
         self.frame = 0
-        self.dir = self.face_dir = 1
+        self.dir = 0.0
+        self.face_dir = 1
         self.tx, self.ty = 400, 300
 
         self.life = 4
         self.is_atk = False
+        self.det = False
 
         self.build_behavior_tree()
 
     def update(self):
         self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
+        self.det = False
+        self.is_atk = False
         # self.x += self.dir * FLY_SPEED_PPS * game_framework.frame_time
         # if (self.x >= 1230):
         #     self.dir = self.face_dir = -1
@@ -46,12 +50,12 @@ class Monster_3:
 
     def draw(self):
         if self.is_atk:
-            if self.dir > 0:
+            if self.face_dir == 1:
                 self.image.clip_draw(int(self.frame) * 130, 10, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 130, 10, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
         else:
-            if self.dir > 0:
+            if self.face_dir == 1:
                 self.image.clip_draw(int(self.frame) * 130, 120, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
             else:
                 self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
@@ -89,10 +93,20 @@ class Monster_3:
     def move_little_to(self, tx, ty):
         #각도 구하기
         self.dir = math.atan2(ty - self.y, tx - self.x)
+
+        if tx - self.x < 10:
+            self.face_dir = -1
+        else:
+            self.face_dir = 1
         #거리 구하기
         distance = FLY_SPEED_PPS * game_framework.frame_time
-        self.x += distance * math.cos(self.dir)
-        self.y += distance * math.sin(self.dir)
+        if self.det:
+            if abs(tx - self.x) > 20:
+                self.x += distance * math.cos(self.dir)
+            self.y += distance * math.sin(self.dir)
+        else:
+            self.x += distance * math.cos(self.dir)
+            self.y += distance * math.sin(self.dir)
 
     def move_to(self, r=0.5):
         self.state = 'Fly'
@@ -110,6 +124,7 @@ class Monster_3:
 
     def if_player_nearby(self, distance):
         if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
+            self.det = True
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL

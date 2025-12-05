@@ -29,6 +29,8 @@ class Monster_2:
         # self.isdetection = False
         # self.player = player
 
+        self.det = False
+
         self.life = 5
 
         self.tx, self.ty = 400, 300
@@ -39,6 +41,7 @@ class Monster_2:
 
     def update(self):
         self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
+        self.det = False
         # print(self.player.x, self.x)
         # if self.isdetection and self.player is not None:
         #     if self.x < self.player.x:
@@ -68,7 +71,7 @@ class Monster_2:
         self.bt.run()
         pass
     def draw(self):
-        if self.face_dir == 1:
+        if self.dir == 1:
             # self.image.clip_draw(130, 220, 130, 100, 300, 400)
             self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
 
@@ -136,7 +139,11 @@ class Monster_2:
         else:
             self.dir = 1
         distance = WALK_SPEED_PPS * game_framework.frame_time
-        self.x += distance * self.dir
+        if self.det:
+            if abs(tx - self.x) > 20:
+                self.x += distance * self.dir
+        else:
+            self.x += distance * self.dir
 
     def move_to(self, r=0.5):
         self.state = 'Walk'
@@ -155,6 +162,7 @@ class Monster_2:
 
     def if_player_nearby(self, distance):
         if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
+            self.det = True
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
