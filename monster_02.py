@@ -143,6 +143,7 @@ class Monster_2:
             self.life -= 1
             if self.life <= 0:
                 game_world.remove_object(self)
+                common.map.monster_num -= 1
 
     # def handle_detection_collision(self, group, other):
     #     if group == 'detection_monster_1:player':

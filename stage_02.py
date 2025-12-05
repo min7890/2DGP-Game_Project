@@ -70,17 +70,17 @@ def init():
 
 
     global map
-    map = Map_02()
-    game_world.add_object(map, 0)
+    common.map = Map_02()
+    game_world.add_object(common.map, 0)
     #플레이어-타일
     game_world.add_collision_pair('tile:player', None, common.player)
-    for tile in map.tiles:
+    for tile in common.map.tiles:
         game_world.add_collision_pair('tile:player', tile, None)
 
     #몬스터-타일
     for monster in monster_1:
         game_world.add_collision_pair('tile:monster_2', None, monster)
-    for tile in map.tiles:
+    for tile in common.map.tiles:
         game_world.add_collision_pair('tile:monster_2', tile, None)
 
 
