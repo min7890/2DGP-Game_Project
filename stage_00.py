@@ -35,8 +35,8 @@ def init():
     game_world.add_object(common.player, 1)
 
 
-    # monster_2 = Monster_2()
-    # game_world.add_object(monster_2, 1)
+    monster_2 = Monster_2()
+    game_world.add_object(monster_2, 1)
 
 
     # monster_3 = Monster_3()

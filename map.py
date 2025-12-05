@@ -10,7 +10,10 @@ class Map_Start:
         self.tiles = [
             Tile_02(400, 250, patrol_route=[(350, 300), (580, 300)]),
             Tile_02(400 + 128, 250),  # 연속 타일이므로 None
-            Tile_02(300, 150, patrol_route=[(250, 200), (350, 200)])
+            Tile_02(300, 150, patrol_route=[(250, 200), (350, 200)]),
+
+            Tile_02(500, 160, patrol_route=[(450, 210), (680, 210)]),
+            Tile_02(500 + 128, 160)
         ]
         #스테이지 00은 처음 튜토리얼 스테이지로서 monster_num이 필요없지만 다른 맵과의 통일성을 위해 0 이라는 값을 넣어놓음.
         self.monster_num = 0

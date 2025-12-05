@@ -129,6 +129,7 @@ class Monster_1:
         if group in ('map_01_tile:monster_1', 'map_00_tile:monster_1'):
             left, bottom, right, top = other.get_bb()
             print(f'몬스터_01가 타일과 충돌함 {self.patrol_locations=} {self.ground=}')
+            print(f'{self.x=}, {self.y=}')
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
