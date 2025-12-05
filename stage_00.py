@@ -34,9 +34,19 @@ def init():
     common.player = Player()
     game_world.add_object(common.player, 1)
 
+    monster_1 = Monster_1(400, 300)
+    game_world.add_object(monster_1, 1)
+    # 몬스터1, 원거리공격 충돌
+    game_world.add_collision_pair('monster_1:fire', monster_1, None)
+    # 몬스터1, 타일 충돌
+    game_world.add_collision_pair('map_00_tile:monster_1', None, monster_1)
 
-    # monster_2 = Monster_2(550, 220)
-    # game_world.add_object(monster_2, 1)
+    monster_2 = Monster_2(550, 194)
+    game_world.add_object(monster_2, 1)
+    # 몬스터2, 원거리공격 충돌
+    game_world.add_collision_pair('monster_2:fire', monster_2, None)
+    # 몬스터2, 타일 충돌
+    game_world.add_collision_pair('map_00_tile:monster_2', None, monster_2)
 
 
     # monster_3 = Monster_3()
@@ -71,9 +81,9 @@ def spawn_monster_02():
     monster_2 = Monster_2(550, 194)
     game_world.add_object(monster_2, 1)
 
-    #몬스터1, 원거리공격 충돌
+    #몬스터2, 원거리공격 충돌
     game_world.add_collision_pair('monster_2:fire', monster_2, None)
-    #몬스터1, 타일 충돌
+    #몬스터2, 타일 충돌
     game_world.add_collision_pair('map_00_tile:monster_2', None, monster_2)
 
 
