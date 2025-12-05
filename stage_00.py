@@ -13,7 +13,7 @@ from fire import Fire
 from map import Map_Start
 import pinput
 
-player = None
+import common
 
 def handle_events():
     event_list = get_events()
@@ -22,17 +22,17 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_f and player.isInPortal:
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_f and common.player.isInPortal:
             game_framework.change_mode(stage_01)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
-            player.handle_event(event)
+            common.player.handle_event(event)
 
 def init():
     global player
 
-    player = Player()
-    game_world.add_object(player, 1)
+    common.player = Player()
+    game_world.add_object(common.player, 1)
 
 
     # monster_2 = Monster_2()
@@ -47,11 +47,11 @@ def init():
 
     map = Map_Start()
     game_world.add_object(map, 0)
-    game_world.add_collision_pair('map_01_tile:player', None, player)
+    game_world.add_collision_pair('map_01_tile:player', None, common.player)
     for tile in map.tiles:
         game_world.add_collision_pair('map_01_tile:player', tile, None)
 
-    game_world.add_collision_pair('portal:player', map.portal, player)
+    game_world.add_collision_pair('portal:player', map.portal, common.player)
 
 def spawn_monster():
     monster_1 = Monster_1(400, 300)
