@@ -28,6 +28,8 @@ class Monster_1:
         self.frame = 0
         self.dir = self.face_dir = 1
 
+        self.det = False
+
         self.ground = self.y
 
         self.life = 3
@@ -51,6 +53,7 @@ class Monster_1:
             else:
                 self.dir = self.face_dir = 1
             self.is_atk = False
+            self.det = False
         else:
             self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 3
             # if self.loc_no == 0:
@@ -163,7 +166,10 @@ class Monster_1:
         else:
             self.dir = self.face_dir = 1
         distance = WALK_SPEED_PPS * game_framework.frame_time
-        if abs(tx - self.x) > 20:
+        if self.det:
+            if abs(tx - self.x) > 20:
+                self.x += distance * self.dir
+        else:
             self.x += distance * self.dir
 
     def move_to(self, r=0.5):
@@ -183,6 +189,7 @@ class Monster_1:
 
     def if_player_nearby(self, distance):
         if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
+            self.det = True
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
