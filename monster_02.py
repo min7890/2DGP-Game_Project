@@ -14,10 +14,14 @@ WALK_SPEED_MPM = (WALK_SPEED_KMPH * 1000.0 / 60.0)
 WALK_SPEED_MPS = (WALK_SPEED_MPM / 60.0)
 WALK_SPEED_PPS = (WALK_SPEED_MPS * PIXEL_PER_METER)
 
+
 TIME_PER_SECOND = 0.7
 ACTION_PER_TIME = 1.0 / TIME_PER_SECOND
 FRAMES_PER_ACTION = 5
 FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
+
+FRAMES_PER_ACTION_atk = 3
+FRAME_PER_SECOND_atk = FRAMES_PER_ACTION_atk * ACTION_PER_TIME
 
 
 class Monster_2:
@@ -25,10 +29,11 @@ class Monster_2:
         self.image = load_image('monster.png')
         self.x, self.y = x, y
         self.frame = 0
+        self.atk_frame = 0
         self.dir = self.face_dir = 1
         # self.isdetection = False
         # self.player = player
-
+        self.is_atk = False
         self.det = False
 
         self.life = 5
@@ -40,7 +45,12 @@ class Monster_2:
         self.build_behavior_tree()
 
     def update(self):
-        self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
+        if self.is_atk:
+            self.atk_frame = (self.atk_frame + FRAME_PER_SECOND_atk * game_framework.frame_time) % 3
+            self.is_atk = False
+        else:
+            self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 5
+
         self.det = False
         # print(self.player.x, self.x)
         # if self.isdetection and self.player is not None:
@@ -71,12 +81,19 @@ class Monster_2:
         self.bt.run()
         pass
     def draw(self):
-        if self.dir == 1:
-            # self.image.clip_draw(130, 220, 130, 100, 300, 400)
-            self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
-
+        if self.is_atk:
+            if self.dir == 1:
+                # self.image.clip_draw(130, 220, 130, 100, 300, 400)
+                self.image.clip_composite_draw(int(self.atk_frame) * 130, 320, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+            else:
+                self.image.clip_draw(int(self.atk_frame) * 130, 320, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+            pass
         else:
-            self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+            if self.dir == 1:
+                # self.image.clip_draw(130, 220, 130, 100, 300, 400)
+                self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+            else:
+                self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
         draw_rectangle(*self.get_bb())
         # draw_rectangle(*self.get_detection_bb(), 0, 0, 255)
 

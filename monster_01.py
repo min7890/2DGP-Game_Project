@@ -19,6 +19,9 @@ ACTION_PER_TIME = 1.0 / TIME_PER_SECOND
 FRAMES_PER_ACTION = 3
 FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
+FRAMES_PER_ACTION_atk = 6
+FRAME_PER_SECOND_atk = FRAMES_PER_ACTION_atk * ACTION_PER_TIME
+
 class Monster_1:
     def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
@@ -26,6 +29,7 @@ class Monster_1:
         self.is_atk = False
         self.x, self.y = x, y
         self.frame = 0
+        self.atk_frame = 0
         self.dir = self.face_dir = 1
 
         self.det = False
@@ -47,15 +51,16 @@ class Monster_1:
 
     def update(self):
         if self.is_atk:
-            self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 6
+            self.atk_frame = (self.atk_frame + FRAME_PER_SECOND_atk * game_framework.frame_time) % 6
             if common.player.x <= self.x:
                 self.dir = self.face_dir = -1
             else:
                 self.dir = self.face_dir = 1
             self.is_atk = False
-            self.det = False
         else:
             self.frame = (self.frame + FRAME_PER_SECOND * game_framework.frame_time) % 3
+
+        self.det = False
             # if self.loc_no == 0:
             #     self.dir = self.face_dir = 1
             # else:
@@ -99,9 +104,9 @@ class Monster_1:
         if self.is_atk:
             if self.face_dir == 1:
                 # self.image.clip_draw(120, 420, 110, 190, 300, 400)
-                self.atk_image.clip_composite_draw(int(self.frame) * 95, 0, 95, 190, 3.141592, 'v', self.x, self.y, 110 / 2, 190 / 2)
+                self.atk_image.clip_composite_draw(int(self.atk_frame) * 95, 0, 95, 190, 3.141592, 'v', self.x, self.y, 110 / 2, 190 / 2)
             else:
-                self.atk_image.clip_draw(int(self.frame) * 95, 0, 95, 190, self.x, self.y, 110 / 2, 190 / 2)
+                self.atk_image.clip_draw(int(self.atk_frame) * 95, 0, 95, 190, self.x, self.y, 110 / 2, 190 / 2)
             pass
         #walk
         else:
