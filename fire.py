@@ -24,7 +24,7 @@ class Fire:
         return self.x - 30, self.y - 15, self.x + 20, self.y + 12
 
     def handle_collision(self, group, other):
-        if group in ('monster_1:fire', 'monster_2:fire'):
+        if group in ('monster_1:fire', 'monster_2:fire', 'monster_3:fire'):
             current_stage = game_framework.stack[-1]
             game_world.remove_object(self)
             # if hasattr(current_stage, 'get_map') and current_stage.get_map().monster_num > 0:

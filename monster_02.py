@@ -108,6 +108,9 @@ class Monster_2:
         elif group == 'monster_1:player':
             pass
 
+        if group == 'map_00_monster_2:player':
+            self.is_atk = True
+
         if group == 'monster_2:fire':
             self.life -= 1
             if self.life <= 0:

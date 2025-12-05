@@ -29,6 +29,9 @@ class Monster_3:
         self.dir = self.face_dir = 1
         self.tx, self.ty = 400, 300
 
+        self.life = 4
+        self.is_atk = False
+
         self.build_behavior_tree()
 
     def update(self):
@@ -42,11 +45,16 @@ class Monster_3:
         self.bt.run()
 
     def draw(self):
-        if self.dir > 0:
-            # self.image.clip_draw(130, 120, 130, 100, 300, 400)
-            self.image.clip_draw(int(self.frame) * 130, 120, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+        if self.is_atk:
+            if self.dir > 0:
+                self.image.clip_draw(int(self.frame) * 130, 10, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 130, 10, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
         else:
-            self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+            if self.dir > 0:
+                self.image.clip_draw(int(self.frame) * 130, 120, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+            else:
+                self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
 
         draw_rectangle(*self.get_bb())
         draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
@@ -55,6 +63,16 @@ class Monster_3:
         return self.x - 20, self.y - 30, self.x + 20, self.y + 30
 
     def handle_collision(self, group, other):
+        if group == 'monster_3:fire':
+            self.life -= 1
+            if self.life <= 0:
+                game_world.remove_object(self)
+                common.map.monster_num -= 1
+        elif group == 'monster_3:player':
+            self.is_atk = True
+
+        if group == 'map_00_monster_3:player':
+            self.is_atk = True
         pass
     # def handle_detection_collision(self, group, other):
     #     pass
@@ -77,7 +95,7 @@ class Monster_3:
         self.y += distance * math.sin(self.dir)
 
     def move_to(self, r=0.5):
-        self.state = 'Walk'
+        self.state = 'Fly'
         self.move_little_to(self.tx, self.ty)
         # 목표 지점에 거의 도착했으면 성공 리턴
         if self.distance_less_than(self.x, self.y, self.tx, self.ty, r):
