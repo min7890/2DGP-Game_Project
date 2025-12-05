@@ -27,6 +27,7 @@ FRAME_PER_SECOND_atk = FRAMES_PER_ACTION_atk * ACTION_PER_TIME
 class Monster_2:
     def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
+        self.hp_image = load_image('monster_hp.png')
         self.x, self.y = x, y
         self.frame = 0
         self.atk_frame = 0
@@ -81,6 +82,7 @@ class Monster_2:
         self.bt.run()
         pass
     def draw(self):
+        self.hp_image.clip_draw(0, 31 * (5 - self.life), 190, 31, self.x, self.y + 60, 200 / 4, 40 / 4)
         if self.is_atk:
             if self.dir == 1:
                 # self.image.clip_draw(130, 220, 130, 100, 300, 400)

@@ -26,6 +26,7 @@ class Monster_1:
     def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
         self.atk_image = load_image('monster_01_atk.png')
+        self.hp_image = load_image('monster_hp.png')
         self.is_atk = False
         self.x, self.y = x, y
         self.frame = 0
@@ -100,6 +101,7 @@ class Monster_1:
 
         pass
     def draw(self):
+        self.hp_image.clip_draw(340, 31* (3 - self.life), 120, 31, self.x, self.y + 60, 200 / 4, 40 / 4)
         #atk
         if self.is_atk:
             if self.face_dir == 1:
