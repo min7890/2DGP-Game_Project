@@ -29,6 +29,8 @@ class Monster_2:
         # self.isdetection = False
         # self.player = player
 
+        self.life = 5
+
         self.tx, self.ty = 400, 300
         self.state = 'Idle'
         self.ground = self.y
@@ -91,18 +93,25 @@ class Monster_2:
 
 
     def handle_collision(self, group, other):
-        if group == 'map_01_tile:monster_2':
+        if group in ('map_00_tile:monster_2', 'map_01_tile:monster_2'):
             left, bottom, right, top = other.get_bb()
-            print('몬스터2가 타일과 충돌함')
+            print(f'몬스터2가 타일과 충돌함 {self.y=} {top=}')
             if self.y > top and left <= self.x <= right:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
 
         if group == 'monster_1:fire':
-            game_world.remove_object(self)
+            self.life -= 1
+            if self.life <= 0:
+                game_world.remove_object(self)
         elif group == 'monster_1:player':
             pass
+
+        if group == 'monster_2:fire':
+            self.life -= 1
+            if self.life <= 0:
+                game_world.remove_object(self)
 
     # def handle_detection_collision(self, group, other):
     #     if group == 'detection_monster_1:player':

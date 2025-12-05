@@ -1129,6 +1129,7 @@ class Player:
         fire = Fire(self.x+self.face_dir*30, self.y+15, self.face_dir * 8)
         game_world.add_object(fire, 1)
         game_world.add_collision_pair('monster_1:fire', None, fire)
+        game_world.add_collision_pair('monster_2:fire', None, fire)
 
     def swing_sword(self):
         self.swing = True
