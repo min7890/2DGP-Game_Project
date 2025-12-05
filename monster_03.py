@@ -49,7 +49,7 @@ class Monster_3:
             self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
 
         draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(5 * PIXEL_PER_METER), 255, 255, 0)
+        draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 20, self.y - 30, self.x + 20, self.y + 30
@@ -112,7 +112,7 @@ class Monster_3:
         a2 = Action('랜덤 위치 설정', self.set_random_location)
         wander = Sequence('배회', a2, a1)
 
-        c1 = Condition('플레이어가 근처에 있는가?', self.if_player_nearby, 7)
+        c1 = Condition('플레이어가 근처에 있는가?', self.if_player_nearby, 2)
         a3 = Action('플레이어 추적', self.move_to_player)
         chase_if_player_nearby = Sequence('소년이 근처에 있으면 추적', c1, a3)
 
