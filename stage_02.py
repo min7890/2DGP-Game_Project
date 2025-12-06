@@ -41,31 +41,23 @@ def init():
         common.player.life = stage_01.prev_stage_life()
     game_world.add_object(common.player, 1)
 
+    game_world.add_collision_pair('item:player', None, common.player)
+
     # lives = [Life(35 + x * 60, 690) for x in range(player.life)]
     # for life in lives:
     #     game_world.add_object(life, 2)
 
     # monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
-    monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
-    for monster in monster_1:
-         game_world.add_object(monster, 1)
-    game_world.add_collision_pair('monster_1:player', None, common.player)
-    # game_world.add_detection_collision_pair('detection_monster_1:player', None, common.player)
-    for monster in monster_1:
-        game_world.add_collision_pair('monster_1:player', monster, None)
-        # game_world.add_detection_collision_pair('detection_monster_1:player', monster, None)
+    monster_2 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
+    for monster in monster_2:
+        game_world.add_object(monster, 1)
 
-    #몬스터1, 원거리공격 충돌
-    for monster in monster_1:
+        game_world.add_collision_pair('monster_2:player', monster, None)
         game_world.add_collision_pair('monster_2:fire', monster, None)
+        game_world.add_collision_pair('tile:monster_2', None, monster)
+        game_world.add_collision_pair('monster:sword', monster, None)
 
-
-    # monster_2 = Monster_2()
-    # game_world.add_object(monster_2, 1)
     game_world.add_collision_pair('monster_2:player', None, common.player)
-
-    # monster_3 = Monster_3()
-    # game_world.add_object(monster_3, 1)
     game_world.add_collision_pair('monster_3:player', None, common.player)
 
 
@@ -74,15 +66,13 @@ def init():
     game_world.add_object(common.map, 0)
     #플레이어-타일
     game_world.add_collision_pair('tile:player', None, common.player)
+
     for tile in common.map.tiles:
         game_world.add_collision_pair('tile:player', tile, None)
 
-    #몬스터-타일
-    for monster in monster_1:
-        game_world.add_collision_pair('tile:monster_2', None, monster)
-    for tile in common.map.tiles:
         game_world.add_collision_pair('tile:monster_2', tile, None)
 
+        game_world.add_collision_pair('tile:item', tile, None)
 
     game_world.add_collision_pair('portal:player', None, common.player)
 
