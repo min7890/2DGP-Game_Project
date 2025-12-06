@@ -10,6 +10,7 @@ import game_world
 from fire import Fire
 
 from state_machine import StateMachine
+from sword import Sword_range
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 WALK_SPEED_KMPH = 5.0  # Km / Hour  성인은 평균적으로 한시간에 약 4~5킬로미터 정도 걷는다고함.
@@ -51,11 +52,11 @@ class Idle:
 
         # s_down 이벤트에서 enter가 호출되면 swing 시작
         if s_down(e):
-            self.player.swing = True
-            self.swing_time = 0
+            if not self.player.swing:
+                self.player.swing_sword()
+                self.swing_time = 0
 
     def exit(self, e):
-        self.player.swing = False
         if a_down(e):
             self.player.fire_ball()
 
@@ -274,12 +275,12 @@ class Walk:
 
         # s_down 이벤트에서 enter가 호출되면 swing 시작
         if s_down(e):
-            self.player.swing = True
-            self.swing_time = 0
+            if not self.player.swing:
+                self.player.swing_sword()
+                self.swing_time = 0
 
     def exit(self, e):
         self.player.velocity_x = 0  # 멈춤
-        self.player.swing = False
         if a_down(e):
             self.player.fire_ball()
 
@@ -494,8 +495,9 @@ class Run:
                 self.player.dir = self.player.face_dir = -1
 
         if s_down(e):
-            self.player.swing = True
-            self.swing_time = 0
+            if not self.player.swing:
+                self.player.swing_sword()
+                self.swing_time = 0
 
 
     def exit(self, e):
@@ -1077,6 +1079,7 @@ class Player:
         self.ground = 90
 
         self.swing = False
+        self.sword_range = None
 
         self.isInPortal = False
 
@@ -1128,6 +1131,11 @@ class Player:
         else:
             self.ground = 90
 
+        if not self.swing and self.sword_range:
+            game_world.remove_object(self.sword_range)
+            self.sword_range = None
+            pass
+
     def handle_event(self, event):
         self.state_machine.handle_state_event(('INPUT', event))
 
@@ -1147,6 +1155,8 @@ class Player:
 
     def swing_sword(self):
         self.swing = True
+        self.sword_range = Sword_range(self.x, self.y, self.face_dir)
+        game_world.add_object(self.sword_range, 1)
 
     def get_player_x(self):
         return self.x
