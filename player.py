@@ -1232,6 +1232,13 @@ class Player:
                 if self.life < 5:
                     self.life += 1
 
+        if group == 'boss_fire:player':
+            if self.life > 0 and not self.islife_down:
+                self.life -= 1
+                self.islife_down = True
+                self.life_notdown_timer = get_time()
+
+
 
     # def handle_detection_collision(self, group, other):
     #     if group == 'detection_monster_1:player':

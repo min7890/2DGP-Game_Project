@@ -126,8 +126,6 @@ class Monster_boss:
                 common.map.monster_num -= 1
 
 
-
-
 class Monster_boss_left_hand:
     def __init__(self):
         self.image = load_image('boss.png')
