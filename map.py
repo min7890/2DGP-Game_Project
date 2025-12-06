@@ -125,7 +125,7 @@ class Map_boss:
                        (200, 250), (328, 250),
                        (952, 250), (1080, 250),
                        (350, 150), (930, 150)]]
-        self.monster_num = 1
+        self.monster_num = 0
         self.portal = None
 
     def update(self):
