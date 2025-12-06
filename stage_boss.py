@@ -48,6 +48,7 @@ def init():
 
     # 플레이어-타일 충돌 페어 등록 (플레이어 생성 후)
     game_world.add_collision_pair('tile:player', None, common.player)
+    game_world.add_collision_pair('boss_fire:player', None, common.player)
 
     for tile in common.map.tiles:
         game_world.add_collision_pair('tile:player', tile, None)
@@ -135,7 +136,7 @@ def update():
         for obj in current_life_objects:
             game_world.remove_object(obj)
         # 새 Life 객체 생성
-        lives = [Life(35 + x * 60, 690) for x in range(common.player.life)]
+        lives = [Life(35 + x * 60, 570) for x in range(common.player.life)]
         for life in lives:
             game_world.add_object(life, 2)
 
