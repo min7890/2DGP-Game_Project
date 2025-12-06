@@ -8,6 +8,7 @@ from state_machine import StateMachine
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import common
 import random
+from item import Item
 
 PIXEL_PER_METER = (10.0 / 0.2)
 FLY_SPEED_KMPH = 10.0 # 10km/h
@@ -77,6 +78,9 @@ class Monster_3:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
+                item = Item(self.x, self.y)
+                game_world.add_object(item, 1)
+
                 game_world.remove_object(self)
                 common.map.monster_num -= 1
         elif group == 'monster_3:player':

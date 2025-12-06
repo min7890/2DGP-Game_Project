@@ -7,6 +7,7 @@ from state_machine import StateMachine
 
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import common
+from item import Item
 
 PIXEL_PER_METER = (10.0 / 0.3)
 WALK_SPEED_KMPH = 5.0 # 5km/h
@@ -142,6 +143,9 @@ class Monster_2:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
+                item = Item(self.x, self.y)
+                game_world.add_object(item, 1)
+
                 game_world.remove_object(self)
                 common.map.monster_num -= 1
 
