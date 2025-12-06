@@ -129,10 +129,7 @@ class Map_boss:
         self.portal = None
 
     def update(self):
-        if self.monster_num == 0 and self.portal is None:
-            self.portal = Portal(1100, 120)
-        if self.portal:
-            self.portal.update()
+        pass
 
     def draw(self):
         self.image.draw(1280 // 2, 720 // 2, 1280, 720)
@@ -140,9 +137,7 @@ class Map_boss:
             tile.draw()
         for tile in self.tiles:
             tile.draw()
-        if self.portal is not None:
-            self.portal.draw()
-            game_world.add_collision_pair('portal:player', self.portal, None)
+
 
     def handle_collision(self, group, other):
         pass
