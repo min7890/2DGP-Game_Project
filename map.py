@@ -45,15 +45,18 @@ class Map_01:
         self.tiles = [
             # 연속된 타일은 하나에만 patrol_route 지정 (왼쪽~오른쪽 범위)
             Tile_02(400, 250, patrol_route=[(350, 300), (580, 300)]),
-            Tile_02(400 + 128, 250),  # 연속 타일이므로 None
+            Tile_02(400 + 128, 250, patrol_route=[(350, 300), (580, 300)]),
+
             Tile_02(300, 150, patrol_route=[(250, 200), (350, 200)]),
+
             Tile_02(900, 150, patrol_route=[(850, 200), (1200, 200)]),
-            Tile_02(1028, 150),  # 연속 타일
-            Tile_02(1156, 150),  # 연속 타일
+            Tile_02(1028, 150, patrol_route=[(850, 200), (1200, 200)]),
+            Tile_02(1156, 150, patrol_route=[(850, 200), (1200, 200)]),
+
             Tile_02(690, 350, patrol_route=[(640, 400), (870, 400)]),
-            Tile_02(690+128, 350),  # 연속 타일
+            Tile_02(690+128, 350, patrol_route=[(640, 400), (870, 400)]),
         ]
-        self.monster_num = 3
+        self.monster_num = 6
         self.portal = None
 
     def update(self):

@@ -44,6 +44,7 @@ def init():
     #     game_world.add_object(life, 2)
 
     monster_1 = [Monster_1(400 + x, 300) for x in range(0, 60, 20)]
+    monster_1 += [Monster_1(900 + x, 200) for x in (30, 300)]
     # monster_1 = [Monster_1(300, 200)]
     for monster in monster_1:
          game_world.add_object(monster, 1)
