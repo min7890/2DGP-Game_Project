@@ -39,6 +39,8 @@ def init():
     common.player = Player()
     game_world.add_object(common.player, 1)
 
+    game_world.add_collision_pair('item:player', None, common.player)
+
     # lives = [Life(35 + x * 60, 690) for x in range(player.life)]
     # for life in lives:
     #     game_world.add_object(life, 2)
