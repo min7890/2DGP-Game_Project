@@ -135,7 +135,7 @@ class Monster_2:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
-                if random.randint(1, 100) <= 100:
+                if random.randint(1, 100) <= 10:
                     drop_x, drop_y = self.x, self.y
                     item = Item(drop_x, drop_y + 30)
                     game_world.add_object(item, 1)
