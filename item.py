@@ -1,11 +1,13 @@
 from pico2d import *
 import game_framework
+import random
 
 class Item:
     def __init__(self,x =400, y = 300):
         self.Mp_potion_image = load_image('Mp_potion.png')
         self.Hp_potion_image = load_image('Hp_potion.png')
         self.x, self.y = x, y
+        self.Mp_or_Hp = random.randint(0, 1)
 
     def update(self):
         if hasattr(self, 'candidate_grounds') and self.candidate_grounds:
@@ -23,8 +25,13 @@ class Item:
             self.y = self.ground
 
 
+
+
     def draw(self):
-        self.Hp_potion_image.draw(self.x, self.y, 50, 50)
+        if self.Mp_or_Hp == 0:
+            self.Mp_potion_image.draw(self.x, self.y, 50, 50)
+        else:
+            self.Hp_potion_image.draw(self.x, self.y, 50, 50)
 
         draw_rectangle(*self.get_bb())
 
