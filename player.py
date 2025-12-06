@@ -1105,10 +1105,18 @@ class Player:
         self.sprite_leg_l = (3, 0, 2, 4)
         self.sprite_leg_r = (9, 0, 2, 4)
 
+        #Mp 자동회복
+        self.last_Mp_recover_time = get_time()
+
     def update(self):
         self.isInPortal = False
         self.time += game_framework.frame_time
         self.state_machine.update()
+
+        if get_time() - self.last_Mp_recover_time > 15.0:
+            if self.Mp < 3:
+                self.Mp += 1
+            self.last_Mp_recover_time = get_time()
 
 
         if get_time() - self.life_notdown_timer > 2.0:
