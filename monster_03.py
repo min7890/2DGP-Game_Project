@@ -23,10 +23,10 @@ FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 
 class Monster_3:
-    def __init__(self):
+    def __init__(self, x = 400, y =300):
         self.image = load_image('monster.png')
         self.hp_image = load_image('monster_hp.png')
-        self.x, self.y = 400, 300
+        self.x, self.y = x, y
         self.frame = 0
         self.dir = 0.0
         self.face_dir = 1

@@ -43,12 +43,24 @@ def init():
 
     game_world.add_collision_pair('item:player', None, common.player)
 
-    # lives = [Life(35 + x * 60, 690) for x in range(player.life)]
-    # for life in lives:
-    #     game_world.add_object(life, 2)
+    monster_1 = [Monster_1(x, 120) for x in (400, 1050)]
+
+    for monster in monster_1:
+        game_world.add_object(monster, 1)
+    game_world.add_collision_pair('monster_1:player', None, common.player)
+    for monster in monster_1:
+        # 플레이어 충돌
+        game_world.add_collision_pair('monster_1:player', monster, None)
+        # 몬스터1, 원거리공격 충돌
+        game_world.add_collision_pair('monster_1:fire', monster, None)
+        # 몬스터1, 타일 충돌
+        game_world.add_collision_pair('tile:monster_1', None, monster)
+        # 몬스터, 검 충돌
+        game_world.add_collision_pair('monster:sword', monster, None)
+
 
     # monster_1 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
-    monster_2 = [Monster_2(x, y) for x, y in [(400, 285), (600, 88), (900, 185)]]
+    monster_2 = [Monster_2(x, y) for x, y in [(230, 430), (550, 330), (1000, 430), (818, 380)]]
     for monster in monster_2:
         game_world.add_object(monster, 1)
 
@@ -58,6 +70,16 @@ def init():
         game_world.add_collision_pair('monster:sword', monster, None)
 
     game_world.add_collision_pair('monster_2:player', None, common.player)
+    game_world.add_collision_pair('monster_3:player', None, common.player)
+
+    monster_3 = [Monster_3(200, 400), Monster_3(800, 150)]
+    for monster in monster_3:
+        game_world.add_object(monster, 1)
+        # 플레이어 충돌
+        game_world.add_collision_pair('monster_3:player', monster, None)
+        # 몬스터3, 원거리공격 충돌
+        game_world.add_collision_pair('monster_3:fire', monster, None)
+        game_world.add_collision_pair('monster:sword', monster, None)
     game_world.add_collision_pair('monster_3:player', None, common.player)
 
 
