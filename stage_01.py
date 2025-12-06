@@ -78,6 +78,8 @@ def init():
     for tile in common.map.tiles:
         game_world.add_collision_pair('tile:player', tile, None)
 
+        game_world.add_collision_pair('tile:item', tile, None)
+
     game_world.add_collision_pair('portal:player', None, common.player)
 
     for monster in monster_1:

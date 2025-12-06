@@ -36,6 +36,9 @@ class Monster_3:
         self.is_atk = False
         self.det = False
 
+        game_world.add_collision_pair('tile:item', None, None)
+        game_world.add_collision_pair('item:player', None, None)
+
         self.build_behavior_tree()
 
     def update(self):
@@ -78,10 +81,12 @@ class Monster_3:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
-                if random.randint(1, 100) <= 10:
-                    item = Item(self.x, self.y)
+                if random.randint(1, 100) <= 100:
+                    drop_x, drop_y = self.x, self.y
+                    item = Item(drop_x, drop_y + 30)
                     game_world.add_object(item, 1)
                     game_world.add_collision_pair('item:player', item, None)
+                    game_world.add_collision_pair('tile:item', None, item)
 
                 game_world.remove_object(self)
                 common.map.monster_num -= 1

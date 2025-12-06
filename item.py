@@ -43,4 +43,13 @@ class Item:
     def handle_collision(self, group, other):
         if group == 'item:player':
             game_world.remove_object(self)
+
+        if group == 'tile:item':
+            left, bottom, right, top = other.get_bb()
+
+            if self.y > top and left <= self.x <= right:
+                if not hasattr(self, 'candidate_grounds'):
+                    self.candidate_grounds = []
+                self.candidate_grounds.append(top + 18)
+
         pass
