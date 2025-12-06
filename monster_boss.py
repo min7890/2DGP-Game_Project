@@ -34,8 +34,8 @@ def get_random_spawn_position():
         if (x - common.player.x) ** 2 + (y - common.player.y) ** 2 >= (2 * PIXEL_PER_METER_player) ** 2:
             return x, y
 
-def spawn_monster_03():
-    monster_3 = [Monster_3(*get_random_spawn_position()) for _ in range(5)]
+def spawn_monster_03(num = 0):
+    monster_3 = [Monster_3(*get_random_spawn_position()) for _ in range(num)]
     for monster in monster_3:
         game_world.add_object(monster, 1)
 
@@ -83,13 +83,18 @@ class Monster_boss:
         if get_time() - self.last_fire_time > 10.0:
             if self.life <= 10:
              self.fire_360()
+             if common.map.monster_num < 5:
+                 spawn_monster_03(1)
+                 common.map.monster_num += 1
             self.last_fire_time = get_time()
+
 
 
         #보스몬스터 hp 5이하일때 몬스터3 소환 5마리, 위치이동
         if self.life <= 5 and not self.is_spowned:
             self.is_spowned = True
-            spawn_monster_03()
+            spawn_monster_03(5)
+            common.map.monster_num += 5
             self.x = 1050
 
 
