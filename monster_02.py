@@ -112,12 +112,6 @@ class Monster_2:
         elif self.dir == -1:
             return self.x - 30, self.y - 25, self.x + 35, self.y + 25
 
-    # def get_detection_bb(self):
-    #     if self.dir == 1:
-    #         return self.x - 300, self.y - 25, self.x + 300, self.y + 25
-    #     elif self.dir == -1:
-    #         return self.x - 300, self.y - 25, self.x + 300, self.y + 25
-
 
     def handle_collision(self, group, other):
         if group == 'tile:monster_2':
@@ -128,13 +122,6 @@ class Monster_2:
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
 
-        # if group == 'monster_1:fire':
-        #
-        #     self.life -= 1
-        #     if self.life <= 0:
-        #         game_world.remove_object(self)
-        # elif group == 'monster_1:player':
-        #     pass
 
         if group == 'map_00_monster_2:player':
             self.is_atk = True
