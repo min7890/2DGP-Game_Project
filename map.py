@@ -160,6 +160,7 @@ class Map_02:
 class Map_boss:
     def __init__(self):
         self.image = load_image('background_boss.png')
+        self.image_back = load_image('background_boss_01.png')
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [Tile_02(x, y) for x, y in
                       [(576, 450), (704, 450),
@@ -182,6 +183,14 @@ class Map_boss:
         self.window_bottom = clamp(0, int(common.player.y) - self.ch // 2, self.h - self.ch - 1)
 
     def draw(self):
+        self.image_back.clip_draw_to_origin(
+            self.window_left,
+            self.window_bottom,
+            self.cw,
+            self.ch,
+            0,
+            0
+        )
         self.image.clip_draw_to_origin(
             self.window_left,
             self.window_bottom,

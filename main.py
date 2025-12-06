@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import stage_00 as start_mode
+import stage_boss as start_mode
 
 #플레이어는 1 픽셀당 3cm
 #w = 1280픽셀 * 3cm = 3840cm = 38.4m
