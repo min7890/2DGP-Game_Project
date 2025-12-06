@@ -12,7 +12,7 @@ from item import Item
 from boss_fire import Fire
 
 PIXEL_PER_METER = (10.0 / 0.2)
-FLY_SPEED_KMPH = 10.0 # 10km/h
+FLY_SPEED_KMPH = 5.0 # 5km/h
 FLY_SPEED_MPM = (FLY_SPEED_KMPH * 1000.0 / 60.0)
 FLY_SPEED_MPS = (FLY_SPEED_MPM / 60.0)
 FLY_SPEED_PPS = (FLY_SPEED_MPS * PIXEL_PER_METER)
@@ -30,6 +30,8 @@ class Monster_boss:
         self.frame = 0
         self.dir = 0.0
         self.face_dir = 1
+
+        self.fly_y = 1
         self.tx, self.ty = 400, 300
 
         self.life = 20
@@ -41,6 +43,11 @@ class Monster_boss:
         self.build_behavior_tree()
 
     def update(self):
+        self.y += self.fly_y * FLY_SPEED_PPS * game_framework.frame_time
+        if self.y > 400:
+            self.fly_y = -1
+        elif self.y < 300:
+            self.fly_y = 1
         self.det = False
         self.is_atk = False
 
@@ -165,6 +172,7 @@ class Monster_boss_left_hand:
         self.det = False
 
     def update(self):
+        self.y = common.monster_boss.y - 30
         self.det = False
         self.is_atk = False
 
@@ -193,6 +201,7 @@ class Monster_boss_right_hand:
         self.det = False
 
     def update(self):
+        self.y = common.monster_boss.y - 30
         self.det = False
         self.is_atk = False
 
