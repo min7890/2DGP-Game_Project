@@ -67,9 +67,9 @@ def init():
 
     common.map = Map_Start()
     game_world.add_object(common.map, 0)
-    game_world.add_collision_pair('map_01_tile:player', None, common.player)
+    game_world.add_collision_pair('tile:player', None, common.player)
     for tile in common.map.tiles:
-        game_world.add_collision_pair('map_01_tile:player', tile, None)
+        game_world.add_collision_pair('tile:player', tile, None)
 
         game_world.add_collision_pair('tile:monster_1', tile, None)
         game_world.add_collision_pair('tile:monster_2', tile, None)
