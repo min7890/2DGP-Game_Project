@@ -297,7 +297,8 @@ class Walk:
 
         if is_lshift_pressed():
             self.player.state_machine.handle_state_event(('ENTER_RUN', None))
-        if is_d_pressed():
+        if is_d_pressed() and self.player.can_dash:
+            self.player.can_dash = False
             self.player.state_machine.handle_state_event(('ENTER_DASH', None))
 
         self.player.x += self.player.dir * WALK_SPEED_PPS * game_framework.frame_time
@@ -506,7 +507,8 @@ class Run:
             self.player.fire_ball()
 
     def do(self):
-        if is_d_pressed():
+        if is_d_pressed() and self.player.can_dash:
+            self.player.can_dash = False
             self.player.state_machine.handle_state_event(('ENTER_DASH', None))
         if not is_lshift_pressed():
             self.player.state_machine.handle_state_event(('ENTER_WALK', None))
@@ -1110,6 +1112,9 @@ class Player:
 
         #Mp 자동회복
         self.last_Mp_recover_time = get_time()
+        #dash용 시간측정
+        self.last_dash_time = get_time()
+        self.can_dash = True
 
     def update(self):
         self.isInPortal = False
@@ -1120,6 +1125,11 @@ class Player:
             if self.Mp < 3:
                 self.Mp += 1
             self.last_Mp_recover_time = get_time()
+
+        if get_time() - self.last_dash_time > 5.0:
+            self.can_dash = True
+            self.last_dash_time = get_time()
+
 
 
         if get_time() - self.life_notdown_timer > 2.0:
