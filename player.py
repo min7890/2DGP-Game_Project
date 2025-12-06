@@ -1065,6 +1065,7 @@ class Player:
         self.face_dir = 1  # 1: 오른쪽, -1: 왼쪽
         self.image = load_image('avatar_body0000.png')
         self.weapon_image = load_image('weapons01.png')
+        self.Mp_image = load_image('player_MP.png')
         self.time = 0
         self.jump = 2
 
@@ -1124,6 +1125,7 @@ class Player:
 
     def draw(self):
         self.state_machine.draw()
+        self.Mp_image.clip_draw(340, 31* (3 - self.Mp), 120, 31, self.x, self.y + 35, 200 /4 , 40 / 4)
         draw_rectangle(*self.get_bb())
 
     def fire_ball(self):
