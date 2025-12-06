@@ -1157,6 +1157,7 @@ class Player:
         self.swing = True
         self.sword_range = Sword_range(self.x, self.y, self.face_dir)
         game_world.add_object(self.sword_range, 1)
+        game_world.add_collision_pair('monster:sword', None, self.sword_range)
 
     def get_player_x(self):
         return self.x

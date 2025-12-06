@@ -58,11 +58,14 @@ def init():
         game_world.add_collision_pair('monster_1:fire', monster, None)
         # 몬스터1, 타일 충돌
         game_world.add_collision_pair('tile:monster_1', None, monster)
+        # 몬스터, 검 충돌
+        game_world.add_collision_pair('monster:sword', monster, None)
 
 
     # monster_2 = Monster_2()
     # game_world.add_object(monster_2, 1)
     game_world.add_collision_pair('monster_2:player', None, common.player)
+
 
     monster_3 = Monster_3()
     game_world.add_object(monster_3, 1)
@@ -71,6 +74,7 @@ def init():
     game_world.add_collision_pair('monster_3:player', monster_3, None)
     # 몬스터3, 원거리공격 충돌
     game_world.add_collision_pair('monster_3:fire', monster_3, None)
+    game_world.add_collision_pair('monster:sword', monster_3, None)
 
 
     global map

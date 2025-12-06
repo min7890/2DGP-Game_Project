@@ -24,4 +24,6 @@ class Sword_range:
             return self.x - 50, self.y - 22, self.x - 17, self.y + 25
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'monster:sword':
+            game_world.remove_object(self)
+            common.player.sword_range = None  # player에서 중복 삭제 방지

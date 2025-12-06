@@ -157,6 +157,25 @@ class Monster_2:
                 game_world.remove_object(self)
                 common.map.monster_num -= 1
 
+        if group == 'monster:sword':
+            distance = WALK_SPEED_PPS * game_framework.frame_time
+            if other.face_dir < 0:
+                self.x -= distance * 30
+            else:
+                self.x += distance * 30
+            self.life -= 1
+            if self.life <= 0:
+                # 아이템 드롭
+                if random.randint(1, 100) <= 100: # 10% 확률로 아이템 드롭
+                    drop_x, drop_y = self.x, self.y
+                    item = Item(drop_x, drop_y + 30)
+                    game_world.add_object(item, 1)
+                    game_world.add_collision_pair('item:player', item, None)
+                    game_world.add_collision_pair('tile:item', None, item)
+
+                game_world.remove_object(self)
+                common.map.monster_num -= 1
+
     # def handle_detection_collision(self, group, other):
     #     if group == 'detection_monster_1:player':
     #         self.isdetection = True
