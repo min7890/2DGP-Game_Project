@@ -11,6 +11,9 @@ import random
 from item import Item
 from boss_fire import Fire
 
+from monster_03 import Monster_3
+
+
 PIXEL_PER_METER = (10.0 / 0.2)
 FLY_SPEED_KMPH = 5.0 # 5km/h
 FLY_SPEED_MPM = (FLY_SPEED_KMPH * 1000.0 / 60.0)
@@ -21,6 +24,17 @@ TIME_PER_SECOND = 0.7
 ACTION_PER_TIME = 1.0 / TIME_PER_SECOND
 FRAMES_PER_ACTION = 5
 FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
+
+def spawn_monster_03():
+    monster_3 = [Monster_3(random.randint(100, 1180), random.randint(150, 620)) for _ in range(5)]
+    for monster in monster_3:
+        game_world.add_object(monster, 1)
+
+        #몬스터2, 원거리공격 충돌
+        game_world.add_collision_pair('monster_3:fire', monster, None)
+        # 플레이어 충돌
+        game_world.add_collision_pair('monster_3:player', monster, None)
+        game_world.add_collision_pair('monster:sword', monster, None)
 
 
 class Monster_boss:
@@ -37,6 +51,8 @@ class Monster_boss:
         self.life = 20
         self.is_atk = False
         self.det = False
+
+        self.is_spowned = False
 
         self.last_fire_time = get_time()
 
@@ -57,6 +73,11 @@ class Monster_boss:
             if self.life <= 10:
              self.fire_360()
             self.last_fire_time = get_time()
+
+        #보스몬스터 hp 5이하일때 몬스터3 소환 5마리
+        if self.life <= 5 and not self.is_spowned:
+            self.is_spowned = True
+            spawn_monster_03()
 
         # self.bt.run()
 

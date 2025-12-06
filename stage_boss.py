@@ -44,6 +44,8 @@ def init():
 
     game_world.add_collision_pair('monster_boss:player', None, common.player)
 
+    game_world.add_collision_pair('monster_3:player', None, common.player)
+
     game_world.add_collision_pair('item:player', None, common.player)
 
     common.monster_boss = Monster_boss(650, 400)
