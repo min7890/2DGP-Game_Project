@@ -7,6 +7,7 @@ from state_machine import StateMachine
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import common
 import random
+from item import Item
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10pixel = 10cm = 0.1m
 WALK_SPEED_KMPH = 10.0 # 10km/h
@@ -135,8 +136,14 @@ class Monster_1:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
+                # 아이템 드롭
+                item = Item(self.x, self.y)
+                game_world.add_object(item, 1)
+
                 game_world.remove_object(self)
                 common.map.monster_num -= 1
+
+
 
         elif group == 'monster_1:player':
             self.is_atk = True
