@@ -48,6 +48,8 @@ def init():
     game_world.add_collision_pair('tile:monster_1', None, monster_1)
     #플레이어 충돌
     game_world.add_collision_pair('map_00_monster_1:player', monster_1, None)
+    #몬스터, 근거리 공격 충돌
+    game_world.add_collision_pair('monster:sword', monster_1, None)
 
     monster_2 = Monster_2(550, 194)
     game_world.add_object(monster_2, 1)
@@ -57,6 +59,7 @@ def init():
     game_world.add_collision_pair('tile:monster_2', None, monster_2)
     #플레이어 충돌
     game_world.add_collision_pair('map_00_monster_2:player', monster_2, None)
+    game_world.add_collision_pair('monster:sword', monster_2, None)
 
     monster_3 = Monster_3()
     game_world.add_object(monster_3, 1)
@@ -64,6 +67,8 @@ def init():
     game_world.add_collision_pair('monster_3:fire', monster_3, None)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_3:player', monster_3, None)
+
+    game_world.add_collision_pair('monster:sword', monster_3, None)
 
 
 
@@ -92,7 +97,7 @@ def spawn_monster_01():
     game_world.add_collision_pair('tile:monster_1', None, monster_1)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_1:player', monster_1, None)
-
+    game_world.add_collision_pair('monster:sword', monster_1, None)
 
 def spawn_monster_02():
     monster_2 = Monster_2(550, 194)
@@ -104,6 +109,7 @@ def spawn_monster_02():
     game_world.add_collision_pair('tile:monster_2', None, monster_2)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_2:player', monster_2, None)
+    game_world.add_collision_pair('monster:sword', monster_2, None)
 
 def spawn_monster_03():
     monster_3 = Monster_3()
@@ -113,7 +119,7 @@ def spawn_monster_03():
     game_world.add_collision_pair('monster_3:fire', monster_3, None)
     # 플레이어 충돌
     game_world.add_collision_pair('map_00_monster_3:player', monster_3, None)
-
+    game_world.add_collision_pair('monster:sword', monster_3, None)
 
 
 
