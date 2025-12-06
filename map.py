@@ -2,6 +2,7 @@ from pico2d import *
 from tile import Tile_01, Tile_02
 from portal import Portal
 import game_world
+import common
 
 class Map_Start:
     def __init__(self):
@@ -20,21 +21,35 @@ class Map_Start:
         self.monster_num = 0
 
         self.portal = Portal(1100, 120)
+
+        self.w = self.image.w
+        self.h = self.image.h
+        self.cw = get_canvas_width()
+        self.ch = get_canvas_height()
+
     def update(self):
+        self.window_left = clamp(0, int(common.player.x) - self.cw // 2, self.w - self.cw - 1)
+        self.window_bottom = clamp(0, int(common.player.y) - self.ch // 2, self.h - self.ch - 1)
         self.portal.update()
-        pass
+
     def draw(self):
-        self.image.draw(1280 // 2, 720 // 2, 1280, 720)
+        self.image.clip_draw_to_origin(
+            self.window_left,
+            self.window_bottom,
+            self.cw,
+            self.ch,
+            0,
+            0
+        )
         for tile in self.ground_tiles:
             tile.draw()
         for tile in self.tiles:
             tile.draw()
 
         self.portal.draw()
+
     def handle_collision(self, group, other):
         pass
-    # def handle_detection_collision(self, group, other):
-    #     pass
 
 class Map_01:
     def __init__(self):
@@ -60,15 +75,29 @@ class Map_01:
         self.monster_num = 6
         self.portal = None
 
+        self.w = self.image.w
+        self.h = self.image.h
+        self.cw = get_canvas_width()
+        self.ch = get_canvas_height()
+
     def update(self):
+        self.window_left = clamp(0, int(common.player.x) - self.cw // 2, self.w - self.cw - 1)
+        self.window_bottom = clamp(0, int(common.player.y) - self.ch // 2, self.h - self.ch - 1)
+
         if self.monster_num == 0 and self.portal is None:
             self.portal = Portal(1100, 220)
         if self.portal:
             self.portal.update()
-        pass
 
     def draw(self):
-        self.image.draw(1280 // 2, 720// 2, 1280, 720)
+        self.image.clip_draw_to_origin(
+            self.window_left,
+            self.window_bottom,
+            self.cw,
+            self.ch,
+            0,
+            0
+        )
         for tile in self.ground_tiles:
             tile.draw()
 
@@ -81,8 +110,6 @@ class Map_01:
 
     def handle_collision(self, group, other):
         pass
-    # def handle_detection_collision(self, group, other):
-    #     pass
 
 
 class Map_02:
@@ -94,14 +121,30 @@ class Map_02:
                        (200, 400), (328, 400), (900, 400), (1028, 400)]]
         self.monster_num = 8
         self.portal = None
+
+        self.w = self.image.w
+        self.h = self.image.h
+        self.cw = get_canvas_width()
+        self.ch = get_canvas_height()
+
     def update(self):
+        self.window_left = clamp(0, int(common.player.x) - self.cw // 2, self.w - self.cw - 1)
+        self.window_bottom = clamp(0, int(common.player.y) - self.ch // 2, self.h - self.ch - 1)
+
         if self.monster_num == 0 and self.portal is None:
             self.portal = Portal(1100, 220)
         if self.portal:
             self.portal.update()
-        pass
+
     def draw(self):
-        self.image.draw(1280 // 2, 720 // 2, 1280, 720)
+        self.image.clip_draw_to_origin(
+            self.window_left,
+            self.window_bottom,
+            self.cw,
+            self.ch,
+            0,
+            0
+        )
         for tile in self.ground_tiles:
             tile.draw()
         for tile in self.tiles:
@@ -109,10 +152,10 @@ class Map_02:
         if self.portal is not None:
             self.portal.draw()
             game_world.add_collision_pair('portal:player', self.portal, None)
+
     def handle_collision(self, group, other):
         pass
-    # def handle_detection_collision(self, group, other):
-    #     pass
+
 
 class Map_boss:
     def __init__(self):
@@ -128,16 +171,30 @@ class Map_boss:
         self.monster_num = 0
         self.portal = None
 
+        self.w = self.image.w
+        self.h = self.image.h
+        self.cw = get_canvas_width()
+        self.ch = get_canvas_height()
+
+
     def update(self):
-        pass
+        self.window_left = clamp(0, int(common.player.x) - self.cw // 2, self.w - self.cw - 1)
+        self.window_bottom = clamp(0, int(common.player.y) - self.ch // 2, self.h - self.ch - 1)
 
     def draw(self):
-        self.image.draw(1280 // 2, 720 // 2, 1280, 720)
+        self.image.clip_draw_to_origin(
+            self.window_left,
+            self.window_bottom,
+            self.cw,
+            self.ch,
+            0,
+            0
+        )
+
         for tile in self.ground_tiles:
             tile.draw()
         for tile in self.tiles:
             tile.draw()
-
 
     def handle_collision(self, group, other):
         pass

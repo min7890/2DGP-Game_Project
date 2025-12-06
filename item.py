@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import random
 import game_world
+import common
 
 class Item:
     def __init__(self,x =400, y = 300):
@@ -29,12 +30,14 @@ class Item:
 
 
     def draw(self):
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
         if self.Mp_or_Hp == 0:
-            self.Mp_potion_image.draw(self.x, self.y, 50, 50)
+            self.Mp_potion_image.draw(sx_, sy_, 50, 50)
         else:
-            self.Hp_potion_image.draw(self.x, self.y, 50, 50)
+            self.Hp_potion_image.draw(sx_, sy_, 50, 50)
 
-        draw_rectangle(*self.get_bb())
+        draw_rectangle(sx_ - 25, sy_ - 20, sx_ + 25, sy_ + 20)
 
     def get_bb(self):
         return self.x - 25, self.y - 20, self.x + 25, self.y + 20

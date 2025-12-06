@@ -61,7 +61,7 @@ class Monster_2:
         # print(self.player.x, self.x)
         # if self.isdetection and self.player is not None:
         #     if self.x < self.player.x:
-        #         self.dir = self.face_dir = 1
+        #         self dir = self.face_dir = 1
         #         if abs(self.player.x - self.x) > 10:
         #             self.x += self.dir * WALK_SPEED_PPS * game_framework.frame_time
         #     elif self.x > self.player.x:
@@ -87,24 +87,25 @@ class Monster_2:
         self.bt.run()
         pass
     def draw(self):
-        self.hp_image.clip_draw(0, 31 * (5 - self.life), 190, 31, self.x, self.y + 60, 200 / 4, 40 / 4)
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.hp_image.clip_draw(0, 31 * (5 - self.life), 190, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         if self.is_atk:
             if self.dir == 1:
                 # self.image.clip_draw(130, 220, 130, 100, 300, 400)
-                self.image.clip_composite_draw(int(self.atk_frame) * 130, 320, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_composite_draw(int(self.atk_frame) * 130, 320, 130, 100, 3.141592, 'v', sx_, sy_, 130 / 2, 100 / 2)
             else:
-                self.image.clip_draw(int(self.atk_frame) * 130, 320, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_draw(int(self.atk_frame) * 130, 320, 130, 100, sx_, sy_, 130 / 2, 100 / 2)
             pass
         else:
             if self.dir == 1:
                 # self.image.clip_draw(130, 220, 130, 100, 300, 400)
-                self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', sx_, sy_, 130 / 2, 100 / 2)
             else:
-                self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
-        draw_rectangle(*self.get_bb())
-        # draw_rectangle(*self.get_detection_bb(), 0, 0, 255)
+                self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, sx_, sy_, 130 / 2, 100 / 2)
+        draw_rectangle(sx_ - 35, sy_ - 25, sx_ + 30, sy_ + 25)
 
-        draw_circle(self.x, self.y, int(7 * PIXEL_PER_METER), 255, 255, 0)
+        draw_circle(sx_, sy_, int(7 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         if self.dir == 1:

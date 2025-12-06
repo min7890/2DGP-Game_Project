@@ -54,20 +54,22 @@ class Monster_3:
         self.bt.run()
 
     def draw(self):
-        self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, self.x, self.y + 60, 200 / 4, 40 / 4)
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         if self.is_atk:
             if self.face_dir == 1:
-                self.image.clip_draw(int(self.frame) * 130, 10, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_draw(int(self.frame) * 130, 10, 130, 100, sx_, sy_, 130 / 2, 100 / 2)
             else:
-                self.image.clip_composite_draw(int(self.frame) * 130, 10, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_composite_draw(int(self.frame) * 130, 10, 130, 100, 3.141592, 'v', sx_, sy_, 130 / 2, 100 / 2)
         else:
             if self.face_dir == 1:
-                self.image.clip_draw(int(self.frame) * 130, 120, 130, 100, self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_draw(int(self.frame) * 130, 120, 130, 100, sx_, sy_, 130 / 2, 100 / 2)
             else:
-                self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', self.x, self.y, 130 / 2, 100 / 2)
+                self.image.clip_composite_draw(int(self.frame) * 130, 120, 130, 100, 3.141592, 'v', sx_, sy_, 130 / 2, 100 / 2)
 
-        draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        draw_rectangle(sx_ - 20, sy_ - 30, sx_ + 20, sy_ + 30)
+        draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 20, self.y - 30, self.x + 20, self.y + 30

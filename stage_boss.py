@@ -36,17 +36,33 @@ def handle_events():
 
 def init():
     global player
+    global map
+    common.map = Map_boss()
+    game_world.add_object(common.map, 0)
 
+    # 플레이어를 먼저 생성
     common.player = Player()
     if common.player is not None:
         common.player.life = stage_01.prev_stage_life()
     game_world.add_object(common.player, 1)
+
+    # 플레이어-타일 충돌 페어 등록 (플레이어 생성 후)
+    game_world.add_collision_pair('tile:player', None, common.player)
+
+    for tile in common.map.tiles:
+        game_world.add_collision_pair('tile:player', tile, None)
+        game_world.add_collision_pair('tile:monster_2', tile, None)
+        game_world.add_collision_pair('tile:item', tile, None)
+
+    game_world.add_collision_pair('portal:player', None, common.player)
 
     game_world.add_collision_pair('monster_boss:player', None, common.player)
 
     game_world.add_collision_pair('monster_3:player', None, common.player)
 
     game_world.add_collision_pair('item:player', None, common.player)
+
+    game_world.add_collision_pair('boss_fire:player', None, common.player)
 
     common.monster_boss = Monster_boss(650, 400)
     game_world.add_object(common.monster_boss, 1)
@@ -98,20 +114,7 @@ def init():
     # game_world.add_collision_pair('monster_3:player', None, common.player)
 
 
-    global map
-    common.map = Map_boss()
-    game_world.add_object(common.map, 0)
-    #플레이어-타일
-    game_world.add_collision_pair('tile:player', None, common.player)
 
-    for tile in common.map.tiles:
-        game_world.add_collision_pair('tile:player', tile, None)
-
-        game_world.add_collision_pair('tile:monster_2', tile, None)
-
-        game_world.add_collision_pair('tile:item', tile, None)
-
-    game_world.add_collision_pair('portal:player', None, common.player)
 
 
 

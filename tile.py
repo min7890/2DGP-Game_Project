@@ -1,4 +1,5 @@
 from pico2d import *
+import common
 
 class Tile_01:
     def __init__(self, x = 400, y =300, patrol_route=None):
@@ -11,8 +12,10 @@ class Tile_01:
         pass
 
     def draw(self):
-        self.tile_image_01.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.tile_image_01.draw(sx_, sy_)
+        draw_rectangle(sx_ - 65, sy_ - 40, sx_ + 65, sy_ + 40)
 
     def get_bb(self):
         return self.x - 65, self.y - 40, self.x + 65, self.y + 40
@@ -31,8 +34,10 @@ class Tile_02:
         pass
 
     def draw(self):
-        self.tile_image_02.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.tile_image_02.draw(sx_, sy_)
+        draw_rectangle(sx_ - 64, sy_ - 16, sx_ + 64, sy_ + 16)
 
     def get_bb(self):
         return self.x - 64, self.y - 16, self.x + 64, self.y + 16

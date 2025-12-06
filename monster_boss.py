@@ -101,10 +101,12 @@ class Monster_boss:
 
 
     def draw(self):
-        self.image.clip_draw(0, 0, 230, 380, self.x, self.y)
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.image.clip_draw(0, 0, 230, 380, sx_, sy_)
 
-        draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(9 * PIXEL_PER_METER), 255, 255, 0)
+        draw_rectangle(sx_ - 110, sy_ - 200, sx_ + 120, sy_ + 180)
+        draw_circle(sx_, sy_, int(9 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 110, self.y - 200, self.x + 120, self.y + 180
@@ -145,10 +147,12 @@ class Monster_boss_left_hand:
         self.is_atk = False
 
     def draw(self):
-        self.image.clip_draw(260, 15, 75, 70, self.x, self.y)
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.image.clip_draw(260, 15, 75, 70, sx_, sy_)
 
-        draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 40, sy_ + 25)
+        draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 40, self.y - 40, self.x + 40, self.y + 25
@@ -175,10 +179,12 @@ class Monster_boss_right_hand:
         self.is_atk = False
 
     def draw(self):
-        self.image.clip_draw(340, 15, 75, 70, self.x, self.y)
+        sx_ = self.x - common.map.window_left
+        sy_ = self.y - common.map.window_bottom
+        self.image.clip_draw(340, 15, 75, 70, sx_, sy_)
 
-        draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 30, sy_ + 25)
+        draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 40, self.y - 40, self.x + 30, self.y + 25
