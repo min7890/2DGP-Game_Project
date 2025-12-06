@@ -65,9 +65,9 @@ def init():
     game_world.add_object(monster_3, 1)
     game_world.add_collision_pair('monster_3:player', None, common.player)
     # 플레이어 충돌
-    game_world.add_collision_pair('monster_3:player', monster, None)
+    game_world.add_collision_pair('monster_3:player', monster_3, None)
     # 몬스터3, 원거리공격 충돌
-    game_world.add_collision_pair('monster_3:fire', monster, None)
+    game_world.add_collision_pair('monster_3:fire', monster_3, None)
 
 
     global map
