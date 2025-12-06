@@ -9,7 +9,8 @@ class Map_Start:
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [
             Tile_02(400, 250, patrol_route=[(350, 300), (580, 300)]),
-            Tile_02(400 + 128, 250),  # 연속 타일이므로 None
+            Tile_02(400 + 128, 250, patrol_route=[(350, 300), (580, 300)]),
+
             Tile_02(300, 150, patrol_route=[(250, 200), (350, 200)]),
 
             Tile_02(500, 160, patrol_route=[(450, 210), (680, 210)]),
@@ -89,9 +90,9 @@ class Map_02:
         self.image = load_image('background_02.png')
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [Tile_02(x, y) for x, y in
-                      [(400, 250), (400 + 128, 250), (300, 150), (900, 150), (1028, 150), (1156, 150), (690, 350),
-                       (690 + 128, 350)]]
-        self.monster_num = 3
+                      [(150, 150), (278, 150), (370, 240), (870, 240), (550, 300), (678, 300), (950, 150), (1078, 150),
+                       (200, 400), (328, 400), (900, 400), (1028, 400)]]
+        self.monster_num = 6
         self.portal = None
     def update(self):
         if self.monster_num == 0 and self.portal is None:

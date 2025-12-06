@@ -44,7 +44,6 @@ class Idle:
         self.player = player
         self.swing_time = 0
         self.swing_duration = 0.2  # 칼 휘두르기 모션 시간(초)
-
     def enter(self, e):
         self.player.velocity_x = 0
         self.player.jump = 2
@@ -1038,25 +1037,7 @@ class Dash:
                     self.player.x + 3 * weapon_scale, arm_y,
                     sw * weapon_scale, sh * weapon_scale
                 )
-        else:
-            # 칼 휘두르기 모션
-            angle = math.pi / 2 * (self.swing_time / self.swing_duration)  # 0~90도 회전
-            sx, sy, sw, sh = 89, 139, 17, 7
-            arm_y = self.player.y - 4 * weapon_scale
-            if self.player.face_dir == -1:
-                self.player.weapon_image.clip_composite_draw(
-                    sx, sy, sw, sh,
-                    angle, '',
-                    self.player.x - 6 * weapon_scale, arm_y,
-                    sw * weapon_scale, sh * weapon_scale
-                )
-            elif self.player.face_dir == 1:
-                self.player.weapon_image.clip_composite_draw(
-                    sx, sy, sw, sh,
-                    3.141592 - angle, '',
-                    self.player.x + 6 * weapon_scale, arm_y,
-                    sw * weapon_scale, sh * weapon_scale
-                )
+
 
 
 class Player:
