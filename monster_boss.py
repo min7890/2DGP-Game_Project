@@ -25,8 +25,17 @@ ACTION_PER_TIME = 1.0 / TIME_PER_SECOND
 FRAMES_PER_ACTION = 5
 FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
+def get_random_spawn_position():
+    PIXEL_PER_METER_player = (10.0 / 0.3)  # 10 pixel 30 cm
+    while True:
+        x = random.randint(100, 1180)
+        y = random.randint(150, 620)
+
+        if (x - common.player.x) ** 2 + (y - common.player.y) ** 2 >= (2 * PIXEL_PER_METER_player) ** 2:
+            return x, y
+
 def spawn_monster_03():
-    monster_3 = [Monster_3(random.randint(100, 1180), random.randint(150, 620)) for _ in range(5)]
+    monster_3 = [Monster_3(*get_random_spawn_position()) for _ in range(5)]
     for monster in monster_3:
         game_world.add_object(monster, 1)
 
