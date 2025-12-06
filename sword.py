@@ -19,9 +19,9 @@ class Sword_range:
 
     def get_bb(self):
         if self.face_dir == 1:
-            return self.x + 17, self.y - 22, self.x + 50, self.y + 25
+            return self.x - 17, self.y - 22, self.x + 50, self.y + 25
         else:
-            return self.x - 50, self.y - 22, self.x - 17, self.y + 25
+            return self.x - 50, self.y - 22, self.x + 17, self.y + 25
 
     def handle_collision(self, group, other):
         if group == 'monster:sword':
