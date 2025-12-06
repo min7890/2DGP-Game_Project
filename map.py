@@ -92,7 +92,7 @@ class Map_02:
         self.tiles = [Tile_02(x, y) for x, y in
                       [(150, 150), (278, 150), (370, 240), (870, 240), (550, 300), (678, 300), (950, 150), (1078, 150),
                        (200, 400), (328, 400), (900, 400), (1028, 400)]]
-        self.monster_num = 6
+        self.monster_num = 8
         self.portal = None
     def update(self):
         if self.monster_num == 0 and self.portal is None:
@@ -113,3 +113,36 @@ class Map_02:
         pass
     # def handle_detection_collision(self, group, other):
     #     pass
+
+class Map_boss:
+    def __init__(self):
+        self.image = load_image('background_boss.png')
+        self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
+        self.tiles = [Tile_02(x, y) for x, y in
+                      [(576, 450), (704, 450),
+                       (350, 350), (478, 350),
+                       (802, 350), (930, 350),
+                       (200, 250), (328, 250),
+                       (952, 250), (1080, 250),
+                       (350, 150), (930, 150)]]
+        self.monster_num = 1
+        self.portal = None
+
+    def update(self):
+        if self.monster_num == 0 and self.portal is None:
+            self.portal = Portal(1100, 120)
+        if self.portal:
+            self.portal.update()
+
+    def draw(self):
+        self.image.draw(1280 // 2, 720 // 2, 1280, 720)
+        for tile in self.ground_tiles:
+            tile.draw()
+        for tile in self.tiles:
+            tile.draw()
+        if self.portal is not None:
+            self.portal.draw()
+            game_world.add_collision_pair('portal:player', self.portal, None)
+
+    def handle_collision(self, group, other):
+        pass
