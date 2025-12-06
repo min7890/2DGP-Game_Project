@@ -78,8 +78,9 @@ class Monster_3:
                 self.x += distance * 30
             self.life -= 1
             if self.life <= 0:
-                item = Item(self.x, self.y)
-                game_world.add_object(item, 1)
+                if random.randint(1, 100) <= 10:
+                    item = Item(self.x, self.y)
+                    game_world.add_object(item, 1)
 
                 game_world.remove_object(self)
                 common.map.monster_num -= 1

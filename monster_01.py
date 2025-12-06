@@ -137,8 +137,9 @@ class Monster_1:
             self.life -= 1
             if self.life <= 0:
                 # 아이템 드롭
-                item = Item(self.x, self.y)
-                game_world.add_object(item, 1)
+                if rnadom.randint(1, 100) <= 10: # 10% 확률로 아이템 드롭
+                    item = Item(self.x, self.y)
+                    game_world.add_object(item, 1)
 
                 game_world.remove_object(self)
                 common.map.monster_num -= 1
