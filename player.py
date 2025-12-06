@@ -1069,6 +1069,7 @@ class Player:
         self.jump = 2
 
         self.life = 5
+        self.Mp = 3
         self.islife_down = False
         self.life_notdown_timer = 0
 
@@ -1164,6 +1165,16 @@ class Player:
         if group == 'portal:player':
             self.isInPortal = True
             print('포탈과 충돌함')
+
+        if group == 'item:player':
+            print('아이템과 충돌함')
+            if other.Mp_or_Hp == 0:
+                if self.Mp < 3:
+                    self.Mp += 1
+            elif other.Mp_or_Hp == 1:
+                if self.life < 5:
+                    self.life += 1
+
 
     # def handle_detection_collision(self, group, other):
     #     if group == 'detection_monster_1:player':

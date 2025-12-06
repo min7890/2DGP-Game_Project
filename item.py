@@ -1,13 +1,14 @@
 from pico2d import *
 import game_framework
 import random
+import game_world
 
 class Item:
     def __init__(self,x =400, y = 300):
         self.Mp_potion_image = load_image('Mp_potion.png')
         self.Hp_potion_image = load_image('Hp_potion.png')
         self.x, self.y = x, y
-        self.Mp_or_Hp = random.randint(0, 1)
+        self.Mp_or_Hp = random.randint(0, 1) #0:Mp, 1:Hp
 
     def update(self):
         if hasattr(self, 'candidate_grounds') and self.candidate_grounds:
@@ -40,4 +41,6 @@ class Item:
 
 
     def handle_collision(self, group, other):
+        if group == 'item:player':
+            game_world.remove_object(self)
         pass

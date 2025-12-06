@@ -146,6 +146,7 @@ class Monster_2:
                 if random.randint(1, 100) <= 10:
                     item = Item(self.x, self.y)
                     game_world.add_object(item, 1)
+                    game_world.add_collision_pair('item:player', item, None)
 
                 game_world.remove_object(self)
                 common.map.monster_num -= 1

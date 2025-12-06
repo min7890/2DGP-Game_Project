@@ -37,6 +37,9 @@ def init():
     game_world.add_collision_pair('map_00_monster_2:player', None, common.player)
     game_world.add_collision_pair('map_00_monster_3:player', None, common.player)
 
+    #아이템과 플레이어 충돌
+    game_world.add_collision_pair('item:player', None, common.player)
+
     monster_1 = Monster_1(400, 300)
     game_world.add_object(monster_1, 1)
     # 몬스터1, 원거리공격 충돌
