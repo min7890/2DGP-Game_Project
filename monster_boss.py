@@ -54,6 +54,8 @@ class Monster_boss:
         self.dir = 0.0
         self.face_dir = 1
 
+        self.state = 'Idle'
+
         self.fly_y = 1
         self.tx, self.ty = 400, 300
 
@@ -65,16 +67,16 @@ class Monster_boss:
 
         self.last_fire_time = get_time()
 
-        self.build_behavior_tree()
 
     def update(self):
+        self.det = False
+        self.is_atk = False
+
         self.y += self.fly_y * FLY_SPEED_PPS * game_framework.frame_time
         if self.y > 400:
             self.fly_y = -1
         elif self.y < 300:
             self.fly_y = 1
-        self.det = False
-        self.is_atk = False
 
 
         #10초마다 fire발사
@@ -83,18 +85,21 @@ class Monster_boss:
              self.fire_360()
             self.last_fire_time = get_time()
 
-        #보스몬스터 hp 5이하일때 몬스터3 소환 5마리
+
+        #보스몬스터 hp 5이하일때 몬스터3 소환 5마리, 위치이동
         if self.life <= 5 and not self.is_spowned:
             self.is_spowned = True
             spawn_monster_03()
+            self.x = 1050
 
-        # self.bt.run()
+
+
 
     def draw(self):
         self.image.clip_draw(0, 0, 230, 380, self.x, self.y)
 
         draw_rectangle(*self.get_bb())
-        draw_circle(self.x, self.y, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        draw_circle(self.x, self.y, int(9 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 110, self.y - 200, self.x + 120, self.y + 180
@@ -115,79 +120,6 @@ class Monster_boss:
 
 
 
-        pass
-
-
-    def set_target_location(self, x=None, y=None):
-        self.tx, self.ty = x, y
-        return BehaviorTree.SUCCESS
-
-    def distance_less_than(self, x1, y1, x2, y2, r):
-        distance2 = (x2 - x1) ** 2 + (y2 - y1) ** 2
-        return distance2 < (r * PIXEL_PER_METER) ** 2
-
-
-    def move_little_to(self, tx, ty):
-        #각도 구하기
-        self.dir = math.atan2(ty - self.y, tx - self.x)
-
-        if tx - self.x < 10:
-            self.face_dir = -1
-        else:
-            self.face_dir = 1
-        #거리 구하기
-        distance = FLY_SPEED_PPS * game_framework.frame_time
-        if self.det:
-            if abs(tx - self.x) > 20:
-                self.x += distance * math.cos(self.dir)
-            self.y += distance * math.sin(self.dir)
-        else:
-            self.x += distance * math.cos(self.dir)
-            self.y += distance * math.sin(self.dir)
-
-    def move_to(self, r=0.5):
-        self.state = 'Fly'
-        self.move_little_to(self.tx, self.ty)
-        # 목표 지점에 거의 도착했으면 성공 리턴
-        if self.distance_less_than(self.x, self.y, self.tx, self.ty, r):
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-
-    def set_random_location(self):
-        self.tx = random.randint(100, 1180)
-        self.ty = random.randint(100, 620)
-        return BehaviorTree.SUCCESS
-
-    def if_player_nearby(self, distance):
-        if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, distance):
-            self.det = True
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.FAIL
-
-    def move_to_player(self, r=0.5):
-        self.state = 'Walk'
-        self.move_little_to(common.player.x, common.player.y)
-        if self.distance_less_than(common.player.x, common.player.y, self.x, self.y, r):
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-
-    def build_behavior_tree(self):
-
-        a1 = Action('목표 지점으로 이동', self.move_to)
-
-        a2 = Action('랜덤 위치 설정', self.set_random_location)
-        wander = Sequence('배회', a2, a1)
-
-        c1 = Condition('플레이어가 근처에 있는가?', self.if_player_nearby, 2)
-        a3 = Action('플레이어 추적', self.move_to_player)
-        chase_if_player_nearby = Sequence('소년이 근처에 있으면 추적', c1, a3)
-
-        root = chase_or_wander = Selector('소년이 가까이 있으면추적하고, 아니면 배회', chase_if_player_nearby, wander)
-
-        self.bt = BehaviorTree(root)
 
 class Monster_boss_left_hand:
     def __init__(self):
@@ -203,6 +135,7 @@ class Monster_boss_left_hand:
 
     def update(self):
         self.y = common.monster_boss.y - 30
+        self.x = common.monster_boss.x - 100
         self.det = False
         self.is_atk = False
 
@@ -232,6 +165,7 @@ class Monster_boss_right_hand:
 
     def update(self):
         self.y = common.monster_boss.y - 30
+        self.x = common.monster_boss.x + 100
         self.det = False
         self.is_atk = False
 
