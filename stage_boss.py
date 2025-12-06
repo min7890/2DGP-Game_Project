@@ -42,10 +42,13 @@ def init():
         common.player.life = stage_01.prev_stage_life()
     game_world.add_object(common.player, 1)
 
+    game_world.add_collision_pair('monster_boss:player', None, common.player)
+
     game_world.add_collision_pair('item:player', None, common.player)
 
     common.monster_boss = Monster_boss(650, 400)
     game_world.add_object(common.monster_boss, 1)
+    game_world.add_collision_pair('monster:sword', common.monster_boss, None)
 
     monster_boss_left_hand = Monster_boss_left_hand()
     game_world.add_object(monster_boss_left_hand, 2)

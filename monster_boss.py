@@ -9,6 +9,7 @@ from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 import common
 import random
 from item import Item
+from boss_fire import Fire
 
 PIXEL_PER_METER = (10.0 / 0.2)
 FLY_SPEED_KMPH = 10.0 # 10km/h
@@ -31,15 +32,24 @@ class Monster_boss:
         self.face_dir = 1
         self.tx, self.ty = 400, 300
 
-        self.life = 4
+        self.life = 20
         self.is_atk = False
         self.det = False
+
+        self.last_fire_time = get_time()
 
         self.build_behavior_tree()
 
     def update(self):
         self.det = False
         self.is_atk = False
+
+
+        #10초마다 fire발사
+        if get_time() - self.last_fire_time > 10.0:
+            if self.life <= 10:
+             self.fire_360()
+            self.last_fire_time = get_time()
 
         # self.bt.run()
 
@@ -52,7 +62,22 @@ class Monster_boss:
     def get_bb(self):
         return self.x - 110, self.y - 200, self.x + 120, self.y + 180
 
+    def fire_360(self):
+        # 20도 간격으로 360도 발사 (18발)
+        for angle in range(0, 360, 20):
+            fire = Fire(self.x, self.y, angle, speed=10)
+            game_world.add_object(fire, 1)
+            game_world.add_collision_pair('boss_fire:player', fire, None)
+
     def handle_collision(self, group, other):
+        if group == 'monster:sword':
+            self.life -= 1
+            if self.life <= 0:
+                game_world.remove_object(self)
+                common.map.monster_num -= 1
+
+
+
         pass
 
 
