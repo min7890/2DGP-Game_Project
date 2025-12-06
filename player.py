@@ -1182,7 +1182,8 @@ class Player:
             print('아이템과 충돌함')
             if other.Mp_or_Hp == 0:
                 if self.Mp < 3:
-                    self.Mp += 1
+                    self.Mp = min(3, self.Mp + 2)
+
             elif other.Mp_or_Hp == 1:
                 if self.life < 5:
                     self.life += 1

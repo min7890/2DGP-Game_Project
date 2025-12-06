@@ -137,7 +137,7 @@ class Monster_1:
             self.life -= 1
             if self.life <= 0:
                 # 아이템 드롭
-                if random.randint(1, 100) <= 10: # 10% 확률로 아이템 드롭
+                if random.randint(1, 100) <= 100: # 10% 확률로 아이템 드롭
                     item = Item(self.x, self.y)
                     game_world.add_object(item, 1)
                     game_world.add_collision_pair('item:player', item, None)
