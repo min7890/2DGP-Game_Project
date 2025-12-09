@@ -22,7 +22,7 @@ def handle_events():
     event_list = get_events()
     for event in event_list:
         if common.player.life == 0:
-            game_framework.change_mode(stage_00)
+            game_framework.change_mode(title_mode)
 
         if event.type == SDL_QUIT:
             game_framework.quit()
