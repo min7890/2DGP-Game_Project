@@ -14,6 +14,8 @@ from map import Map_02
 import pinput
 import stage_00
 import stage_01
+import stage_boss
+import title_mode
 
 import common
 
@@ -21,14 +23,14 @@ def handle_events():
     event_list = get_events()
     for event in event_list:
         if common.player.life == 0:
-            game_framework.change_mode(stage_boss)
+            game_framework.change_mode(title_mode)
 
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_f and common.player.isInPortal:
-            game_framework.change_mode(stage_00)
+            game_framework.change_mode(stage_boss)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
             common.player.handle_event(event)
