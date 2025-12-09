@@ -1211,6 +1211,10 @@ class Player:
                 self.candidate_grounds.append(top + 18)
         if group in ('monster_1:player', 'monster_2:player', 'monster_3:player', 'monster_boss:player', 'monster_boss_left:player', 'monster_boss_right:player'):
             if self.life > 0 and not self.islife_down:
+                if self.x <=  other.x:
+                    self.x -= 20
+                elif self.x > other.x:
+                    self.x += 20
                 self.life -= 1
                 self.islife_down = True
                 self.life_notdown_timer = get_time()
