@@ -131,6 +131,7 @@ class Monster_boss:
 class Monster_boss_left_hand:
     def __init__(self):
         self.image = load_image('boss.png')
+        self.hp_image = load_image('monster_hp.png')
         self.x, self.y = common.monster_boss.x - 100, common.monster_boss.y - 30
 
         self.dir = 0.0
@@ -152,6 +153,7 @@ class Monster_boss_left_hand:
     def draw(self):
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
+        self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         self.image.clip_draw(260, 15, 75, 70, sx_, sy_)
 
         draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 40, sy_ + 25)
@@ -166,6 +168,7 @@ class Monster_boss_left_hand:
 class Monster_boss_right_hand:
     def __init__(self):
         self.image = load_image('boss.png')
+        self.hp_image = load_image('monster_hp.png')
         self.x, self.y = common.monster_boss.x + 100, common.monster_boss.y - 30
 
         self.dir = 0.0
@@ -187,6 +190,7 @@ class Monster_boss_right_hand:
     def draw(self):
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
+        self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         self.image.clip_draw(340, 15, 75, 70, sx_, sy_)
 
         draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 30, sy_ + 25)
