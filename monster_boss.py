@@ -146,6 +146,9 @@ class Monster_boss_left_hand:
         self.det = False
         self.is_atk = False
 
+        if common.monster_boss.life <= 0:
+            game_world.remove_object(self)
+
     def draw(self):
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
@@ -177,6 +180,9 @@ class Monster_boss_right_hand:
         self.x = common.monster_boss.x + 100
         self.det = False
         self.is_atk = False
+
+        if common.monster_boss.life <= 0:
+            game_world.remove_object(self)
 
     def draw(self):
         sx_ = self.x - common.map.window_left
