@@ -1209,7 +1209,7 @@ class Player:
                 if not hasattr(self, 'candidate_grounds'):
                     self.candidate_grounds = []
                 self.candidate_grounds.append(top + 18)
-        if group in ('monster_1:player', 'monster_2:player', 'monster_3:player', 'monster_boss:player', 'monster_boss_left:player', 'monster_boss_right:player'):
+        if group in ('monster_1:player', 'monster_2:player', 'monster_3:player', 'monster_boss:player'):
             if self.life > 0 and not self.islife_down:
                 if self.x <=  other.x:
                     self.x -= 20
@@ -1221,6 +1221,33 @@ class Player:
 
             print('몬스터와 충돌함')
             print(self.life)
+
+        if group  == 'monster_boss_left:player':
+            if self.life > 0 and not self.islife_down and common.monster_boss_left_hand.life > 0:
+                if self.x <= other.x:
+                    self.x -= 20
+                elif self.x > other.x:
+                    self.x += 20
+                self.life -= 1
+                self.islife_down = True
+                self.life_notdown_timer = get_time()
+
+            print('몬스터와 충돌함')
+            print(self.life)
+
+        if group  == 'monster_boss_right:player':
+            if self.life > 0 and not self.islife_down and common.monster_boss_right_hand.life > 0:
+                if self.x <= other.x:
+                    self.x -= 20
+                elif self.x > other.x:
+                    self.x += 20
+                self.life -= 1
+                self.islife_down = True
+                self.life_notdown_timer = get_time()
+
+            print('몬스터와 충돌함')
+            print(self.life)
+
 
         if group == 'portal:player':
             self.isInPortal = True
