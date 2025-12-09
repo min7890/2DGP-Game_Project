@@ -7,6 +7,9 @@ import common
 class Map_Start:
     def __init__(self):
         self.image = load_image('background_00.png')
+        self.font = load_font('ENCR10B.TTF', 15)
+
+
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [
             Tile_02(400, 250, patrol_route=[(350, 300), (580, 300)]),
@@ -47,6 +50,14 @@ class Map_Start:
             tile.draw()
 
         self.portal.draw()
+
+        texts = [
+            'shift+arrow key : Run',
+            'a: fire, s: sword, d: Dash',
+            'arrow key: Move'
+        ]
+        for i, text in enumerate(texts):
+            self.font.draw(10, 50 - i * 20, text, (0, 0, 255))
 
     def handle_collision(self, group, other):
         pass
