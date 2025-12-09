@@ -9,7 +9,7 @@ from monster_02 import Monster_2
 from monster_03 import Monster_3
 from monster_boss import Monster_boss, Monster_boss_left_hand, Monster_boss_right_hand
 
-from life import Life
+from life import Life, Boss_Life
 
 from map import Map_boss
 import pinput
@@ -75,6 +75,9 @@ def init():
     monster_boss_left_hand = Monster_boss_right_hand()
     game_world.add_object(monster_boss_left_hand, 2)
 
+    boss_life = Boss_Life(400, 570)
+    game_world.add_object(boss_life, 2)
+
     # monster_1 = [Monster_1(x, 120) for x in (400, 1050)]
     #
     # for monster in monster_1:
@@ -139,6 +142,8 @@ def update():
         lives = [Life(35 + x * 60, 570) for x in range(common.player.life)]
         for life in lives:
             game_world.add_object(life, 2)
+
+
 
 
 def draw():

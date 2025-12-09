@@ -49,6 +49,7 @@ def spawn_monster_03(num = 0):
 class Monster_boss:
     def __init__(self, x = 400, y =300):
         self.image = load_image('boss.png')
+        self.font = load_font('ENCR10B.TTF', 30)
         self.x, self.y = x, y
         self.frame = 0
         self.dir = 0.0
@@ -107,6 +108,7 @@ class Monster_boss:
 
         draw_rectangle(sx_ - 110, sy_ - 200, sx_ + 120, sy_ + 180)
         draw_circle(sx_, sy_, int(9 * PIXEL_PER_METER), 255, 255, 0)
+        self.font.draw(450, 570, f'x{self.life}', (0, 0, 255))
 
     def get_bb(self):
         return self.x - 110, self.y - 200, self.x + 120, self.y + 180
