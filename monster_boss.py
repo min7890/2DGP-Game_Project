@@ -141,6 +141,8 @@ class Monster_boss_left_hand:
         self.is_atk = False
         self.det = False
 
+        self.recover_time = get_time()
+
     def update(self):
         self.y = common.monster_boss.y - 30
         self.x = common.monster_boss.x - 100
@@ -149,6 +151,12 @@ class Monster_boss_left_hand:
 
         if common.monster_boss.life <= 0:
             game_world.remove_object(self)
+
+        if get_time() - self.recover_time > 30.0:
+            if self.life < 4:
+                self.life += 1
+            self.recover_time = get_time()
+
 
     def draw(self):
         sx_ = self.x - common.map.window_left
@@ -163,7 +171,9 @@ class Monster_boss_left_hand:
         return self.x - 40, self.y - 40, self.x + 40, self.y + 25
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'monster:sword':
+            if self.life > 0:
+                self.life -= 1
 
 class Monster_boss_right_hand:
     def __init__(self):
@@ -177,6 +187,13 @@ class Monster_boss_right_hand:
         self.life = 4
         self.is_atk = False
         self.det = False
+
+        self.recover_time = get_time()
+
+        if get_time() - self.recover_time > 30.0:
+            if self.life < 4:
+                self.life += 1
+            self.recover_time = get_time()
 
     def update(self):
         self.y = common.monster_boss.y - 30
@@ -200,4 +217,6 @@ class Monster_boss_right_hand:
         return self.x - 40, self.y - 40, self.x + 30, self.y + 25
 
     def handle_collision(self, group, other):
-        pass
+        if group == 'monster:sword':
+            if self.life > 0:
+                self.life -= 1

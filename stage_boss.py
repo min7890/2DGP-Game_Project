@@ -77,10 +77,12 @@ def init():
     monster_boss_left_hand = Monster_boss_left_hand()
     game_world.add_object(monster_boss_left_hand, 2)
     game_world.add_collision_pair('monster_boss_left:player', monster_boss_left_hand, None)
+    game_world.add_collision_pair('monster:sword', monster_boss_left_hand, None)
 
     monster_boss_right_hand = Monster_boss_right_hand()
     game_world.add_object(monster_boss_right_hand, 2)
     game_world.add_collision_pair('monster_boss_right:player', monster_boss_right_hand, None)
+    game_world.add_collision_pair('monster:sword', monster_boss_right_hand, None)
 
     boss_life = Boss_Life(400, 570)
     game_world.add_object(boss_life, 2)
