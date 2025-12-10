@@ -291,6 +291,8 @@ class Walk:
 
 
     def do(self):
+
+        Player.walk_sound.play()
         # swing 진행 중 타이머 업데이트
 
 
@@ -491,6 +493,7 @@ class Run:
         self.swing_duration = 0.2  # 칼 휘두르기 모션 시간(초)
 
     def enter(self, e):
+
         if right_down(e):
             if is_left_pressed():
                 self.player.face_dir = 1
@@ -517,6 +520,8 @@ class Run:
             self.player.fire_ball()
 
     def do(self):
+        Player.run_sound.play()
+
         if is_d_pressed() and self.player.can_dash:
             self.player.can_dash = False
             self.player.dash_sound.play()
@@ -1090,7 +1095,18 @@ class Player:
     jump_sound = None
     hit_sound = None
 
+    run_sound = None
+    walk_sound = None
+
     def __init__(self):
+        if not Player.run_sound:
+            Player.run_sound = load_wav('sound/run.ogg')
+            Player.run_sound.set_volume(4)
+
+        if not Player.walk_sound:
+            Player.walk_sound = load_wav('sound/walk.wav')
+            Player.walk_sound.set_volume(4)
+
         if not Player.fire_sound:
             Player.fire_sound = load_wav('sound/flame.ogg')
             Player.fire_sound.set_volume(32)
