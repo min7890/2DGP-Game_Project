@@ -22,6 +22,7 @@ class Map_Start:
         ]
         #스테이지 00은 처음 튜토리얼 스테이지로서 monster_num이 필요없지만 다른 맵과의 통일성을 위해 0 이라는 값을 넣어놓음.
         self.monster_num = 0
+        self.stage_boss = False
 
         self.portal = Portal(1100, 120)
 
@@ -85,6 +86,7 @@ class Map_01:
         ]
         self.monster_num = 6
         self.portal = None
+        self.stage_boss = False
 
         self.w = self.image.w
         self.h = self.image.h
@@ -132,6 +134,7 @@ class Map_02:
                        (200, 400), (328, 400), (900, 400), (1028, 400)]]
         self.monster_num = 8
         self.portal = None
+        self.stage_boss = False
 
         self.w = self.image.w
         self.h = self.image.h
@@ -182,6 +185,7 @@ class Map_boss:
                        (350, 150), (930, 150)]]
         self.monster_num = 0
         self.is_boss_alive = True
+        self.stage_boss = True
 
         self.portal = None
 
