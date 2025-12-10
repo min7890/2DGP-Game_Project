@@ -49,7 +49,13 @@ def spawn_monster_03(num = 0):
 
 
 class Monster_boss:
+    fire_sound = None
+
     def __init__(self, x = 400, y =300):
+        if not Monster_boss.fire_sound:
+            Monster_boss.fire_sound = load_wav('sound/flame.ogg')
+            Monster_boss.fire_sound.set_volume(32)
+
         self.image = load_image('boss.png')
         self.font = load_font('ENCR10B.TTF', 30)
         self.x, self.y = x, y
@@ -120,6 +126,7 @@ class Monster_boss:
     def fire_360(self):
         # 20도 간격으로 360도 발사 (18발)
         for angle in range(0, 360, 20):
+            Monster_boss.fire_sound.play()
             fire = Fire(self.x, self.y, angle, speed=10)
             game_world.add_object(fire, 1)
             game_world.add_collision_pair('boss_fire:player', fire, None)
@@ -195,8 +202,8 @@ class Monster_boss_left_hand:
         self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         self.image.clip_draw(260, 15, 75, 70, sx_, sy_)
 
-        draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 40, sy_ + 25)
-        draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        # draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 40, sy_ + 25)
+        # draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 40, self.y - 40, self.x + 40, self.y + 25
@@ -303,8 +310,8 @@ class Monster_boss_right_hand:
         self.hp_image.clip_draw(190, 31 * (4 - self.life), 150, 31, sx_, sy_ + 60, 200 / 4, 40 / 4)
         self.image.clip_draw(340, 15, 75, 70, sx_, sy_)
 
-        draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 30, sy_ + 25)
-        draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
+        # draw_rectangle(sx_ - 40, sy_ - 40, sx_ + 30, sy_ + 25)
+        # draw_circle(sx_, sy_, int(2 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         return self.x - 40, self.y - 40, self.x + 30, self.y + 25
