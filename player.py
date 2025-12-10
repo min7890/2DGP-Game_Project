@@ -728,6 +728,8 @@ class Jump:
         elif left_down(e):
             self.player.face_dir = self.player.dir =  -1
 
+        self.player.jump_sound.play()
+
     def exit(self, e):
         if a_down(e):
             self.player.fire_ball()
@@ -1085,6 +1087,7 @@ class Player:
     sword_swing_sound = None
     dash_sound = None
     potion_sound = None
+    jump_sound = None
 
     def __init__(self):
         if not Player.fire_sound:
@@ -1102,6 +1105,10 @@ class Player:
         if not Player.potion_sound:
             Player.potion_sound = load_wav('sound/bottle.wav')
             Player.potion_sound.set_volume(32)
+
+        if not Player.jump_sound:
+            Player.jump_sound = load_wav('sound/jump.wav')
+            Player.jump_sound.set_volume(32)
 
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
