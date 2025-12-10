@@ -62,7 +62,7 @@ class Monster_boss:
         self.fly_y = 1
         self.tx, self.ty = 400, 300
 
-        self.life = 20
+        self.life = 100
         self.is_atk = False
         self.det = False
 
@@ -100,6 +100,8 @@ class Monster_boss:
             common.map.monster_num += 5
             self.x = 1050
 
+        # print(common.monster_boss_left_hand.life, common.monster_boss_right_hand.life)
+
 
 
 
@@ -124,7 +126,8 @@ class Monster_boss:
 
     def handle_collision(self, group, other):
         if group == 'monster:sword':
-            self.life -= 1
+            if common.monster_boss_left_hand.life <= 0 and common.monster_boss_right_hand.life <= 0:
+                self.life -= 1
             if self.life <= 0:
                 game_world.remove_object(self)
                 common.map.is_boss_alive = False

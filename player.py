@@ -1140,7 +1140,7 @@ class Player:
         self.x = clamp(0.0, self.x, common.map.w - 1)
         self.y = clamp(0.0, self.y, common.map.h - 1)
 
-        print(self.x, common.map.w)
+        # print(self.x, common.map.w)
 
         if get_time() - self.last_Mp_recover_time > 15.0:
             if self.Mp < 3:
