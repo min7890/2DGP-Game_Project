@@ -1088,6 +1088,7 @@ class Player:
     dash_sound = None
     potion_sound = None
     jump_sound = None
+    hit_sound = None
 
     def __init__(self):
         if not Player.fire_sound:
@@ -1109,6 +1110,10 @@ class Player:
         if not Player.jump_sound:
             Player.jump_sound = load_wav('sound/jump.wav')
             Player.jump_sound.set_volume(32)
+
+        if not Player.hit_sound:
+            Player.hit_sound = load_wav('sound/player_hit.wav')
+            Player.hit_sound.set_volume(32)
 
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
@@ -1245,6 +1250,7 @@ class Player:
                 self.candidate_grounds.append(top + 18)
         if group in ('monster_1:player', 'monster_2:player', 'monster_3:player', 'monster_boss:player'):
             if self.life > 0 and not self.islife_down:
+                Player.hit_sound.play()
                 if self.x <=  other.x:
                     self.x -= 20
                 elif self.x > other.x:
@@ -1258,6 +1264,7 @@ class Player:
 
         if group  == 'monster_boss_left:player':
             if self.life > 0 and not self.islife_down and common.monster_boss_left_hand.life > 0:
+                Player.hit_sound.play()
                 if self.x <= other.x:
                     self.x -= 20
                 elif self.x > other.x:
@@ -1271,6 +1278,7 @@ class Player:
 
         if group  == 'monster_boss_right:player':
             if self.life > 0 and not self.islife_down and common.monster_boss_right_hand.life > 0:
+                Player.hit_sound.play()
                 if self.x <= other.x:
                     self.x -= 20
                 elif self.x > other.x:
@@ -1300,6 +1308,7 @@ class Player:
 
         if group == 'boss_fire:player':
             if self.life > 0 and not self.islife_down:
+                Player.player.hit_sound.play()
                 self.life -= 1
                 self.islife_down = True
                 self.life_notdown_timer = get_time()
