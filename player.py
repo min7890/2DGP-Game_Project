@@ -1076,7 +1076,13 @@ class Dash:
 
 
 class Player:
+    fire_sound = None
+
     def __init__(self):
+        if not Player.fire_sound:
+            Player.fire_sound = load_wav('sound/flame.ogg')
+            Player.fire_sound.set_volume(32)
+
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
         self.velocity_y = 0  # 수직 속도
@@ -1179,6 +1185,7 @@ class Player:
 
     def fire_ball(self):
         if self.Mp > 0:
+            Player.fire_sound.play()
             self.Mp -= 1
             fire = Fire(self.x+self.face_dir*30, self.y+15, self.face_dir * 8)
             game_world.add_object(fire, 1)
