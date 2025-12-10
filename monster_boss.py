@@ -108,8 +108,8 @@ class Monster_boss:
         sy_ = self.y - common.map.window_bottom
         self.image.clip_draw(0, 0, 230, 380, sx_, sy_)
 
-        draw_rectangle(sx_ - 110, sy_ - 200, sx_ + 120, sy_ + 180)
-        draw_circle(sx_, sy_, int(9 * PIXEL_PER_METER), 255, 255, 0)
+        # draw_rectangle(sx_ - 110, sy_ - 200, sx_ + 120, sy_ + 180)
+        # draw_circle(sx_, sy_, int(9 * PIXEL_PER_METER), 255, 255, 0)
         self.font.draw(450, 570, f'x{self.life}', (0, 0, 255))
 
     def get_bb(self):

@@ -125,8 +125,8 @@ class Monster_1:
             else:
                 self.image.clip_draw(int(self.frame) * 120, 420, 110, 190, sx_, sy_, 110 / 2, 190 / 2)
 
-        draw_rectangle(sx_ - 25, sy_ - 40, sx_ + 25, sy_ + 45)
-        draw_circle(sx_, sy_, int(5 * PIXEL_PER_METER), 255, 255, 0)
+        # draw_rectangle(sx_ - 25, sy_ - 40, sx_ + 25, sy_ + 45)
+        # draw_circle(sx_, sy_, int(5 * PIXEL_PER_METER), 255, 255, 0)
 
 
     def get_bb(self):

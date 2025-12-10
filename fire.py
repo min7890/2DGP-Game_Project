@@ -18,7 +18,7 @@ class Fire:
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
         self.image.clip_draw(210, 125, 125, 110, sx_, sy_, 50, 50)
-        draw_rectangle(sx_ - 30, sy_ - 15, sx_ + 20, sy_ + 12)
+        # draw_rectangle(sx_ - 30, sy_ - 15, sx_ + 20, sy_ + 12)
 
     def update(self):
         self.x += self.xv * game_framework.frame_time * PIXEL_PER_METER

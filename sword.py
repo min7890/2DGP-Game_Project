@@ -16,10 +16,10 @@ class Sword_range:
     def draw(self):
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
-        if self.face_dir == 1:
-            draw_rectangle(sx_ - 17, sy_ - 22, sx_ + 50, sy_ + 25, 0, 255, 0)
-        else:
-            draw_rectangle(sx_ - 50, sy_ - 22, sx_ + 17, sy_ + 25, 0, 255, 0)
+        # if self.face_dir == 1:
+        #     draw_rectangle(sx_ - 17, sy_ - 22, sx_ + 50, sy_ + 25, 0, 255, 0)
+        # else:
+        #     draw_rectangle(sx_ - 50, sy_ - 22, sx_ + 17, sy_ + 25, 0, 255, 0)
 
     def get_bb(self):
         if self.face_dir == 1:

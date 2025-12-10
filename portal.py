@@ -21,7 +21,7 @@ class Portal:
         self.image.clip_composite_draw(512, 0, 512, 512, self.rotation, '', sx_, sy_, 100, 100)
         self.image.clip_composite_draw(512, 512, 512, 512, self.rotation, '', sx_, sy_, 100, 100)
 
-        draw_rectangle(sx_ - 50, sy_ - 50, sx_ + 50, sy_ + 50)
+        # draw_rectangle(sx_ - 50, sy_ - 50, sx_ + 50, sy_ + 50)
 
     def get_bb(self):
         return self.x - 50, self.y - 50, self.x + 50, self.y + 50

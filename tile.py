@@ -15,7 +15,7 @@ class Tile_01:
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
         self.tile_image_01.draw(sx_, sy_)
-        draw_rectangle(sx_ - 65, sy_ - 40, sx_ + 65, sy_ + 40)
+        # draw_rectangle(sx_ - 65, sy_ - 40, sx_ + 65, sy_ + 40)
 
     def get_bb(self):
         return self.x - 65, self.y - 40, self.x + 65, self.y + 40
@@ -37,7 +37,7 @@ class Tile_02:
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
         self.tile_image_02.draw(sx_, sy_)
-        draw_rectangle(sx_ - 64, sy_ - 16, sx_ + 64, sy_ + 16)
+        # draw_rectangle(sx_ - 64, sy_ - 16, sx_ + 64, sy_ + 16)
 
     def get_bb(self):
         return self.x - 64, self.y - 16, self.x + 64, self.y + 16

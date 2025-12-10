@@ -1175,7 +1175,7 @@ class Player:
         sx_ = self.x - common.map.window_left
         sy_ = self.y - common.map.window_bottom
         self.Mp_image.clip_draw(340, 31* (3 - self.Mp), 120, 31, sx_, sy_ + 35, 200 /4 , 40 / 4)
-        draw_rectangle(sx_ - 17, sy_ - 22, sx_ + 17, sy_ + 25)
+        # draw_rectangle(sx_ - 17, sy_ - 22, sx_ + 17, sy_ + 25)
 
     def fire_ball(self):
         if self.Mp > 0:

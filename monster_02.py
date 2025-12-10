@@ -103,9 +103,10 @@ class Monster_2:
                 self.image.clip_composite_draw(int(self.frame) * 130, 220, 130, 100, 3.141592, 'v', sx_, sy_, 130 / 2, 100 / 2)
             else:
                 self.image.clip_draw(int(self.frame) * 130, 220, 130, 100, sx_, sy_, 130 / 2, 100 / 2)
-        draw_rectangle(sx_ - 35, sy_ - 25, sx_ + 30, sy_ + 25)
 
-        draw_circle(sx_, sy_, int(7 * PIXEL_PER_METER), 255, 255, 0)
+
+        # draw_rectangle(sx_ - 35, sy_ - 25, sx_ + 30, sy_ + 25)
+        # draw_circle(sx_, sy_, int(7 * PIXEL_PER_METER), 255, 255, 0)
 
     def get_bb(self):
         if self.dir == 1:

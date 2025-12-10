@@ -37,7 +37,7 @@ class Item:
         else:
             self.Hp_potion_image.draw(sx_, sy_, 50, 50)
 
-        draw_rectangle(sx_ - 25, sy_ - 20, sx_ + 25, sy_ + 20)
+        # draw_rectangle(sx_ - 25, sy_ - 20, sx_ + 25, sy_ + 20)
 
     def get_bb(self):
         return self.x - 25, self.y - 20, self.x + 25, self.y + 20
