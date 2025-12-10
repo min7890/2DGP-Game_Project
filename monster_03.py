@@ -23,7 +23,12 @@ FRAME_PER_SECOND = FRAMES_PER_ACTION * ACTION_PER_TIME
 
 
 class Monster_3:
+    hit_sound = None
     def __init__(self, x = 400, y =300):
+        if not Monster_3.hit_sound:
+            Monster_3.hit_sound = load_wav('sound/monster_hit.ogg')
+            Monster_3.hit_sound.set_volume(32)
+
         self.image = load_image('monster.png')
         self.hp_image = load_image('monster_hp.png')
         self.x, self.y = x, y
@@ -76,6 +81,7 @@ class Monster_3:
 
     def handle_collision(self, group, other):
         if group == 'monster_3:fire':
+            Monster_3.hit_sound.play()
             distance = FLY_SPEED_PPS * game_framework.frame_time
             if other.xv < 0:
                 self.x -= distance * 30
@@ -100,6 +106,7 @@ class Monster_3:
         pass
 
         if group == 'monster:sword':
+            Monster_3.hit_sound.play()
             distance = FLY_SPEED_PPS * game_framework.frame_time
             if other.face_dir < 0:
                 self.x -= distance * 30

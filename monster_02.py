@@ -26,7 +26,12 @@ FRAME_PER_SECOND_atk = FRAMES_PER_ACTION_atk * ACTION_PER_TIME
 
 
 class Monster_2:
+    hit_sound = None
     def __init__(self, x = 400, y =300):
+        if not Monster_2.hit_sound:
+            Monster_2.hit_sound = load_wav('sound/monster_hit.ogg')
+            Monster_2.hit_sound.set_volume(32)
+
         self.image = load_image('monster.png')
         self.hp_image = load_image('monster_hp.png')
         self.x, self.y = x, y
@@ -129,6 +134,7 @@ class Monster_2:
             self.is_atk = True
 
         if group == 'monster_2:fire':
+            Monster_2.hit_sound.play()
             distance = WALK_SPEED_PPS * game_framework.frame_time
             if other.xv < 0:
                 self.x -= distance * 30
@@ -147,6 +153,7 @@ class Monster_2:
                 common.map.monster_num -= 1
 
         if group == 'monster:sword':
+            Monster_2.hit_sound.play()
             distance = WALK_SPEED_PPS * game_framework.frame_time
             if other.face_dir < 0:
                 self.x -= distance * 30

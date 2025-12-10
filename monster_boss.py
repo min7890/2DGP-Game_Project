@@ -49,9 +49,14 @@ def spawn_monster_03(num = 0):
 
 
 class Monster_boss:
+    hit_sound = None
     fire_sound = None
 
     def __init__(self, x = 400, y =300):
+        if not Monster_boss.hit_sound:
+            Monster_boss.hit_sound = load_wav('sound/monster_hit.ogg')
+            Monster_boss.hit_sound.set_volume(32)
+
         if not Monster_boss.fire_sound:
             Monster_boss.fire_sound = load_wav('sound/flame.ogg')
             Monster_boss.fire_sound.set_volume(32)
@@ -133,6 +138,7 @@ class Monster_boss:
 
     def handle_collision(self, group, other):
         if group == 'monster:sword':
+            Monster_boss.hit_sound.play()
             if common.monster_boss_left_hand.life <= 0 and common.monster_boss_right_hand.life <= 0:
                 self.life -= 1
             if self.life <= 0:
@@ -143,7 +149,12 @@ class Monster_boss:
 
 
 class Monster_boss_left_hand:
+    hit_sound = None
     def __init__(self):
+        if not Monster_boss_left_hand.hit_sound:
+            Monster_boss_left_hand.hit_sound = load_wav('sound/monster_hit.ogg')
+            Monster_boss_left_hand.hit_sound.set_volume(32)
+
         self.image = load_image('boss.png')
         self.hp_image = load_image('monster_hp.png')
         self.x, self.y = common.monster_boss.x - 100, common.monster_boss.y - 30
@@ -210,6 +221,7 @@ class Monster_boss_left_hand:
 
     def handle_collision(self, group, other):
         if group == 'monster:sword':
+            Monster_boss_left_hand.hit_sound.play()
             if self.life > 0:
                 self.life -= 1
 
@@ -276,7 +288,12 @@ class Monster_boss_left_hand:
 
 
 class Monster_boss_right_hand:
+    hit_sound = None
     def __init__(self):
+        if not Monster_boss_right_hand.hit_sound:
+            Monster_boss_right_hand.hit_sound = load_wav('sound/monster_hit.ogg')
+            Monster_boss_right_hand.hit_sound.set_volume(32)
+
         self.image = load_image('boss.png')
         self.hp_image = load_image('monster_hp.png')
         self.x, self.y = common.monster_boss.x + 100, common.monster_boss.y - 30
@@ -318,5 +335,6 @@ class Monster_boss_right_hand:
 
     def handle_collision(self, group, other):
         if group == 'monster:sword':
+            Monster_boss_right_hand.hit_sound.play()
             if self.life > 0:
                 self.life -= 1
