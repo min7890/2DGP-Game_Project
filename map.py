@@ -6,6 +6,10 @@ import common
 
 class Map_Start:
     def __init__(self):
+        self.bgm = load_music('sound/map_sound.wav')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
         self.image = load_image('background_00.png')
         self.font = load_font('ENCR10B.TTF', 15)
 
@@ -65,6 +69,10 @@ class Map_Start:
 
 class Map_01:
     def __init__(self):
+        self.bgm = load_music('sound/map_sound.wav')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
         self.image = load_image('background_01.png')
         self.ground_tiles = [Tile_01(60+i, 30) for i in range(0, 1280, 120)]
 
@@ -127,6 +135,10 @@ class Map_01:
 
 class Map_02:
     def __init__(self):
+        self.bgm = load_music('sound/map_sound.wav')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
         self.image = load_image('background_02.png')
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
         self.tiles = [Tile_02(x, y) for x, y in
@@ -173,6 +185,10 @@ class Map_02:
 
 class Map_boss:
     def __init__(self):
+        self.bgm = load_music('sound/boss_map_sound.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
         self.image = load_image('background_boss.png')
         self.image_back = load_image('background_boss_01.png')
         self.ground_tiles = [Tile_01(60 + i, 30) for i in range(0, 1280, 120)]
