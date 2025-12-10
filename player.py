@@ -54,6 +54,7 @@ class Idle:
         if s_down(e):
             if not self.player.swing:
                 self.player.swing_sword()
+                self.player.sword_swing_sound.play()
                 self.swing_time = 0
 
     def exit(self, e):
@@ -279,6 +280,7 @@ class Walk:
         # s_down 이벤트에서 enter가 호출되면 swing 시작
         if s_down(e):
             if not self.player.swing:
+                self.player.sword_swing_sound.play()
                 self.player.swing_sword()
                 self.swing_time = 0
 
@@ -503,6 +505,7 @@ class Run:
 
         if s_down(e):
             if not self.player.swing:
+                self.player.sword_swing_sound.play()
                 self.player.swing_sword()
                 self.swing_time = 0
 
@@ -1077,11 +1080,16 @@ class Dash:
 
 class Player:
     fire_sound = None
+    sword_swing_sound = None
 
     def __init__(self):
         if not Player.fire_sound:
             Player.fire_sound = load_wav('sound/flame.ogg')
             Player.fire_sound.set_volume(32)
+
+        if not Player.sword_swing_sound:
+            Player.sword_swing_sound = load_wav('sound/swing_sword.wav')
+            Player.sword_swing_sound.set_volume(32)
 
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
