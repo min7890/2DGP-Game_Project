@@ -13,6 +13,8 @@ from life import Life
 from map import Map_01
 import pinput
 import stage_02
+import win_or_lose
+import title_mode
 import stage_00
 
 import common
@@ -21,7 +23,7 @@ def handle_events():
     event_list = get_events()
     for event in event_list:
         if common.player.life == 0:
-            game_framework.change_mode(title_mode)
+            game_framework.push_mode(win_or_lose)
 
         if event.type == SDL_QUIT:
             game_framework.quit()

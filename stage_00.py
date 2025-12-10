@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_world
 import stage_01
+import title_mode
 import game_framework
 from player import Player
 from monster_01 import Monster_1

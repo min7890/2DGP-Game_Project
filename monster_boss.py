@@ -127,7 +127,9 @@ class Monster_boss:
             self.life -= 1
             if self.life <= 0:
                 game_world.remove_object(self)
-                common.map.monster_num -= 1
+                common.map.is_boss_alive = False
+
+
 
 
 class Monster_boss_left_hand:

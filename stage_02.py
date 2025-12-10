@@ -16,6 +16,7 @@ import stage_00
 import stage_01
 import stage_boss
 import title_mode
+import win_or_lose
 
 import common
 
@@ -23,7 +24,7 @@ def handle_events():
     event_list = get_events()
     for event in event_list:
         if common.player.life == 0:
-            game_framework.change_mode(title_mode)
+            game_framework.push_mode(win_or_lose)
 
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -128,6 +129,12 @@ def draw():
     clear_canvas()
     game_world.render()
     update_canvas()
+
+def prev_stage_life():
+    if common.player is None:
+        return 5
+    else:
+        return common.player.life
 
 def finish():
     game_world.clear()

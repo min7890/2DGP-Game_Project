@@ -14,22 +14,21 @@ from life import Life, Boss_Life
 from map import Map_boss
 import pinput
 import stage_00
-import title_mode
+import stage_02
+import win_or_lose
 
 import common
 
 def handle_events():
     event_list = get_events()
     for event in event_list:
-        if common.player.life == 0:
-            game_framework.change_mode(title_mode)
+        if common.player.life == 0 or not common.map.is_boss_alive:
+            game_framework.push_mode(win_or_lose)
 
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_f and common.player.isInPortal:
-            game_framework.change_mode(title_mode)
         else:
             pinput.update_key_state(event)  # 키 상태 업데이트
             common.player.handle_event(event)
@@ -43,7 +42,7 @@ def init():
     # 플레이어를 먼저 생성
     common.player = Player()
     if common.player is not None:
-        common.player.life = stage_01.prev_stage_life()
+        common.player.life = stage_02.prev_stage_life()
     game_world.add_object(common.player, 1)
 
     # 플레이어-타일 충돌 페어 등록 (플레이어 생성 후)

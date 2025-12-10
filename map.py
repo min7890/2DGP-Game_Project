@@ -181,6 +181,8 @@ class Map_boss:
                        (952, 250), (1080, 250),
                        (350, 150), (930, 150)]]
         self.monster_num = 0
+        self.is_boss_alive = True
+
         self.portal = None
 
         self.w = self.image.w
