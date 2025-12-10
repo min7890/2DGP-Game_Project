@@ -304,6 +304,7 @@ class Walk:
             self.player.state_machine.handle_state_event(('ENTER_RUN', None))
         if is_d_pressed() and self.player.can_dash:
             self.player.can_dash = False
+            self.player.dash_sound.play()
             self.player.state_machine.handle_state_event(('ENTER_DASH', None))
 
         self.player.x += self.player.dir * WALK_SPEED_PPS * game_framework.frame_time
@@ -518,6 +519,7 @@ class Run:
     def do(self):
         if is_d_pressed() and self.player.can_dash:
             self.player.can_dash = False
+            self.player.dash_sound.play()
             self.player.state_machine.handle_state_event(('ENTER_DASH', None))
         if not is_lshift_pressed():
             self.player.state_machine.handle_state_event(('ENTER_WALK', None))
@@ -1081,6 +1083,7 @@ class Dash:
 class Player:
     fire_sound = None
     sword_swing_sound = None
+    dash_sound = None
 
     def __init__(self):
         if not Player.fire_sound:
@@ -1090,6 +1093,10 @@ class Player:
         if not Player.sword_swing_sound:
             Player.sword_swing_sound = load_wav('sound/swing_sword.wav')
             Player.sword_swing_sound.set_volume(32)
+
+        if not Player.dash_sound:
+            Player.dash_sound = load_wav('sound/dash.wav')
+            Player.dash_sound.set_volume(32)
 
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
