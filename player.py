@@ -251,6 +251,9 @@ class Walk:
         self.swing_time = 0
         self.swing_duration = 0.2  # 칼 휘두르기 모션 시간(초)
 
+
+        self.walk_sound_timer = get_time()
+
     def enter(self, e):
         if right_down(e):
             if is_left_pressed():
@@ -292,8 +295,11 @@ class Walk:
 
     def do(self):
 
-        Player.walk_sound.play()
+        # Player.walk_sound.play()
         # swing 진행 중 타이머 업데이트
+        if get_time() - self.walk_sound_timer >= 0.5:
+            Player.walk_sound.play()
+            self.walk_sound_timer = get_time()
 
 
         if self.player.swing:
@@ -1105,7 +1111,7 @@ class Player:
 
         if not Player.walk_sound:
             Player.walk_sound = load_wav('sound/walk.wav')
-            Player.walk_sound.set_volume(4)
+            Player.walk_sound.set_volume(32)
 
         if not Player.fire_sound:
             Player.fire_sound = load_wav('sound/flame.ogg')
