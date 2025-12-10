@@ -1084,6 +1084,7 @@ class Player:
     fire_sound = None
     sword_swing_sound = None
     dash_sound = None
+    potion_sound = None
 
     def __init__(self):
         if not Player.fire_sound:
@@ -1097,6 +1098,10 @@ class Player:
         if not Player.dash_sound:
             Player.dash_sound = load_wav('sound/dash.wav')
             Player.dash_sound.set_volume(32)
+
+        if not Player.potion_sound:
+            Player.potion_sound = load_wav('sound/bottle.wav')
+            Player.potion_sound.set_volume(32)
 
         self.x, self.y = 100, 90
         self.velocity_x = 0  # 좌우 속도
@@ -1276,6 +1281,7 @@ class Player:
             print('포탈과 충돌함')
 
         if group == 'item:player':
+            Player.potion_sound.play()
             print('아이템과 충돌함')
             if other.Mp_or_Hp == 0:
                 if self.Mp < 3:
