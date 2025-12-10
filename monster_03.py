@@ -111,7 +111,7 @@ class Monster_3:
                     if common.monster_boss_right_hand.life > 0:
                         common.monster_boss_right_hand.life -= 1
                 # 아이템 드롭
-                if random.randint(1, 100) <= 100: # 10% 확률로 아이템 드롭
+                if random.randint(1, 100) <= 10: # 10% 확률로 아이템 드롭
                     drop_x, drop_y = self.x, self.y
                     item = Item(drop_x, drop_y + 30)
                     game_world.add_object(item, 1)
